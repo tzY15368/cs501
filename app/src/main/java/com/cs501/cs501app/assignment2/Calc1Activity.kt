@@ -28,8 +28,15 @@ class Calc1Activity : AppCompatActivity() {
 
         binding.btnOp.setOnClickListener { view ->
             // read the values from the edit text fields
-            var num1 = binding.editOp1.text.toString().toFloat()
-            var num2 = binding.editOp2.text.toString().toFloat()
+            var num1: Float = 0f
+            var num2: Float = 0f
+            try {
+                num1 = binding.editOp1.text.toString().toFloat()
+                num2 = binding.editOp2.text.toString().toFloat()
+            } catch (e: Exception) {
+                Alert.fail(view, "Invalid input")
+                return@setOnClickListener
+            }
             var operator = binding.spinnerOperator.selectedItem.toString()
 
             if (num2 == 0f && (operator == "️➗" || operator == "mod")) {
@@ -48,8 +55,7 @@ class Calc1Activity : AppCompatActivity() {
 
             if (num1 > num1.toInt()) {
                 Alert.success(view, num1.toString())
-            }
-            else{
+            } else {
                 Alert.success(view, num1.toInt().toString())
             }
         }
