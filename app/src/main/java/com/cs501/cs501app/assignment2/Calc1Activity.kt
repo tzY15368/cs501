@@ -10,7 +10,7 @@ import com.cs501.cs501app.utils.Alert
 
 class Calc1Activity : AppCompatActivity() {
     private lateinit var binding: ActivityCalc1Binding
-    var operators_array= arrayOf("➕","➖","✖","️➗","mod")
+    var operators_array = arrayOf("➕", "➖", "✖", "️➗", "mod")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,31 @@ class Calc1Activity : AppCompatActivity() {
         }
 
         binding.btnOp.setOnClickListener { view ->
-            Alert.success(view, "hello")
+            // read the values from the edit text fields
+            var num1 = binding.editOp1.text.toString().toFloat()
+            var num2 = binding.editOp2.text.toString().toFloat()
+            var operator = binding.spinnerOperator.selectedItem.toString()
+
+            if (num2 == 0f && (operator == "️➗" || operator == "mod")) {
+                Alert.fail(view, "Cannot divide by zero")
+                return@setOnClickListener
+            }
+
+            // calculate the result
+            when (operator) {
+                "➕" -> num1 += num2
+                "➖" -> num1 -= num2
+                "✖" -> num1 *= num2
+                "️➗" -> num1 /= num2
+                "mod" -> num1 %= num2
+            }
+
+            if (num1 > num1.toInt()) {
+                Alert.success(view, num1.toString())
+            }
+            else{
+                Alert.success(view, num1.toInt().toString())
+            }
         }
     }
 }
