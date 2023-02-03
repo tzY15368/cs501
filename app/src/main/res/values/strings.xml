@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <resources>
     <string name="app_name">CS501App</string>
     <string name="btn_doCalc">do calc</string>
@@ -6,4 +7,11 @@
     <string name="label_op3">Operand:</string>
     <string name="btn_2_1">Goto 2.1</string>
     <string name="btn_2_2">GOTO 2.2</string>
+    <string-array name="operators_array">
+        <item>➕</item>
+        <item>➖</item>
+        <item>✖️</item>
+        <item>➗</item>
+        <item>mod</item>
+    </string-array>
 </resources>
