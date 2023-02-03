@@ -55,25 +55,22 @@
         android:layout_height="77dp" />
 
 
-
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="89dp"
+        android:layout_height="48dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/textView37"
-            android:layout_width="50dp"
+            android:layout_width="67dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/label_op3" />
 
-        <EditText
-            android:id="@+id/editOperand"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:inputType="text" />
+        <Spinner
+            android:id="@+id/spinnerOperator"
+            android:layout_width="111dp"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <View
