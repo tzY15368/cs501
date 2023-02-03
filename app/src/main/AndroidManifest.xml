@@ -12,6 +12,12 @@
         android:theme="@style/Theme.CS501App"
         tools:targetApi="31">
         <activity
+            android:name=".assignment2.Calc2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".assignment2.Calc1Activity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
