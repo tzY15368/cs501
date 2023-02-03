@@ -19,8 +19,19 @@ class Alert {
         }
 
         private fun makeAlert(type: AlertType, view: View, msg: String) {
-            val alertMsg: String = type.name.plus(": ").plus(msg)
-            Snackbar.make(view, alertMsg, SNACKBAR_DURATION).show()
+            val alertMsg: String = type.toString().plus(": ").plus(msg)
+            var snackbar: Snackbar = Snackbar.make(view, alertMsg, SNACKBAR_DURATION)
+            snackbar = when (type) {
+                AlertType.SUCCESS -> {
+                    snackbar.setBackgroundTint(0xFF00FF00.toInt())
+                    snackbar.setActionTextColor(0xFF000000.toInt())
+                }
+                AlertType.ERROR -> snackbar.setBackgroundTint(0xFFFF0000.toInt())
+                AlertType.INFO -> snackbar.setBackgroundTint(0xFF0000FF.toInt())
+                AlertType.WARNING -> snackbar.setBackgroundTint(0xFFFFFF00.toInt())
+                AlertType.FAIL -> snackbar.setBackgroundTint(0xFFFF0000.toInt())
+            }
+            snackbar.show()
         }
 
         fun success(view: View, msg: String) {
