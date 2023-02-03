@@ -27,6 +27,11 @@ class Alert {
             snackbar.show()
         }
 
+        private fun makeAlert(type: AlertType, view: View, msg: String) {
+            val alertMsg: String = type.name.plus(": ").plus(msg)
+            Snackbar.make(view, alertMsg, SNACKBAR_DURATION).show()
+        }
+
         fun success(view: View, msg: String) {
 //            makeAlert(true, view, msg)
             makeAlert(AlertType.SUCCESS, view, msg)
