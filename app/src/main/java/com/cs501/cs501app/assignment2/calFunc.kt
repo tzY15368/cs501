@@ -1,5 +1,7 @@
 package com.cs501.cs501app.assignment2
 
+import android.view.View
+import com.cs501.cs501app.utils.Alert
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -8,7 +10,7 @@ import kotlin.math.sqrt
 object calFunc {
     private var digitCount = 0
     private var operateCount = 0
-    fun cal(s: String): Stack<String> {
+    fun cal(view: View, s: String): Stack<String> {
         val stacka = Stack<String>()
         val stackb = Stack<String>()
         var temp = String()
@@ -24,6 +26,7 @@ object calFunc {
             if (Character.isDigit(c) || c == '.') {
                 if (i == s.length - 1) {
                     temp += m
+                    digitCount++
                     stacka.push(temp)
                 } else
                     temp += m
@@ -34,11 +37,19 @@ object calFunc {
                         val t = stackb.pop()
                         stacka.push(t)
                         stackb.push(m)
+                        operateCount++
                     } else {
                         stackb.push(m)
+                        operateCount++
                     }
-                    '*', '/' -> stackb.push(m)
-                    '√' -> stackb.push(m)
+                    '*', '/' -> {
+                        stackb.push(m)
+                        operateCount++
+                    }
+                    '√' -> {
+                        stackb.push(m)
+                        operateCount++
+                    }
                 }
             }
         }
@@ -46,10 +57,13 @@ object calFunc {
             val q = stackb.pop()
             stacka.push(q)
         }
+        if(operateCount > digitCount) {
+            Alert.fail(view, "Invalid input")
+        }
         return stacka
     }
 
-    fun calc(stacka: Stack<String>)
+    fun calc(view: View, stacka: Stack<String>)
             : String {
         val arr = ArrayList<String>()
         while (!stacka.isEmpty()) {
@@ -78,10 +92,16 @@ object calFunc {
                     arr1.add(c.toString())
                 }
                 "/" -> {
-                    val d = BigDecimal(
-                        arr1.removeAt(j - 2)).divide(BigDecimal(arr1.removeAt(j - 2)),6,RoundingMode.DOWN
-                    )
-                    arr1.add(d.toString())
+                    val d1 = BigDecimal(arr1.removeAt(j - 2))
+                    val d2 = BigDecimal(arr1.removeAt(j - 2))
+                    if(d2 == BigDecimal(0)) {
+                        Alert.fail(view, "Cannot divide by zero")
+                        break
+                    }
+                    else {
+                        val d = d1.divide(d2,6,RoundingMode.DOWN)
+                        arr1.add(d.toString())
+                    }
                 }
 
                 else -> arr1.add(arr[i])
