@@ -7,4 +7,22 @@
     <string name="label_op3">Operand:</string>
     <string name="btn_2_1">Goto 2.1</string>
     <string name="btn_2_2">GOTO 2.2</string>
+    <string name="cal2_tv_msg_default">0</string>
+    <string name="cal2_btn_1">1</string>
+    <string name="cal2_btn_2">2</string>
+    <string name="cal2_btn_3">3</string>
+    <string name="cal2_btn_plus">+</string>
+    <string name="cal2_btn_multi">*</string>
+    <string name="cal2_btn_4">4</string>
+    <string name="cal2_btn_5">5</string>
+    <string name="cal2_btn_6">6</string>
+    <string name="cal2_btn_sub">-</string>
+    <string name="cal2_btn_div">\\</string>
+    <string name="cal2_btn_7">7</string>
+    <string name="cal2_btn_8">8</string>
+    <string name="cal2_btn_9">9</string>
+    <string name="cal2_btn_sqrt">sqrt</string>
+    <string name="cal2_btn_0">0</string>
+    <string name="cal2_btn_point">.</string>
+    <string name="cal2_btn_equals">=</string>
 </resources>
