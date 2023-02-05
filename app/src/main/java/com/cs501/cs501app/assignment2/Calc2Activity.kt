@@ -3,6 +3,7 @@ package com.cs501.cs501app.assignment2
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.cs501.cs501app.databinding.ActivityCalc2Binding
+import com.cs501.cs501app.utils.Alert
 
 class Calc2Activity : AppCompatActivity() {
     private lateinit var binding: ActivityCalc2Binding
@@ -86,10 +87,13 @@ class Calc2Activity : AppCompatActivity() {
         }
 
         binding.btnEquals.setOnClickListener { view ->
-            val resultMsg = try {
-                calFunc.evalExpr(str)
+            var resultMsg = ""
+            try {
+                resultMsg = calFunc.evalExpr(str)
+                Alert.success(view, resultMsg)
             } catch (e: Exception) {
-                "ERROR:$e"
+                resultMsg = "ERROR:$e"
+                Alert.fail(view, e.toString())
             }
             binding.msg.text = resultMsg//输入结束，转为逆波兰表达式
 

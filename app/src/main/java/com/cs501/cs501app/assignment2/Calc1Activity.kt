@@ -44,13 +44,15 @@ class Calc1Activity : AppCompatActivity() {
             val expr: String = num1.toString() +
                     operators_expr_array[operators_char_array.indexOf(operator)] +
                     num2.toString()
-            val resultStr: String = try {
-                calFunc.evalExpr(expr)
+            var resultStr: String = ""
+            try {
+                resultStr = calFunc.evalExpr(expr)
+                Alert.success(view, resultStr)
             } catch (e: Exception) {
-                "Error:$e"
+                resultStr = "Error:$e"
+                Alert.fail(view, resultStr)
             }
             binding.resultText.text = resultStr
-            Alert.success(view, resultStr)
         }
     }
 }
