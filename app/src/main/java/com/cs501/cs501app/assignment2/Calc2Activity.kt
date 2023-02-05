@@ -87,6 +87,11 @@ class Calc2Activity : AppCompatActivity(){
             binding.msg.text = str
         }
 
+        binding.btnMod.setOnClickListener{
+            str += "%"
+            binding.msg.text = str
+        }
+
         binding.btnPoint.setOnClickListener{
             str += "."
             binding.msg.text = str

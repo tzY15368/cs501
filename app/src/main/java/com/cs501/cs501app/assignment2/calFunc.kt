@@ -19,6 +19,7 @@ object calFunc {
         hashMap.put("-", 0);
         hashMap.put("*", 1);
         hashMap.put("/", 1);
+        hashMap.put("%", 1);
         hashMap.put("√", 2);
         for (i in 0 until s.length) {
             val c = s[i]
@@ -42,7 +43,7 @@ object calFunc {
                         stackb.push(m)
                         operateCount++
                     }
-                    '*', '/' -> {
+                    '*', '/', '%' -> {
                         stackb.push(m)
                         operateCount++
                     }
@@ -107,6 +108,19 @@ object calFunc {
 
                     val d = d1.divide(d2,6,RoundingMode.DOWN)
                     arr1.add(d.toString())
+                }
+
+                "%" -> {
+                    val d1 = BigDecimal(arr1.removeAt(j - 2))
+                    val d2 = BigDecimal(arr1.removeAt(j - 2))
+
+                    try {
+                        assert(d2 != BigDecimal(0))
+                    } catch (e : AssertionError) {
+                        throw Exception("Cannot mod by zero")
+                    }
+                    val d = d1.divideAndRemainder(d2);
+                    arr1.add(d[1].toString())
                 }
 
                 else -> arr1.add(arr[i])
