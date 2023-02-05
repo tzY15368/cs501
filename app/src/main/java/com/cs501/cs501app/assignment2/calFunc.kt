@@ -6,6 +6,8 @@ import java.util.*
 import kotlin.math.sqrt
 
 object calFunc {
+    private var digitCount = 0
+    private var operateCount = 0
     fun cal(s: String): Stack<String> {
         val stacka = Stack<String>()
         val stackb = Stack<String>()

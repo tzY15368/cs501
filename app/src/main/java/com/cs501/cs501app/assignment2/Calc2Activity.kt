@@ -13,8 +13,11 @@ import com.cs501.cs501app.databinding.ActivityCalc2Binding
 
 class Calc2Activity : AppCompatActivity(){
     private lateinit var binding: ActivityCalc2Binding
+    // operateCount should be less than digitCount to make sure expression valid
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityCalc2Binding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -90,9 +93,8 @@ class Calc2Activity : AppCompatActivity(){
         }
 
         binding.btnEquals.setOnClickListener{
-            str += "√"
             binding.msg.text = calFunc.calc(cal(str))//输入结束，转为逆波兰表达式
         }
-
     }
+
 }
