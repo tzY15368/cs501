@@ -1,13 +1,7 @@
 package com.cs501.cs501app.assignment2
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import com.cs501.cs501app.R
-import com.cs501.cs501app.assignment2.calFunc.cal
 import com.cs501.cs501app.databinding.ActivityCalc2Binding
 
 class Calc2Activity : AppCompatActivity() {
