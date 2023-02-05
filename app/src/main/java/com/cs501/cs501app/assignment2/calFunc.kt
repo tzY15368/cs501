@@ -10,13 +10,13 @@ object calFunc {
     private var digitCount = 0
     private var operateCount = 0
 
-    // throws exceptions
+    // the only interface for doing calculations, caller should catch exceptions
     fun evalExpr(expr: String): String {
         Log.d("CalFunc", "Evaluating expr=$expr")
         return calc(cal(expr))
     }
 
-    fun cal(s: String): Stack<String> {
+    private fun cal(s: String): Stack<String> {
         val stacka = Stack<String>()
         val stackb = Stack<String>()
         var temp = String()
@@ -72,7 +72,7 @@ object calFunc {
         return stacka
     }
 
-    fun calc(stacka: Stack<String>)
+    private fun calc(stacka: Stack<String>)
             : String {
         val arr = ArrayList<String>()
         while (!stacka.isEmpty()) {
