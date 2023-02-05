@@ -34,9 +34,12 @@ object calFunc {
                     temp += m
                     digitCount++
                     stacka.push(temp)
+                    temp = ""
                 } else
                     temp += m
             } else {
+                stacka.push(temp)
+                temp = ""
                 when (c) {
                     '+', '-' -> if (!stackb.isEmpty() && stackb.peek() != "+" && stackb.peek() != "-") {
                         val t = stackb.pop()
@@ -63,11 +66,11 @@ object calFunc {
             stacka.push(q)
         }
 
-        try {
-            assert(operateCount < digitCount)
-        } catch (e: AssertionError) {
-            throw Exception("Invalid input!")
-        }
+//        try {
+//            assert(operateCount < digitCount)
+//        } catch (e: AssertionError) {
+//            throw Exception("Invalid input!")
+//        }
 
         return stacka
     }
@@ -77,6 +80,7 @@ object calFunc {
         val arr = ArrayList<String>()
         while (!stacka.isEmpty()) {
             val t = stacka.pop()
+            //Log.e("1",t)
             arr.add(t)
         }
         val arr1 = ArrayList<String>()
@@ -89,7 +93,8 @@ object calFunc {
                     arr1.add(a.toString())
                 }
                 "+" -> {
-                    val a = BigDecimal(arr1.removeAt(j - 2)).add(BigDecimal(arr1.removeAt(j - 2)))
+                    val a =
+                        BigDecimal(arr1.removeAt(j - 2)).add(BigDecimal(arr1.removeAt(j - 2)))
                     arr1.add(a.toString())
                 }
                 "-" -> {
