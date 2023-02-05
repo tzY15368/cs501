@@ -93,7 +93,7 @@ class Calc2Activity : AppCompatActivity(){
         }
 
         binding.btnEquals.setOnClickListener{ view ->
-            binding.msg.text = calFunc.calc(view,cal(view, str))//输入结束，转为逆波兰表达式
+            binding.msg.text = calFunc.calc(cal(str))//输入结束，转为逆波兰表达式
 
         }
     }

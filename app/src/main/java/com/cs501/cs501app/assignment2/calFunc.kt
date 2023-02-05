@@ -10,7 +10,7 @@ import kotlin.math.sqrt
 object calFunc {
     private var digitCount = 0
     private var operateCount = 0
-    fun cal(view: View, s: String): Stack<String> {
+    fun cal(s: String): Stack<String> {
         val stacka = Stack<String>()
         val stackb = Stack<String>()
         var temp = String()
@@ -57,13 +57,17 @@ object calFunc {
             val q = stackb.pop()
             stacka.push(q)
         }
-        if(operateCount > digitCount) {
-            Alert.fail(view, "Invalid input")
+
+        try {
+            assert(operateCount < digitCount)
+        } catch (e : AssertionError) {
+            throw Exception("Invalid input!")
         }
+
         return stacka
     }
 
-    fun calc(view: View, stacka: Stack<String>)
+    fun calc(stacka: Stack<String>)
             : String {
         val arr = ArrayList<String>()
         while (!stacka.isEmpty()) {
@@ -94,14 +98,15 @@ object calFunc {
                 "/" -> {
                     val d1 = BigDecimal(arr1.removeAt(j - 2))
                     val d2 = BigDecimal(arr1.removeAt(j - 2))
-                    if(d2 == BigDecimal(0)) {
-                        Alert.fail(view, "Cannot divide by zero")
-                        break
+
+                    try {
+                        assert(d2 != BigDecimal(0))
+                    } catch (e : AssertionError) {
+                        throw Exception("Cannot divide by zero")
                     }
-                    else {
-                        val d = d1.divide(d2,6,RoundingMode.DOWN)
-                        arr1.add(d.toString())
-                    }
+
+                    val d = d1.divide(d2,6,RoundingMode.DOWN)
+                    arr1.add(d.toString())
                 }
 
                 else -> arr1.add(arr[i])
