@@ -89,6 +89,19 @@ class Calc2Activity : AppCompatActivity(){
             binding.msg.text = str
         }
 
+        binding.btnMod.setOnClickListener{
+            str += "%"
+            binding.msg.text = str
+        }
+        binding.btndel.setOnClickListener{
+            str = str.substring(0, str.length - 1)
+            binding.msg.text = str
+        }
+        binding.btnac.setOnClickListener{
+            str = ""
+            binding.msg.text = str
+        }
+
         binding.btnEquals.setOnClickListener{
             str += "√"
             binding.msg.text = calFunc.calc(cal(str))//输入结束，转为逆波兰表达式
