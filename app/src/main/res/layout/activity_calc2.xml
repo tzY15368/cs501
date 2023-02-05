@@ -15,7 +15,7 @@
         android:gravity="end|bottom"
         android:text="@string/cal2_tv_msg_default"
         android:textColor="#000000"
-        android:textSize="35sp"
+        android:textSize="33sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
