@@ -6,25 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".assignment2.Calc2Activity">
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/constraintLayout1"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
-
-
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textColor="#409EFF"-->
-<!--            android:textSize="33sp"-->
-<!--            android:text=""-->
-<!--            android:gravity="center"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -33,9 +14,6 @@
         android:layout_marginTop="70dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-<!--        app:layout_constraintTop_toBottomOf="@+id/constraintLayout1"-->
-        
-
 
         <TextView
             android:id="@+id/msg"
@@ -53,7 +31,7 @@
             android:id="@+id/edit_advanced"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:ems="10"
             android:gravity="end|bottom"
@@ -77,7 +55,7 @@
             android:id="@+id/btn_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="70dp"
             android:text="@string/cal2_btn_1"
             android:textSize="20sp"
@@ -110,7 +88,7 @@
             android:id="@+id/btn_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_plus"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/btn_9"
@@ -120,7 +98,7 @@
             android:id="@+id/btn_multi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="70dp"
             android:text="@string/cal2_btn_multi"
             android:textSize="20sp"
@@ -131,7 +109,7 @@
             android:id="@+id/btn_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_4"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -141,7 +119,7 @@
             android:id="@+id/btn_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_5"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/btn_4"
@@ -161,7 +139,7 @@
             android:id="@+id/btn_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_sub"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/btn_6"
@@ -181,7 +159,7 @@
             android:id="@+id/btn_7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_7"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -191,7 +169,7 @@
             android:id="@+id/btn_8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_8"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/btn_7"
@@ -222,7 +200,7 @@
             android:id="@+id/btn_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_0"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -232,7 +210,7 @@
             android:id="@+id/btn_point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_point"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/btn_0"
@@ -242,7 +220,7 @@
             android:id="@+id/btn_mod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_mod"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/btn_div"
@@ -252,7 +230,7 @@
             android:id="@+id/btn_del"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_del"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -262,7 +240,7 @@
             android:id="@+id/btn_ac"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="8dp"
 
             android:text="@string/cal2_btn_ac"
             android:textSize="18sp"
@@ -273,7 +251,7 @@
             android:id="@+id/btn_equals"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="8dp"
             android:text="@string/cal2_btn_equals"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/btn_sqrt"
