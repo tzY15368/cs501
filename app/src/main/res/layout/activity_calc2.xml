@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/msg"
-        android:layout_width="403dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
@@ -231,7 +231,8 @@
         android:layout_marginStart="11dp"
         android:text="@string/cal2_btn_ac"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_0"
+
+        app:layout_constraintStart_toEndOf="@+id/btn_del"
         app:layout_constraintTop_toBottomOf="@+id/btn_point"
         tools:ignore="MissingConstraints" />
 
@@ -242,7 +243,7 @@
         android:layout_marginStart="5dp"
         android:text="@string/cal2_btn_equals"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_point"
+        app:layout_constraintStart_toEndOf="@+id/btn_ac"
         app:layout_constraintTop_toBottomOf="@+id/btn_mod"
         tools:ignore="MissingConstraints" />
 
