@@ -116,6 +116,7 @@ object calFunc {
         try {
             assert(operateCount < digitCount)
         } catch (e: AssertionError) {
+            Log.d("CalFunc", "operateCount=$operateCount, digitCount=$digitCount")
             throw Exception("Invalid input!")
         }
 
@@ -123,7 +124,7 @@ object calFunc {
             val j = arr1.size
             when (arr[i]) {
                 "√" -> {
-                    val decimal = BigDecimal(arr1.removeAt(j - 2))
+                    val decimal = BigDecimal(arr1.removeAt(j - 1))
                     val a = sqrt(decimal.toDouble())
                     arr1.add(a.toString())
                 }
@@ -156,15 +157,15 @@ object calFunc {
                     arr1.add(d.toString())
                 }
                 "%" -> {
-                    val d1 = arr1.removeAt(j - 2).toIntOrNull()
-                    val d2 = arr1.removeAt(j - 2).toIntOrNull()
+                    val d1 = arr1.removeAt(j - 2).toFloatOrNull()
+                    val d2 = arr1.removeAt(j - 2).toFloatOrNull()
                     try {
                         assert(d1 != null && d2 != null)
                     } catch (e: AssertionError) {
                         throw Exception("Cannot mod between other data type")
                     }
                     try {
-                        assert(d2 != 0)
+                        assert(d2 != 0f)
                     } catch (e: AssertionError) {
                         throw Exception("Cannot divide by zero")
                     }
@@ -174,6 +175,13 @@ object calFunc {
                 }
                 else -> arr1.add(arr[i])
             }
+        }
+        // If the result is an integer, remove the decimal point
+        if (arr1[0].contains(".")) {
+            val decimal = BigDecimal(arr1[0])
+            val a = decimal.setScale(0, RoundingMode.DOWN)
+            if (a.toDouble() == decimal.toDouble())
+                arr1[0] = a.toString()
         }
         return arr1[0]
     }
