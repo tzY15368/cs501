@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".assignment2.Calc2Activity">
 
+
     <TextView
         android:id="@+id/msg"
         android:layout_width="403dp"
@@ -19,6 +20,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/edit_advanced"
+        android:layout_width="353dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="76dp"
+        android:ems="10"
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="right"
+        app:layout_constraintTop_toTopOf="@+id/msg"
+        tools:ignore="MissingConstraints"
+        android:inputType="text" />
 
     <Button
         android:id="@+id/btn_1"

@@ -23,8 +23,11 @@ class Calc2Activity : AppCompatActivity() {
         }
 
         binding.btn1.setOnClickListener {
+            str = binding.editAdvanced.text.toString()
             str += "1"
             binding.msg.text = str
+            binding.editAdvanced.setText(str)
+            binding.editAdvanced.setSelection(binding.editAdvanced.length())
         }
         binding.btn2.setOnClickListener {
             str += "2"
@@ -69,8 +72,11 @@ class Calc2Activity : AppCompatActivity() {
             binding.msg.text = str
         }
         binding.btnPlus.setOnClickListener {
+            str = binding.editAdvanced.text.toString()
             str += "+"
             binding.msg.text = str
+            binding.editAdvanced.setText(str)
+            binding.editAdvanced.setSelection(binding.editAdvanced.length())
         }
         binding.btnSub.setOnClickListener {
             str += "-"
@@ -88,6 +94,7 @@ class Calc2Activity : AppCompatActivity() {
 
         binding.btnEquals.setOnClickListener { view ->
             var resultMsg = ""
+            str = binding.editAdvanced.text.toString()
             try {
                 resultMsg = calFunc.evalExpr(str)
                 Alert.success(view, resultMsg)
@@ -95,8 +102,8 @@ class Calc2Activity : AppCompatActivity() {
                 resultMsg = "ERROR:$e"
                 Alert.fail(view, e.toString())
             }
-            binding.msg.text = resultMsg//输入结束，转为逆波兰表达式
-
+            binding.msg.text = resultMsg // change format
+            binding.editAdvanced.setText(resultMsg)
         }
     }
 
