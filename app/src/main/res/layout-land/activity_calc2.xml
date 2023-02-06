@@ -6,35 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".assignment2.Calc2Activity">
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/constraintLayout1"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
-
-
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textColor="#409EFF"-->
-<!--            android:textSize="33sp"-->
-<!--            android:text=""-->
-<!--            android:gravity="center"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
+        android:id="@+id/constraintLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-<!--        app:layout_constraintTop_toBottomOf="@+id/constraintLayout1"-->
-        
 
 
         <TextView
@@ -71,14 +49,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
 
         <Button
             android:id="@+id/btn_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="10dp"
             android:text="@string/cal2_btn_1"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="10dp"
             android:text="@string/cal2_btn_2"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/btn_1"
@@ -100,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="10dp"
             android:text="@string/cal2_btn_3"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/btn_2"
@@ -121,7 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="10dp"
             android:text="@string/cal2_btn_multi"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/btn_3"
