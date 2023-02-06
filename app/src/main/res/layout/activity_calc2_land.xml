@@ -25,7 +25,7 @@
         android:id="@+id/btn_sqrt"
         android:layout_width="157dp"
         android:layout_height="60dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="4dp"
         android:text="@string/cal2_btn_sqrt"
         android:textSize="18sp"
