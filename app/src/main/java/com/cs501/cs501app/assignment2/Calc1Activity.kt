@@ -49,8 +49,8 @@ class Calc1Activity : AppCompatActivity() {
                 resultStr = calFunc.evalExpr(expr)
                 Alert.success(view, resultStr)
             } catch (e: Exception) {
-                resultStr = "Error:$e"
-                Alert.fail(view, resultStr)
+                resultStr = "Error"
+                Alert.fail(view, "Error:$e")
             }
             binding.resultText.text = resultStr
         }
