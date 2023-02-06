@@ -231,6 +231,7 @@
         android:layout_marginStart="11dp"
         android:text="@string/cal2_btn_ac"
         android:textSize="18sp"
+
         app:layout_constraintStart_toEndOf="@+id/btn_del"
         app:layout_constraintTop_toBottomOf="@+id/btn_point"
         tools:ignore="MissingConstraints" />
