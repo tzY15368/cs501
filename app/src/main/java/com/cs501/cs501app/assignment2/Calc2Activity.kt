@@ -3,6 +3,7 @@ package com.cs501.cs501app.assignment2
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import com.cs501.cs501app.databinding.ActivityCalc2Binding
 import com.cs501.cs501app.utils.Alert
 
@@ -88,17 +89,16 @@ class Calc2Activity : AppCompatActivity() {
         }
 
         binding.btnEquals.setOnClickListener { view ->
-            var resultMsg = ""
             str = binding.editAdvanced.text.toString()
             try {
-                resultMsg = calFunc.evalExpr(str)
+                val resultMsg = calFunc.evalExpr(str)
                 Alert.success(view, resultMsg)
+                binding.editAdvanced.setText(resultMsg)
             } catch (e: Exception) {
-                resultMsg = "ERROR:$e"
-                Alert.fail(view, e.toString())
+                val errorMsg = "ERROR:$e"
+                Alert.fail(view, errorMsg)
+                Log.e("Calc2", errorMsg)
             }
-//            binding.msg.text = resultMsg // change format
-            binding.editAdvanced.setText(resultMsg)
         }
     }
 
