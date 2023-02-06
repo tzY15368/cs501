@@ -97,7 +97,7 @@ object calFunc {
         val arr = ArrayList<String>()
         while (!stacka.isEmpty()) {
             val t = stacka.pop()
-            Log.e("1",t)
+//            Log.e("1",t)
             arr.add(t)
 
             try {
@@ -123,7 +123,7 @@ object calFunc {
             val j = arr1.size
             when (arr[i]) {
                 "√" -> {
-                    val decimal = BigDecimal(arr1.removeAt(j - 2))
+                    val decimal = BigDecimal(arr1.removeAt(j - 1))
                     val a = sqrt(decimal.toDouble())
                     arr1.add(a.toString())
                 }
