@@ -74,6 +74,9 @@ object calFunc {
                         stackb.push(m)
 //                        operateCount++
                     }
+                    '%' -> {
+                        stackb.push(m)
+                    }
                 }
             }
         }
@@ -94,7 +97,7 @@ object calFunc {
         val arr = ArrayList<String>()
         while (!stacka.isEmpty()) {
             val t = stacka.pop()
-            //Log.e("1",t)
+            Log.e("1",t)
             arr.add(t)
 
             try {
@@ -152,7 +155,23 @@ object calFunc {
                     val d = d1.divide(d2, 6, RoundingMode.DOWN)
                     arr1.add(d.toString())
                 }
+                "%" -> {
+                    val d1 = arr1.removeAt(j - 2).toIntOrNull()
+                    val d2 = arr1.removeAt(j - 2).toIntOrNull()
+                    try {
+                        assert(d1 != null && d2 != null)
+                    } catch (e: AssertionError) {
+                        throw Exception("Cannot mod between other data type")
+                    }
+                    try {
+                        assert(d2 != 0)
+                    } catch (e: AssertionError) {
+                        throw Exception("Cannot divide by zero")
+                    }
 
+                    val d = d2?.let { d1?.mod(it) ?: 0 }
+                    arr1.add(d.toString())
+                }
                 else -> arr1.add(arr[i])
             }
         }

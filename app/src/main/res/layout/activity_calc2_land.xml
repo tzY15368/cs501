@@ -8,7 +8,21 @@
 
     <TextView
         android:id="@+id/msg"
-        android:layout_width="722dp"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:gravity="end|bottom"
+
+        android:textColor="#000000"
+        android:textSize="33sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/edit_advanced"
+        android:layout_width="match_parent"
         android:layout_height="63dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
@@ -16,16 +30,19 @@
         android:text="@string/cal2_tv_msg_default"
         android:textColor="#000000"
         android:textSize="33sp"
+        android:hint="@string/cal2_tv_msg_default"
+        android:ems="10"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:inputType="text" />
 
 
     <Button
         android:id="@+id/btn_sqrt"
         android:layout_width="157dp"
         android:layout_height="60dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="4dp"
         android:text="@string/cal2_btn_sqrt"
         android:textSize="18sp"
@@ -65,7 +82,7 @@
         android:layout_marginTop="4dp"
         android:text="@string/cal2_btn_ac"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_0"
+        app:layout_constraintStart_toEndOf="@+id/btn_del"
         app:layout_constraintTop_toBottomOf="@+id/btn_point"
         tools:ignore="MissingConstraints" />
 
@@ -161,7 +178,7 @@
         android:layout_marginTop="4dp"
         android:text="@string/cal2_btn_equals"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_point"
+        app:layout_constraintStart_toEndOf="@+id/btn_ac"
         app:layout_constraintTop_toBottomOf="@+id/btn_mod"
         tools:ignore="MissingConstraints" />
 
