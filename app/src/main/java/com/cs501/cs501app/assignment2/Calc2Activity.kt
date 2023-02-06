@@ -86,6 +86,19 @@ class Calc2Activity : AppCompatActivity() {
             binding.msg.text = str
         }
 
+        binding.btnMod.setOnClickListener{
+            str += "%"
+            binding.msg.text = str
+        }
+        binding.btnDel.setOnClickListener{
+            str = str.substring(0, str.length - 1)
+            binding.msg.text = str
+        }
+        binding.btnAc.setOnClickListener{
+            str = ""
+            binding.msg.text = str
+        }
+
         binding.btnEquals.setOnClickListener { view ->
             var resultMsg = ""
             try {
