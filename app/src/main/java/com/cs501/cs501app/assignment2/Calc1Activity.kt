@@ -2,6 +2,7 @@ package com.cs501.cs501app.assignment2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import com.cs501.cs501app.databinding.ActivityCalc1Binding
 import com.cs501.cs501app.utils.Alert
@@ -13,7 +14,7 @@ class Calc1Activity : AppCompatActivity() {
     var operators_char_array = arrayOf("➕", "➖", "✖", "️➗", "mod")
 
     // chars converted to calFunc expr
-    var operators_expr_array = arrayOf("+", "-", "x", "/", "%")
+    var operators_expr_array = arrayOf("+", "-", "*", "/", "%")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +45,7 @@ class Calc1Activity : AppCompatActivity() {
             val expr: String = num1.toString() +
                     operators_expr_array[operators_char_array.indexOf(operator)] +
                     num2.toString()
+            Log.d("Calc1Activity", "expr: $expr")
             var resultStr: String = ""
             try {
                 resultStr = calFunc.evalExpr(expr)
