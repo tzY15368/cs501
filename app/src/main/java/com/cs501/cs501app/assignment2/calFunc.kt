@@ -1,12 +1,22 @@
 package com.cs501.cs501app.assignment2
 
+import android.util.Log
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
 import kotlin.math.sqrt
 
 object calFunc {
-    fun cal(s: String): Stack<String> {
+    private var digitCount = 0
+    private var operateCount = 0
+
+    // the only interface for doing calculations, caller should catch exceptions
+    fun evalExpr(expr: String): String {
+        Log.d("CalFunc", "Evaluating expr=$expr")
+        return calc(cal(expr))
+    }
+
+    private fun cal(s: String): Stack<String> {
         val stacka = Stack<String>()
         val stackb = Stack<String>()
         var temp = String()
@@ -22,21 +32,32 @@ object calFunc {
             if (Character.isDigit(c) || c == '.') {
                 if (i == s.length - 1) {
                     temp += m
+                    digitCount++
                     stacka.push(temp)
+                    temp = ""
                 } else
                     temp += m
-            }
-            else {
+            } else {
+                stacka.push(temp)
+                temp = ""
                 when (c) {
-                    '+', '-' -> if (!stackb.isEmpty() && stackb.peek()!="+"&& stackb.peek()!="-") {
+                    '+', '-' -> if (!stackb.isEmpty() && stackb.peek() != "+" && stackb.peek() != "-") {
                         val t = stackb.pop()
                         stacka.push(t)
                         stackb.push(m)
+                        operateCount++
                     } else {
                         stackb.push(m)
+                        operateCount++
                     }
-                    '*', '/' -> stackb.push(m)
-                    '√' -> stackb.push(m)
+                    '*', '/' -> {
+                        stackb.push(m)
+                        operateCount++
+                    }
+                    '√' -> {
+                        stackb.push(m)
+                        operateCount++
+                    }
                 }
             }
         }
@@ -44,14 +65,22 @@ object calFunc {
             val q = stackb.pop()
             stacka.push(q)
         }
+
+//        try {
+//            assert(operateCount < digitCount)
+//        } catch (e: AssertionError) {
+//            throw Exception("Invalid input!")
+//        }
+
         return stacka
     }
 
-    fun calc(stacka: Stack<String>)
+    private fun calc(stacka: Stack<String>)
             : String {
         val arr = ArrayList<String>()
         while (!stacka.isEmpty()) {
             val t = stacka.pop()
+            //Log.e("1",t)
             arr.add(t)
         }
         val arr1 = ArrayList<String>()
@@ -64,21 +93,31 @@ object calFunc {
                     arr1.add(a.toString())
                 }
                 "+" -> {
-                    val a = BigDecimal(arr1.removeAt(j - 2)).add(BigDecimal(arr1.removeAt(j - 2)))
+                    val a =
+                        BigDecimal(arr1.removeAt(j - 2)).add(BigDecimal(arr1.removeAt(j - 2)))
                     arr1.add(a.toString())
                 }
                 "-" -> {
-                    val b = BigDecimal(arr1.removeAt(j - 2)).subtract(BigDecimal(arr1.removeAt(j - 2)))
+                    val b =
+                        BigDecimal(arr1.removeAt(j - 2)).subtract(BigDecimal(arr1.removeAt(j - 2)))
                     arr1.add(b.toString())
                 }
                 "*" -> {
-                    val c = BigDecimal(arr1.removeAt(j - 2)).multiply(BigDecimal(arr1.removeAt(j - 2)))
+                    val c =
+                        BigDecimal(arr1.removeAt(j - 2)).multiply(BigDecimal(arr1.removeAt(j - 2)))
                     arr1.add(c.toString())
                 }
                 "/" -> {
-                    val d = BigDecimal(
-                        arr1.removeAt(j - 2)).divide(BigDecimal(arr1.removeAt(j - 2)),6,RoundingMode.DOWN
-                    )
+                    val d1 = BigDecimal(arr1.removeAt(j - 2))
+                    val d2 = BigDecimal(arr1.removeAt(j - 2))
+
+                    try {
+                        assert(d2 != BigDecimal(0))
+                    } catch (e: AssertionError) {
+                        throw Exception("Cannot divide by zero")
+                    }
+
+                    val d = d1.divide(d2, 6, RoundingMode.DOWN)
                     arr1.add(d.toString())
                 }
 
