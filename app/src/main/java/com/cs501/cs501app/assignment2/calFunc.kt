@@ -7,15 +7,30 @@ import java.util.*
 import kotlin.math.sqrt
 
 object calFunc {
-    private var digitCount = 0
-    private var operateCount = 0
 
     // the only interface for doing calculations, caller should catch exceptions
     fun evalExpr(expr: String): String {
         Log.d("CalFunc", "Evaluating expr=$expr")
         return calc(cal(expr))
     }
+    private fun isOperator(s : String) : Boolean {
+        return s == "+" || s == "-" || s == "*" || s == "/"
+    }
 
+    private fun countPoint(s : String) : Boolean {
+        var counter = 0
+        for(c in s) {
+            if(c=='.')
+                counter++
+        }
+
+        return counter <= 1
+    }
+
+    private fun endWithPoint(s : String) : Boolean {
+
+        return s[s.length-1] == '.'
+    }
     private fun cal(s: String): Stack<String> {
         val stacka = Stack<String>()
         val stackb = Stack<String>()
@@ -32,28 +47,35 @@ object calFunc {
             if (Character.isDigit(c) || c == '.') {
                 if (i == s.length - 1) {
                     temp += m
-                    digitCount++
+//                    digitCount++
+                    println(temp)
                     stacka.push(temp)
+                    temp = ""
                 } else
                     temp += m
             } else {
+                stacka.push(temp)
+                temp = ""
                 when (c) {
                     '+', '-' -> if (!stackb.isEmpty() && stackb.peek() != "+" && stackb.peek() != "-") {
                         val t = stackb.pop()
                         stacka.push(t)
                         stackb.push(m)
-                        operateCount++
+//                        operateCount++
                     } else {
                         stackb.push(m)
-                        operateCount++
+//                        operateCount++
                     }
                     '*', '/' -> {
                         stackb.push(m)
-                        operateCount++
+//                        operateCount++
                     }
                     '√' -> {
                         stackb.push(m)
-                        operateCount++
+//                        operateCount++
+                    }
+                    '%' -> {
+                        stackb.push(m)
                     }
                 }
             }
@@ -63,23 +85,40 @@ object calFunc {
             stacka.push(q)
         }
 
-        try {
-            assert(operateCount < digitCount)
-        } catch (e: AssertionError) {
-            throw Exception("Invalid input!")
-        }
 
         return stacka
     }
 
     private fun calc(stacka: Stack<String>)
             : String {
+        var digitCount = 0
+        var operateCount = 0
+
         val arr = ArrayList<String>()
         while (!stacka.isEmpty()) {
             val t = stacka.pop()
+            Log.e("1",t)
             arr.add(t)
+
+            try {
+                assert(countPoint(t) && !endWithPoint(t))
+            } catch (e: AssertionError) {
+                throw Exception("Decimal point invalid!")
+            }
+
+            if(isOperator(t))
+                operateCount++
+            else digitCount++
         }
+
         val arr1 = ArrayList<String>()
+
+        try {
+            assert(operateCount < digitCount)
+        } catch (e: AssertionError) {
+            throw Exception("Invalid input!")
+        }
+
         for (i in arr.indices.reversed()) {
             val j = arr1.size
             when (arr[i]) {
@@ -89,7 +128,8 @@ object calFunc {
                     arr1.add(a.toString())
                 }
                 "+" -> {
-                    val a = BigDecimal(arr1.removeAt(j - 2)).add(BigDecimal(arr1.removeAt(j - 2)))
+                    val a =
+                        BigDecimal(arr1.removeAt(j - 2)).add(BigDecimal(arr1.removeAt(j - 2)))
                     arr1.add(a.toString())
                 }
                 "-" -> {
@@ -115,7 +155,23 @@ object calFunc {
                     val d = d1.divide(d2, 6, RoundingMode.DOWN)
                     arr1.add(d.toString())
                 }
+                "%" -> {
+                    val d1 = arr1.removeAt(j - 2).toIntOrNull()
+                    val d2 = arr1.removeAt(j - 2).toIntOrNull()
+                    try {
+                        assert(d1 != null && d2 != null)
+                    } catch (e: AssertionError) {
+                        throw Exception("Cannot mod between other data type")
+                    }
+                    try {
+                        assert(d2 != 0)
+                    } catch (e: AssertionError) {
+                        throw Exception("Cannot divide by zero")
+                    }
 
+                    val d = d2?.let { d1?.mod(it) ?: 0 }
+                    arr1.add(d.toString())
+                }
                 else -> arr1.add(arr[i])
             }
         }

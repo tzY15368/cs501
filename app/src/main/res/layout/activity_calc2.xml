@@ -6,26 +6,43 @@
     android:layout_height="match_parent"
     tools:context=".assignment2.Calc2Activity">
 
+
     <TextView
         android:id="@+id/msg"
-        android:layout_width="403dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="16dp"
         android:gravity="end|bottom"
-        android:text="@string/cal2_tv_msg_default"
+
         android:textColor="#000000"
         android:textSize="33sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
+    <EditText
+        android:id="@+id/edit_advanced"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="16dp"
+        android:gravity="end|bottom"
+        android:textColor="#000000"
+        android:textSize="33sp"
+        android:hint="@string/cal2_tv_msg_default"
+        android:ems="10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        android:inputType="text" />
+
     <Button
         android:id="@+id/btn_1"
         android:layout_width="75dp"
         android:layout_height="60dp"
-        android:layout_marginTop="76dp"
         android:layout_marginStart="2dp"
+        android:layout_marginTop="76dp"
         android:text="@string/cal2_btn_1"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,9 +101,9 @@
         android:id="@+id/btn_4"
         android:layout_width="75dp"
         android:layout_height="60dp"
+        android:layout_marginStart="2dp"
         android:text="@string/cal2_btn_4"
         android:textSize="20sp"
-        android:layout_marginStart="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_1"
         tools:ignore="MissingConstraints" />
@@ -139,9 +156,9 @@
         android:id="@+id/btn_7"
         android:layout_width="75dp"
         android:layout_height="60dp"
+        android:layout_marginStart="2dp"
         android:text="@string/cal2_btn_7"
         android:textSize="20sp"
-        android:layout_marginStart="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_4"
         tools:ignore="MissingConstraints" />
@@ -184,9 +201,9 @@
         android:id="@+id/btn_0"
         android:layout_width="157dp"
         android:layout_height="60dp"
+        android:layout_marginStart="2dp"
         android:text="@string/cal2_btn_0"
         android:textSize="20sp"
-        android:layout_marginStart="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_7"
         tools:ignore="MissingConstraints" />
@@ -203,14 +220,49 @@
         tools:ignore="MissingConstraints" />
 
     <Button
+        android:id="@+id/btn_mod"
+        android:layout_width="157dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="5dp"
+        android:text="@string/cal2_btn_mod"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/btn_point"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sqrt"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_del"
+        android:layout_width="157dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="2dp"
+        android:text="@string/cal2_btn_del"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_0"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btn_ac"
+        android:layout_width="75dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="11dp"
+        android:text="@string/cal2_btn_ac"
+        android:textSize="18sp"
+
+        app:layout_constraintStart_toEndOf="@+id/btn_del"
+        app:layout_constraintTop_toBottomOf="@+id/btn_point"
+        tools:ignore="MissingConstraints" />
+
+    <Button
         android:id="@+id/btn_equals"
         android:layout_width="157dp"
         android:layout_height="60dp"
         android:layout_marginStart="5dp"
         android:text="@string/cal2_btn_equals"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_point"
-        app:layout_constraintTop_toBottomOf="@+id/btn_sqrt"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/btn_ac"
+        app:layout_constraintTop_toBottomOf="@+id/btn_mod"
         tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
