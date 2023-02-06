@@ -73,16 +73,18 @@ class Calc2Activity : AppCompatActivity() {
         }
 
         binding.btnMod.setOnClickListener{
-            str += "%"
-            binding.msg.text = str
+            updateSettings("%")
         }
         binding.btnDel.setOnClickListener{
+            str = binding.editAdvanced.text.toString()
             str = str.substring(0, str.length - 1)
-            binding.msg.text = str
+            binding.editAdvanced.setText(str)
+            binding.editAdvanced.setSelection(binding.editAdvanced.length())
         }
         binding.btnAc.setOnClickListener{
             str = ""
-            binding.msg.text = str
+            binding.editAdvanced.setText(str)
+            binding.editAdvanced.setSelection(binding.editAdvanced.length())
         }
 
         binding.btnEquals.setOnClickListener { view ->
