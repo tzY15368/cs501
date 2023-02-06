@@ -25,4 +25,7 @@
     <string name="cal2_btn_0">0</string>
     <string name="cal2_btn_point">.</string>
     <string name="cal2_btn_equals">=</string>
+    <string name="cal2_btn_mod">mod</string>
+    <string name="cal2_btn_ac">ac</string>
+    <string name="cal2_btn_del">del</string>
 </resources>
