@@ -73,16 +73,16 @@ class Calc2Activity : AppCompatActivity() {
             updateSettings(".")
         }
 
-        binding.btnMod.setOnClickListener{
+        binding.btnMod.setOnClickListener {
             updateSettings("%")
         }
-        binding.btnDel.setOnClickListener{
+        binding.btnDel.setOnClickListener {
             str = binding.editAdvanced.text.toString()
             str = str.substring(0, str.length - 1)
             binding.editAdvanced.setText(str)
             binding.editAdvanced.setSelection(binding.editAdvanced.length())
         }
-        binding.btnAc.setOnClickListener{
+        binding.btnAc.setOnClickListener {
             str = ""
             binding.editAdvanced.setText(str)
             binding.editAdvanced.setSelection(binding.editAdvanced.length())
@@ -91,6 +91,15 @@ class Calc2Activity : AppCompatActivity() {
         binding.btnEquals.setOnClickListener { view ->
             str = binding.editAdvanced.text.toString()
             try {
+                for (i in str.indices) {
+                    if (str[i] in '0'..'9') continue
+                    if (str[i] != '+' && str[i] != '-' && str[i] != '*'
+                        && str[i] != '/' && str[i] != '%' && str[i] != '√'
+                    ) {
+                        throw Exception("Invalid input!")
+                    }
+
+                }
                 val resultMsg = calFunc.evalExpr(str)
                 Alert.success(view, resultMsg)
                 binding.editAdvanced.setText(resultMsg)
