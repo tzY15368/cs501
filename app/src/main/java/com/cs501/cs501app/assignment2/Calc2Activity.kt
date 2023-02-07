@@ -1,5 +1,7 @@
 package com.cs501.cs501app.assignment2
 
+// import toast
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
@@ -10,6 +12,9 @@ import com.cs501.cs501app.utils.Alert
 class Calc2Activity : AppCompatActivity() {
     private lateinit var binding: ActivityCalc2Binding
     // operateCount should be less than digitCount to make sure expression valid
+    
+    // private array of valid operators
+    private val operators = arrayOf("+", "-", "*", "/", "%", "√")
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -93,14 +98,16 @@ class Calc2Activity : AppCompatActivity() {
             try {
                 for (i in str.indices) {
                     if (str[i] in '0'..'9') continue
-                    if (str[i] != '+' && str[i] != '-' && str[i] != '.' && str[i] != '*'
-                        && str[i] != '/' && str[i] != '%' && str[i] != '√'
-                    ) {
-                        throw Exception("Invalid input operand!")
-                    }
+                    // if str[i] is not in operators, throw exception
+                    if (str[i] !in operators) throw Exception("Invalid expression")
 
                 }
-                val resultMsg = calFunc.evalExpr(str)
+                var resultMsg = calFunc.evalExpr(str)
+                // check if result is negative
+                if (resultMsg[0] == "-") {
+                    // if result is negative, add a space before it
+                    resultMsg = "(0$resultMsg)"
+                }
                 Alert.success(view, resultMsg)
                 binding.editAdvanced.setText(resultMsg)
             } catch (e: Exception) {
@@ -114,8 +121,24 @@ class Calc2Activity : AppCompatActivity() {
 
     private fun updateSettings(add_str: String) {
         var temp = binding.editAdvanced.text.toString()
+        if(add_str in operators){
+            if(temp.isEmpty()){
+                if(add_str == "-"||add_str == "+"){
+                    temp += add_str
+                } else {
+                    // this cannot happen, use a toast to alert user
+                    Toast.makeText(getActivity(), "Invalid op: $add_str",Toast.LENGTH_LONG).show();
+                    return
+                }
+            } else {
+                // check if last char is operator
+                if (temp.last() in operators) {
+                    // if last char is operator, replace it with new operator
+                    temp = temp.substring(0, temp.length - 1)
+                }
+            }
+        }
         temp += add_str
-//        binding.msg.text = temp
         binding.editAdvanced.setText(temp)
         binding.editAdvanced.setSelection(binding.editAdvanced.length())
     }
