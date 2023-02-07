@@ -95,7 +95,8 @@ class Calc2Activity : AppCompatActivity() {
                 Alert.success(view, resultMsg)
                 binding.editAdvanced.setText(resultMsg)
             } catch (e: Exception) {
-                val errorMsg = "ERROR:$e"
+
+                val errorMsg = "ERROR:${e.message}"
                 Alert.fail(view, errorMsg)
                 Log.e("Calc2", errorMsg)
             }
