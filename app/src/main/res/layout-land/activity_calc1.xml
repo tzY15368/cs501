@@ -6,8 +6,8 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="194dp"
-        android:layout_height="74dp"
+        android:layout_width="500px"
+        android:layout_height="150px"
         android:orientation="horizontal">
 
         <TextView
@@ -31,8 +31,8 @@
 
 
     <LinearLayout
-        android:layout_width="195dp"
-        android:layout_height="73dp"
+        android:layout_width="500px"
+        android:layout_height="150px"
         android:orientation="horizontal">
 
         <TextView
@@ -56,8 +56,8 @@
 
 
     <LinearLayout
-        android:layout_width="195dp"
-        android:layout_height="82dp"
+        android:layout_width="500px"
+        android:layout_height="150px"
         android:orientation="horizontal">
 
         <TextView
@@ -76,7 +76,7 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="50px"
         android:background="?android:attr/listDivider" />
 
     <Button
@@ -87,14 +87,15 @@
 
     <Space
         android:layout_width="221dp"
-        android:layout_height="27dp" />
+        android:layout_height="30px"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/result_text"
-        android:layout_width="224dp"
-        android:layout_height="33dp"
+        android:layout_width="500px"
+        android:layout_height="200px"
         android:gravity="center"
-        android:textSize="55sp" />
+        android:textSize="120px" />
 
 
 </LinearLayout>
