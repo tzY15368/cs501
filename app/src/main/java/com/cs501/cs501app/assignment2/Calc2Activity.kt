@@ -93,10 +93,10 @@ class Calc2Activity : AppCompatActivity() {
             try {
                 for (i in str.indices) {
                     if (str[i] in '0'..'9') continue
-                    if (str[i] != '+' && str[i] != '-' && str[i] != '*'
+                    if (str[i] != '+' && str[i] != '-' && str[i] != '.' && str[i] != '*'
                         && str[i] != '/' && str[i] != '%' && str[i] != '√'
                     ) {
-                        throw Exception("Invalid input!")
+                        throw Exception("Invalid input operand!")
                     }
 
                 }
