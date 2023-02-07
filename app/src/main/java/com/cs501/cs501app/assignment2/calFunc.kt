@@ -10,7 +10,7 @@ object calFunc {
 
     // the only interface for doing calculations, caller should catch exceptions
     fun evalExpr(expr: String): String {
-        Log.d("CalFunc", "Evaluating expr=$expr")
+//        Log.d("CalFunc", "Evaluating expr=$expr")
         return calc(cal(expr))
     }
     private fun isOperator(s : String) : Boolean {
@@ -97,7 +97,7 @@ object calFunc {
         val arr = ArrayList<String>()
         while (!stacka.isEmpty()) {
             val t = stacka.pop()
-            Log.e("1",t)
+//            Log.e("1",t)
             arr.add(t)
 
             try {
@@ -116,7 +116,7 @@ object calFunc {
         try {
             assert(operateCount < digitCount)
         } catch (e: AssertionError) {
-            Log.d("CalFunc", "operateCount=$operateCount, digitCount=$digitCount")
+//            Log.d("CalFunc", "operateCount=$operateCount, digitCount=$digitCount")
             throw Exception("Invalid input!")
         }
 
