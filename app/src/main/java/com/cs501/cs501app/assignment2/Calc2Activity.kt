@@ -8,13 +8,14 @@ import android.text.InputType
 import android.util.Log
 import com.cs501.cs501app.databinding.ActivityCalc2Binding
 import com.cs501.cs501app.utils.Alert
+import com.google.android.material.internal.ContextUtils.getActivity
 
 class Calc2Activity : AppCompatActivity() {
     private lateinit var binding: ActivityCalc2Binding
     // operateCount should be less than digitCount to make sure expression valid
-    
+
     // private array of valid operators
-    private val operators = arrayOf("+", "-", "*", "/", "%", "√")
+    private val operators = arrayOf("+", "-", "*", "/", "%", "√", "(", ")", ".")
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -95,18 +96,21 @@ class Calc2Activity : AppCompatActivity() {
 
         binding.btnEquals.setOnClickListener { view ->
             str = binding.editAdvanced.text.toString()
+            if(str[0]=='-'){
+                str = "0$str"
+            }
             try {
                 for (i in str.indices) {
                     if (str[i] in '0'..'9') continue
                     // if str[i] is not in operators, throw exception
-                    if (str[i] !in operators) throw Exception("Invalid expression")
+                    if (!operators.contains(str[i].toString())) throw Exception("Invalid expression")
 
                 }
                 var resultMsg = calFunc.evalExpr(str)
                 // check if result is negative
-                if (resultMsg[0] == "-") {
+                if (resultMsg[0] == '-') {
                     // if result is negative, add a space before it
-                    resultMsg = "(0$resultMsg)"
+                    resultMsg = "$resultMsg"
                 }
                 Alert.success(view, resultMsg)
                 binding.editAdvanced.setText(resultMsg)
@@ -121,26 +125,30 @@ class Calc2Activity : AppCompatActivity() {
 
     private fun updateSettings(add_str: String) {
         var temp = binding.editAdvanced.text.toString()
-        if(add_str in operators){
-            if(temp.isEmpty()){
-                if(add_str == "-"||add_str == "+"){
-                    temp = "0$add_str"
+        if (add_str in operators) {
+            if (temp.isEmpty()) {
+                Log.d("Calc2", "temp is empty")
+                Log.d("Calc2", "add_str is $add_str")
+                if (add_str == "-" || add_str == "+") {
+                    temp = "0"
+                    Log.d("Calc2", "temp is $temp")
                 } else {
                     // this cannot happen, use a toast to alert user
-                    Toast.makeText(getActivity(), "Invalid op: $add_str",Toast.LENGTH_LONG).show();
+                    Toast.makeText(applicationContext, "Invalid op: $add_str", Toast.LENGTH_LONG)
+                        .show();
                     return
                 }
             } else {
                 // check if last char is operator
-                if (temp.last() in operators) {
-                    // if last char is operator, replace it with new operator
+                if (operators.contains(temp[temp.length - 1].toString()) && temp[temp.length - 1] != ')') {
+                // if last char is operator, replace it with new operator
                     temp = temp.substring(0, temp.length - 1)
-                }
             }
         }
-        temp += add_str
-        binding.editAdvanced.setText(temp)
-        binding.editAdvanced.setSelection(binding.editAdvanced.length())
     }
+    temp += add_str
+    binding.editAdvanced.setText(temp)
+    binding.editAdvanced.setSelection(binding.editAdvanced.length())
+}
 
 }
