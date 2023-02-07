@@ -16,6 +16,13 @@ class Calc1Activity : AppCompatActivity() {
     // chars converted to calFunc expr
     var operators_expr_array = arrayOf("+", "-", "*", "/", "%")
 
+    private fun cleanInput(num:Float):String{
+        if(num < 0){
+            return "(0$num)"
+        }
+        return num.toString()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalc1Binding.inflate(layoutInflater)
@@ -47,9 +54,9 @@ class Calc1Activity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val operator = binding.spinnerOperator.selectedItem.toString()
-            val expr: String = num1.toString() +
+            val expr: String = cleanInput(num1) +
                     operators_expr_array[operators_char_array.indexOf(operator)] +
-                    num2.toString()
+                    cleanInput(num2)
             Log.d("Calc1Activity", "expr: $expr")
             var resultStr: String = ""
             try {
