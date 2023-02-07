@@ -30,6 +30,11 @@ class Calc1Activity : AppCompatActivity() {
             binding.spinnerOperator.adapter = adapter
         }
 
+        if (savedInstanceState != null) run {
+            binding.resultText.text = savedInstanceState.getString("result")
+
+        }
+
         binding.btnOp.setOnClickListener { view ->
             // read the values from the edit text fields
             var num1: Float = 0f
@@ -57,4 +62,10 @@ class Calc1Activity : AppCompatActivity() {
             binding.resultText.text = resultStr
         }
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("result",binding.resultText.text.toString())
+    }
+
 }
