@@ -7,276 +7,259 @@
     tools:context=".assignment2.Calc2Activity">
 
 
-    <EditText
-        android:id="@+id/edit_advanced"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout1"
         android:layout_width="match_parent"
-        android:layout_height="63dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:ems="10"
-        android:gravity="end|bottom"
-        android:hint="@string/cal2_tv_msg_default"
-        android:inputType="text"
-        android:text="@string/cal2_tv_msg_default"
-        android:textColor="#000000"
-        android:textSize="33sp"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/msg"
-        android:layout_width="match_parent"
-        android:layout_height="63dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:gravity="end|bottom"
 
-        android:textColor="#000000"
-        android:textSize="33sp"
+        <TextView
+            android:id="@+id/msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:gravity="end|bottom"
+            android:textColor="#000000"
+            android:textSize="33sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/edit_advanced"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:gravity="end|bottom"
+            android:hint="@string/cal2_tv_msg_default"
+            android:inputType="text"
+            android:textColor="#000000"
+            android:textSize="33sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
 
-    <Button
-        android:id="@+id/btn_6"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_6"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_5"
-        app:layout_constraintTop_toBottomOf="@+id/btn_3"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/cal2_btn_1"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_multi"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/cal2_btn_multi"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_3"
-        app:layout_constraintTop_toBottomOf="@+id/msg"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/cal2_btn_2"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_1"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_ac"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_ac"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_del"
-        app:layout_constraintTop_toBottomOf="@+id/btn_point"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/cal2_btn_3"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_2"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_8"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_8"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_7"
-        app:layout_constraintTop_toBottomOf="@+id/btn_5"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_plus"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_9"
+            app:layout_constraintTop_toBottomOf="@+id/btn_sub" />
 
-    <Button
-        android:id="@+id/btn_sqrt"
-        android:layout_width="157dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_sqrt"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_9"
-        app:layout_constraintTop_toBottomOf="@+id/btn_sub"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_multi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/cal2_btn_multi"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_3"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn_plus"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/cal2_btn_plus"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_multi"
-        app:layout_constraintTop_toBottomOf="@+id/msg"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/cal2_btn_4"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_1" />
 
-    <Button
-        android:id="@+id/btn_del"
-        android:layout_width="157dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="168dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_del"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_0"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_5"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_4"
+            app:layout_constraintTop_toBottomOf="@+id/btn_2" />
 
-    <Button
-        android:id="@+id/btn_2"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/cal2_btn_2"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_1"
-        app:layout_constraintTop_toBottomOf="@+id/msg"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_6"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_5"
+            app:layout_constraintTop_toBottomOf="@+id/btn_3" />
 
-    <Button
-        android:id="@+id/btn_sub"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_sub"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_6"
-        app:layout_constraintTop_toBottomOf="@+id/btn_multi"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_sub"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_6"
+            app:layout_constraintTop_toBottomOf="@+id/btn_multi" />
 
-    <Button
-        android:id="@+id/btn_7"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="168dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_7"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_4"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_div"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_div"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_point"
+            app:layout_constraintTop_toBottomOf="@+id/btn_9" />
 
-    <Button
-        android:id="@+id/btn_mod"
-        android:layout_width="157dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_mod"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_point"
-        app:layout_constraintTop_toBottomOf="@+id/btn_sqrt"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/cal2_btn_7"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_4" />
 
-    <Button
-        android:id="@+id/btn_4"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="168dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_4"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_1"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_8"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_7"
+            app:layout_constraintTop_toBottomOf="@+id/btn_5" />
 
-    <Button
-        android:id="@+id/btn_3"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/cal2_btn_3"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_2"
-        app:layout_constraintTop_toBottomOf="@+id/msg"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_9"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_8"
+            app:layout_constraintTop_toBottomOf="@+id/btn_6" />
 
-    <Button
-        android:id="@+id/btn_9"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_9"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_8"
-        app:layout_constraintTop_toBottomOf="@+id/btn_6"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/cal2_btn_0"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_7" />
 
-    <Button
-        android:id="@+id/btn_1"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="168dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/cal2_btn_1"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/msg"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_point"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_0"
+            app:layout_constraintTop_toBottomOf="@+id/btn_8" />
 
-    <Button
-        android:id="@+id/btn_equals"
-        android:layout_width="157dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_equals"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_ac"
-        app:layout_constraintTop_toBottomOf="@+id/btn_mod"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_mod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_mod"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_div"
+            app:layout_constraintTop_toBottomOf="@+id/btn_plus" />
 
-    <Button
-        android:id="@+id/btn_div"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_div"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_sub"
-        app:layout_constraintTop_toBottomOf="@+id/btn_plus"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_ac"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    <Button
-        android:id="@+id/btn_5"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_5"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_4"
-        app:layout_constraintTop_toBottomOf="@+id/btn_2"
-        tools:ignore="MissingConstraints" />
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/cal2_btn_ac"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_sub"
+            app:layout_constraintTop_toTopOf="@+id/btn_del" />
 
-    <Button
-        android:id="@+id/btn_0"
-        android:layout_width="157dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="168dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_0"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_7"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_sqrt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_sqrt"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_plus"
+            app:layout_constraintTop_toBottomOf="@+id/btn_ac" />
 
-    <Button
-        android:id="@+id/btn_point"
-        android:layout_width="75dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/cal2_btn_point"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/btn_0"
-        app:layout_constraintTop_toBottomOf="@+id/btn_9"
-        tools:ignore="MissingConstraints" />
+        <Button
+            android:id="@+id/btn_equals"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/cal2_btn_equals"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_mod"
+            app:layout_constraintTop_toBottomOf="@+id/btn_sqrt" />
+
+        <Button
+            android:id="@+id/btn_del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/cal2_btn_del"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_multi"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
