@@ -1,13 +1,17 @@
 package com.cs501.cs501app.assignment2
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
+import
 import com.cs501.cs501app.databinding.ActivityCalc1Binding
+import com.cs501.cs501app.databinding.ActivityCalc1LandBinding
 import com.cs501.cs501app.utils.Alert
 
 class Calc1Activity : AppCompatActivity() {
-    private lateinit var binding: ActivityCalc1Binding
+    private lateinit var bin
 
     // chars showed on the UI
     var operators_char_array = arrayOf("➕", "➖", "✖", "️➗", "mod")
@@ -17,9 +21,17 @@ class Calc1Activity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityCalc1Binding.inflate(layoutInflater)
-        setContentView(binding.root)
+        lateinit var binding;
 
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            Log.d("cool","Horizontal")
+            lateinit var binding: ActivityCalc1LandBinding;
+            setContentView(R.)
+        }else{
+            Log.d("not cool","vertical")
+            lateinit var binding: ActivityCalc1Binding;
+            setContentView(binding.root)
+        }
         ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
