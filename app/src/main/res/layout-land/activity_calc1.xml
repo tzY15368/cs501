@@ -1,84 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="318dp"
-        android:layout_height="74dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/label_op1" />
-
-        <EditText
-            android:id="@+id/edit_op1"
-            android:layout_width="109dp"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:inputType="numberDecimal" />
-
-        <TextView
-            android:id="@+id/textView34"
-            android:layout_width="39dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/label_op2" />
-
-        <EditText
-            android:id="@+id/edit_op2"
-            android:layout_width="108dp"
-            android:layout_height="match_parent"
-            android:ems="10"
-            android:inputType="numberDecimal" />
-    </LinearLayout>
-
-    <Space
-        android:layout_width="731dp"
-        android:layout_height="wrap_content" />
-
-
-    <Space
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-
-    <LinearLayout
-        android:layout_width="195dp"
-        android:layout_height="65dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textView37"
-            android:layout_width="67dp"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/label_op3" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/spinnerOperator"
-            android:layout_width="111dp"
-            android:layout_height="65dp" />
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="500px"
+                android:layout_height="150px"
+                android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_op"
-        android:layout_width="205dp"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_doCalc" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="100px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/label_op1" />
 
-    <TextView
-        android:id="@+id/result_text"
-        android:layout_width="224dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="55sp" />
+                <EditText
+                    android:id="@+id/edit_op1"
+                    android:layout_width="400px"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="731dp"
+                android:layout_height="wrap_content" />
 
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="500px"
+                android:layout_height="150px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView34"
+                    android:layout_width="100px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/label_op2" />
+
+                <EditText
+                    android:id="@+id/edit_op2"
+                    android:layout_width="400px"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:inputType="numberDecimal" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <LinearLayout
+                android:layout_width="650px"
+                android:layout_height="150px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView37"
+                    android:layout_width="250px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/label_op3" />
+
+                <Spinner
+                    android:id="@+id/spinnerOperator"
+                    android:layout_width="400px"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="50px"
+                android:background="?android:attr/listDivider" />
+
+            <Button
+                android:id="@+id/btn_op"
+                android:layout_width="400px"
+                android:layout_height="120px"
+                android:text="@string/btn_doCalc" />
+
+            <Space
+                android:layout_width="221dp"
+                android:layout_height="30px"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/result_text"
+                android:layout_width="500px"
+                android:layout_height="200px"
+                android:gravity="center"
+                android:textSize="120px" />
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
+</ScrollView>

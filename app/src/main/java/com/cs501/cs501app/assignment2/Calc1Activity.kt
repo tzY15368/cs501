@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
+import androidx.lifecycle.SavedStateHandle
 import com.cs501.cs501app.databinding.ActivityCalc1Binding
 import com.cs501.cs501app.utils.Alert
 
@@ -30,7 +31,13 @@ class Calc1Activity : AppCompatActivity() {
             binding.spinnerOperator.adapter = adapter
         }
 
+        if (savedInstanceState != null) run {
+            var s = savedInstanceState.getString("result")
+            binding.resultText.text= s
+        }
+
         binding.btnOp.setOnClickListener { view ->
+
             // read the values from the edit text fields
             var num1: Float = 0f
             var num2: Float = 0f
@@ -56,5 +63,11 @@ class Calc1Activity : AppCompatActivity() {
             }
             binding.resultText.text = resultStr
         }
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("result",binding.resultText.text.toString())
     }
 }
