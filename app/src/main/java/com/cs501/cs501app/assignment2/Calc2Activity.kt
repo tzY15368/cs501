@@ -124,7 +124,7 @@ class Calc2Activity : AppCompatActivity() {
         if(add_str in operators){
             if(temp.isEmpty()){
                 if(add_str == "-"||add_str == "+"){
-                    temp += add_str
+                    temp = "0$add_str"
                 } else {
                     // this cannot happen, use a toast to alert user
                     Toast.makeText(getActivity(), "Invalid op: $add_str",Toast.LENGTH_LONG).show();
