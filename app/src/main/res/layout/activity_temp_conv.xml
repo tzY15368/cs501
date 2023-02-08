@@ -45,7 +45,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:maxLength="5"
-            android:text="0"
             android:textColor="@color/black"
             android:textColorHighlight="#673AB7"
             android:textColorLink="#673AB7"
@@ -87,7 +86,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
             android:maxLength="5"
-            android:text="32"
             android:textColor="@color/black"
             android:textColorHighlight="#673AB7"
             android:textColorLink="#673AB7"
@@ -101,7 +99,7 @@
         android:layout_height="82dp"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:text="Interesting Message"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="30sp" />
 
