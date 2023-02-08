@@ -34,7 +34,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="30dp"
             android:layout_marginRight="30dp"
-            android:hint="Please input your name"
+            android:hint="@string/fc_name"
             android:textSize="18dp" />
 
         <EditText
@@ -44,7 +44,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="25dp"
             android:layout_marginRight="30dp"
-            android:hint="Please input your password"
+            android:hint="@string/fc_psw"
             android:textSize="18dp" />
 
         <Button

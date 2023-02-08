@@ -7,11 +7,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
 import com.cs501.cs501app.R
-import com.cs501.cs501app.databinding.ActivityCalc1Binding
 import com.cs501.cs501app.databinding.ActivityFcloginBinding
+import com.cs501.cs501app.utils.Alert
 
 
 class FCLoginActivity : AppCompatActivity(), View.OnClickListener{
@@ -79,16 +77,14 @@ class FCLoginActivity : AppCompatActivity(), View.OnClickListener{
         when (v.id) {
             R.id.btGoLogin -> {
                 if (!nameLegal) {
-                    Toast.makeText(this, "name invalid! Please try again.", Toast.LENGTH_SHORT).show()
+                    Alert.fail(v, "name invalid! Please try again.")
                     return
                 }
                 if (!psdLegal) {
-                    Toast.makeText(this, "password invalid! Please try again.", Toast.LENGTH_SHORT)
-                        .show()
+                    Alert.fail(v, "password invalid! Please try again.")
                     return
                 }
-
-                Toast.makeText(this, "Login successfully! $VALID_NAME", Toast.LENGTH_SHORT).show()
+                Alert.success(v, "Login successfully! $VALID_NAME")
                 //跳转到home
                 val intent: Intent = Intent(this, FCHome::class.java)
 

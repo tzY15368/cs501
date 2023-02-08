@@ -14,12 +14,6 @@ class Alert {
     companion object {
         private const val SNACKBAR_DURATION = Snackbar.LENGTH_LONG
 
-        private fun makeAlert(success: Boolean, view: View, msg: String) {
-            val alertMsg: String = (if (success) "√" else "X").plus(": ").plus(msg)
-
-            Snackbar.make(view, alertMsg, SNACKBAR_DURATION).show()
-        }
-
         private fun makeAlert(type: AlertType, view: View, msg: String) {
             val alertMsg: String = type.toString().plus(": ").plus(msg)
             var snackbar: Snackbar = Snackbar.make(view, alertMsg, SNACKBAR_DURATION)
