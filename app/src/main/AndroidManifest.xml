@@ -12,6 +12,18 @@
         android:theme="@style/Theme.CS501App"
         tools:targetApi="31">
         <activity
+            android:name=".assignment3.flashcard.FCHome"
+            android:exported="false" />
+        <activity
+            android:name=".assignment3.flashcard.FCLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".assignment3.geoquiz.GeoQuizActivity"
+            android:exported="false" />
+        <activity
+            android:name=".assignment3.tempconv.TempConvActivity"
+            android:exported="false" />
+        <activity
             android:name=".assignment2.Calc2Activity"
             android:exported="false" />
         <activity
