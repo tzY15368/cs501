@@ -31,6 +31,8 @@
     <string name="btn_3_1">GOTO 3.1</string>
     <string name="btn_3_2">GOTO 3.2</string>
     <string name="btn_3_3">GOTO 3.3</string>
+    <string name="Celcius">Calcius</string>
+    <string name="Fahrenheit">Fahrenheit</string>
     <string name="fc_name">Please input your name(admin)</string>
     <string name="fc_psw">Please input your password(123456)</string>
 </resources>
