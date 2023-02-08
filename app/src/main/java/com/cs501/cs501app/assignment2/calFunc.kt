@@ -10,7 +10,7 @@ object calFunc {
 
     // the only interface for doing calculations, caller should catch exceptions
     fun evalExpr(expr: String): String {
-//        Log.d("CalFunc", "Evaluating expr=$expr")
+        Log.d("CalFunc", "Evaluating expr=$expr")
         return calc(cal(expr))
     }
     private fun isOperator(s : String) : Boolean {
@@ -183,6 +183,7 @@ object calFunc {
             if (a.toDouble() == decimal.toDouble())
                 arr1[0] = a.toString()
         }
+        Log.d("CalFunc", "Result=${arr1[0]}")
         return arr1[0]
     }
 }
