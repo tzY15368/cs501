@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:scrollbars="none">
-    <androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -12,12 +11,12 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
+            android:id="@+id/constraintLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
 
             <TextView
                 android:id="@+id/msg"
@@ -35,7 +34,7 @@
                 android:id="@+id/edit_advanced"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:ems="10"
                 android:gravity="end|bottom"
@@ -49,18 +48,19 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
 
             <Button
                 android:id="@+id/btn_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/cal2_btn_1"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/cal2_btn_2"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/btn_1"
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/cal2_btn_3"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/btn_2"
@@ -103,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/cal2_btn_multi"
                 android:textSize="20sp"
                 app:layout_constraintStart_toEndOf="@+id/btn_3"
@@ -113,7 +113,7 @@
                 android:id="@+id/btn_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:text="@string/cal2_btn_4"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -163,7 +163,7 @@
                 android:id="@+id/btn_7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:text="@string/cal2_btn_7"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -179,7 +179,6 @@
                 app:layout_constraintStart_toEndOf="@+id/btn_7"
                 app:layout_constraintTop_toBottomOf="@+id/btn_5" />
 
-
             <Button
                 android:id="@+id/btn_9"
                 android:layout_width="wrap_content"
@@ -191,20 +190,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/btn_6" />
 
             <Button
-                android:id="@+id/btn_sqrt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/cal2_btn_sqrt"
-                android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/btn_ac"
-                app:layout_constraintTop_toBottomOf="@+id/btn_div" />
-
-            <Button
                 android:id="@+id/btn_0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="4dp"
                 android:text="@string/cal2_btn_0"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -231,25 +220,26 @@
                 app:layout_constraintTop_toBottomOf="@+id/btn_plus" />
 
             <Button
-                android:id="@+id/btn_del"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/cal2_btn_del"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_0" />
-
-            <Button
                 android:id="@+id/btn_ac"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
 
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="50dp"
                 android:text="@string/cal2_btn_ac"
                 android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/btn_del"
-                app:layout_constraintTop_toBottomOf="@+id/btn_point" />
+                app:layout_constraintStart_toEndOf="@+id/btn_sub"
+                app:layout_constraintTop_toTopOf="@+id/btn_del" />
+
+            <Button
+                android:id="@+id/btn_sqrt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/cal2_btn_sqrt"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/btn_plus"
+                app:layout_constraintTop_toBottomOf="@+id/btn_ac" />
 
             <Button
                 android:id="@+id/btn_equals"
@@ -258,11 +248,20 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/cal2_btn_equals"
                 android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/btn_sqrt"
-                app:layout_constraintTop_toBottomOf="@+id/btn_mod" />
+                app:layout_constraintStart_toEndOf="@+id/btn_mod"
+                app:layout_constraintTop_toBottomOf="@+id/btn_sqrt" />
+
+            <Button
+                android:id="@+id/btn_del"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/cal2_btn_del"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/btn_multi"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</HorizontalScrollView>
+</ScrollView>
