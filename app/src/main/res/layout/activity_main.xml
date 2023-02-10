@@ -22,4 +22,27 @@
         android:text="@string/btn_2_2"
         app:icon="@drawable/svg_example"
         app:iconGravity="end"/>
+
+    <Button
+        android:id="@+id/button_3_1"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_3_1"
+        app:icon="@drawable/svg_example"/>
+
+
+    <Button
+        android:id="@+id/button_3_2"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_3_2"
+        app:icon="@drawable/svg_example"/>
+
+
+    <Button
+        android:id="@+id/button_3_3"
+        android:layout_width="173dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_3_3"
+        app:icon="@drawable/svg_example"/>
 </LinearLayout>
