@@ -112,6 +112,7 @@ class Calc2Activity : AppCompatActivity() {
                     // if result is negative, add a space before it
                     resultMsg = "$resultMsg"
                 }
+
                 Alert.success(view, resultMsg)
                 binding.editAdvanced.setText(resultMsg)
             } catch (e: Exception) {
