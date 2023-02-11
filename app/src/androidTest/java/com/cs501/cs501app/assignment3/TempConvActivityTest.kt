@@ -34,12 +34,12 @@ class TempConvActivityTest {
     @Test
     fun moveSeekBarCF() {
         onView(withId(R.id.seekBarC)).perform(setProgress(10))
-        onView(withId(R.id.textViewTempF)).check(matches(withProgress(50)))
+        onView(withId(R.id.textViewTempF)).check(matches(withText("50")))
     }
     @Test
     fun moveSeekBarFC() {
         onView(withId(R.id.seekBarF)).perform(setProgress(50))
-        onView(withId(R.id.textViewTempC)).check(matches(withProgress(10)))
+        onView(withId(R.id.textViewTempC)).check(matches(withText("10")))
     }
 
     private fun setProgress(progress: Int): ViewAction {
