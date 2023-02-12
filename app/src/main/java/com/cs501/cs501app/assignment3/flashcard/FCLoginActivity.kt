@@ -85,7 +85,7 @@ class FCLoginActivity : AppCompatActivity(), View.OnClickListener{
                     return
                 }
                 Alert.success(v, "Login successfully! $VALID_NAME")
-                //跳转到home
+                //jump to home
                 val intent: Intent = Intent(this, FCHome::class.java)
 
                 startActivity(intent)
