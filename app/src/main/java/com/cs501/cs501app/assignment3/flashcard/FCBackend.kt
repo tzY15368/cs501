@@ -50,17 +50,21 @@ class FCBackend(private val savedStateHandle: SavedStateHandle) : ViewModel() {
      * @return if the answer is correct.
      */
     fun checkAnswer(targetAnswer: String): Boolean {
-        val expectAnswer = answerList.get(current_index).toString()
-        val target = BigDecimal(targetAnswer).stripTrailingZeros()
-        if (target.toString().length > expectAnswer.length) {
-            current_index++
+        val expectAnswer = answerList[current_index].toString()
+        current_index++
+        try{
+            val target = BigDecimal(targetAnswer).stripTrailingZeros()
+            if (target.toString().length > expectAnswer.length) {
+                current_index++
+                return false
+            }
+            val targetAnswer = target.setScale(1).toString()
+            val isCorrect = BigDecimal(expectAnswer) == BigDecimal(targetAnswer)
+            if (isCorrect) current_score++
+            return isCorrect
+        } catch (e:Exception) {
             return false
         }
-        val targetAnswer = target.setScale(1).toString()
-        val isCorrect = BigDecimal(expectAnswer) == BigDecimal(targetAnswer)
-        current_index++
-        if (isCorrect) current_score++
-        return isCorrect
     }
 
     fun hasNextProblem(): Boolean {
