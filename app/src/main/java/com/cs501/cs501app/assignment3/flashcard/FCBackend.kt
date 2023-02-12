@@ -19,6 +19,10 @@ class FCBackend(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     private val format = "%.${decimalPlaces}f"
     private val random = Random()
 
+    init {
+        generateTenProblems()
+    }
+
     private var current_index: Int
         get() = savedStateHandle.get(CURRENT_INDEX_KEY) ?: 0
         set(value) = savedStateHandle.set(CURRENT_INDEX_KEY, value)
