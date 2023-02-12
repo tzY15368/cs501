@@ -123,7 +123,8 @@ class FCHome : AppCompatActivity() {
                 ),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
-                )
+                ),
+                enabled = backend.getCurrentIndex() != 10
             )
             // Submit button
             Spacer(modifier = Modifier.height(16.dp))
