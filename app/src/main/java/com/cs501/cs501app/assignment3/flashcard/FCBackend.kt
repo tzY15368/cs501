@@ -33,6 +33,9 @@ class FCBackend(private val savedStateHandle: SavedStateHandle) : ViewModel() {
      * @return FCProblem object.
      */
     fun getCurrentProblem(): FCProblem {
+        if (current_index >= 10) {
+            return problemList.get(9)
+        }
         return problemList.get(current_index)
     }
 
@@ -50,6 +53,10 @@ class FCBackend(private val savedStateHandle: SavedStateHandle) : ViewModel() {
         current_index++
         if (isCorrect) current_score++
         return isCorrect
+    }
+
+    fun hasNextProblem(): Boolean {
+        return current_index < 10
     }
 
     /**

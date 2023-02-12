@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.cs501.cs501app.assignment2.Calc1Activity
 import com.cs501.cs501app.assignment2.Calc2Activity
+import com.cs501.cs501app.assignment3.flashcard.FCHome
 import com.cs501.cs501app.assignment3.flashcard.FCLoginActivity
 import com.cs501.cs501app.assignment3.geoquiz.GeoQuizActivity
 import com.cs501.cs501app.databinding.ActivityMainBinding

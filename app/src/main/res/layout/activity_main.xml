@@ -45,4 +45,5 @@
         android:layout_height="wrap_content"
         android:text="@string/btn_3_3"
         app:icon="@drawable/svg_example"/>
+
 </LinearLayout>
