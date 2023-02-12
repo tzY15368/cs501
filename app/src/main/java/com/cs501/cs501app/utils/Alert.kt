@@ -1,9 +1,16 @@
 package com.cs501.cs501app.utils
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.View
+import android.widget.Toast
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.core.content.ContextCompat
 import com.cs501.cs501app.R
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 enum class AlertType {
     SUCCESS, ERROR, INFO, WARNING, FAIL
@@ -35,6 +42,18 @@ class Alert {
         fun fail(view: View, msg: String) {
 //            makeAlert(false, view, msg)
             makeAlert(AlertType.FAIL, view, msg)
+        }
+    }
+}
+
+class TAlert{
+    companion object {
+        fun success(ctx: Context, msg: String) {
+            Toast.makeText(ctx, "OK:"+msg, Toast.LENGTH_LONG).show()
+        }
+
+        fun fail(ctx: Context, msg: String) {
+            Toast.makeText(ctx, "Fail:"+msg, Toast.LENGTH_LONG).show()
         }
     }
 }
