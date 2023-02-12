@@ -26,10 +26,8 @@ import androidx.compose.runtime.setValue
 
 class FCHome : AppCompatActivity() {
     private val backend by viewModels<FCBackend>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        backend.generateTenProblems()
         setContent {
             MaterialTheme {
                 FCMainScreen()
