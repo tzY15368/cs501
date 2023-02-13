@@ -71,6 +71,7 @@ class FCHome : AppCompatActivity() {
                         .fillMaxSize()
                         .padding(innerPadding)
                 ) {
+                    TAlert.success(applicationContext, "Welcome admin !")
                     FCProblem(snackbarHostState)
                 }
             },
@@ -155,7 +156,7 @@ class FCHome : AppCompatActivity() {
             if (backend.getCurrentIndex() == 10) {
                 // display the score
                 Log.d(TAG, "Score: ${backend.getCurrentScore()}/10")
-                TAlert.success(applicationContext, "Score: ${backend.getCurrentScore()}/10")
+                TAlert.success(applicationContext, "Score: ${backend.getCurrentScore()} out of 10")
             }
         }
 
