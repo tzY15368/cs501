@@ -35,6 +35,7 @@ class FCHome : AppCompatActivity() {
     private final val TAG = "FCHome"
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -71,7 +72,6 @@ class FCHome : AppCompatActivity() {
                         .fillMaxSize()
                         .padding(innerPadding)
                 ) {
-                    TAlert.success(applicationContext, "Welcome admin !")
                     FCProblem(snackbarHostState)
                 }
             },

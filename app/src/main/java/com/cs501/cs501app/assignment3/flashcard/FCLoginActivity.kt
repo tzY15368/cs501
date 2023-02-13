@@ -10,6 +10,7 @@ import android.view.View
 import com.cs501.cs501app.R
 import com.cs501.cs501app.databinding.ActivityFcloginBinding
 import com.cs501.cs501app.utils.Alert
+import com.cs501.cs501app.utils.TAlert
 
 
 class FCLoginActivity : AppCompatActivity(), View.OnClickListener{
@@ -89,6 +90,7 @@ class FCLoginActivity : AppCompatActivity(), View.OnClickListener{
                 val intent: Intent = Intent(this, FCHome::class.java)
 
                 startActivity(intent)
+                TAlert.success(applicationContext, "Welcome admin !")
             }
         }
     }
