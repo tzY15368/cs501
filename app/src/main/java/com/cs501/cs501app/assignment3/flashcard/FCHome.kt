@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.testTag
 import com.cs501.cs501app.utils.TAlert
 
 
@@ -85,6 +86,7 @@ class FCHome : AppCompatActivity() {
     fun FCRoundState(round: Int, score: Int) {
         Column() {
             Text(
+                modifier = Modifier.testTag("roundCnt"),
                 text = "Round ${round + 1}",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
@@ -109,12 +111,14 @@ class FCHome : AppCompatActivity() {
         // Display the problem index and the problem
         Column() {
             Text(
+                modifier = Modifier.testTag("problemCnt"),
                 text = "Problem ${problem.index + 1} of 10",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
                     textAlign = TextAlign.Center
                 )
+
             )
             Text(
                 text = problem.operand1 + " " + (if (problem.isPlus) "+" else "-") + " " + problem.operand2,
@@ -176,6 +180,7 @@ class FCHome : AppCompatActivity() {
             Spacer(modifier = Modifier.height(16.dp))
             // Input field for the answer
             OutlinedTextField(
+                modifier = Modifier.testTag("answerField"),
                 value = answer,
                 onValueChange = {
                     answer = it
@@ -200,6 +205,7 @@ class FCHome : AppCompatActivity() {
                     .fillMaxWidth()
             ) {
                 Button(
+                    modifier = Modifier.testTag("submitBtn"),
                     onClick = {
                         handleSubmit()
                     },
@@ -210,6 +216,7 @@ class FCHome : AppCompatActivity() {
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 Button(
+                    modifier = Modifier.testTag("generateBtn"),
                     onClick = {
                         handleGenerate()
                     },
