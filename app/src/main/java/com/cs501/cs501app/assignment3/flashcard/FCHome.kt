@@ -1,11 +1,13 @@
 package com.cs501.cs501app.assignment3.flashcard
+import android.content.res.Configuration
+import android.graphics.Bitmap.Config
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -22,12 +24,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalConfiguration
 import com.cs501.cs501app.utils.TAlert
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 
 class FCHome : AppCompatActivity() {
     private val backend by viewModels<FCBackend>()
     private final val TAG = "FCHome"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +61,7 @@ class FCHome : AppCompatActivity() {
                             )
                         )
                     },
+                    modifier = Modifier.height(32.dp),
                 )
             },
             snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -70,17 +77,6 @@ class FCHome : AppCompatActivity() {
         )
     }
 
-    @Preview()
-    @Composable
-    fun PreviewFCRoundState() {
-        FCRoundState(9, 9)
-    }
-
-    @Preview()
-    @Composable
-    fun PreviewFCQuestion() {
-        FCQuestionShow(FCProblem(1, "12.3", "23.4", true))
-    }
 
     @Composable
     fun FCRoundState(round: Int, score: Int) {
@@ -108,21 +104,26 @@ class FCHome : AppCompatActivity() {
     @Composable
     fun FCQuestionShow(problem: FCProblem) {
         // Display the problem index and the problem
-        Column() {
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+            val configuration = LocalConfiguration.current.orientation
+            if (configuration == Configuration.ORIENTATION_PORTRAIT){
+                Log.d(TAG, "direction: $configuration")
+                Spacer(modifier = Modifier.height(100.dp))
+            }
             Text(
-                text = "Problem ${problem.index + 1} of 10",
+                text = problem.operand1,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    textAlign = TextAlign.Center
+                    fontSize = 48.sp,
+                    textAlign = TextAlign.Right
                 )
             )
             Text(
-                text = problem.operand1 + " " + (if (problem.isPlus) "+" else "-") + " " + problem.operand2,
+                text = (if (problem.isPlus) "+ " else "- ") + problem.operand2,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    textAlign = TextAlign.Center
+                    fontSize = 48.sp,
+                    textAlign = TextAlign.Right
                 )
             )
         }
@@ -137,6 +138,7 @@ class FCHome : AppCompatActivity() {
         // val scope = rememberCoroutineScope()
         // Get the current problem
         val problem = backend.getCurrentProblem()
+        val configuration = LocalConfiguration.current.orientation
         fun handleSubmit() {
             if (answer == "") {
                 TAlert.fail(applicationContext, "Please enter your answer")
@@ -165,18 +167,39 @@ class FCHome : AppCompatActivity() {
             round++
             Log.d(TAG, "Round: $round")
         }
+
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
+                .fillMaxSize()
+                .then(
+                    if (configuration == Configuration.ORIENTATION_LANDSCAPE) Modifier.verticalScroll(
+                        rememberScrollState()
+                    ).padding(12.dp)
+                    else Modifier.padding(16.dp)
+                )
+
         ) {
             // Display the current round
-            FCRoundState(round = round, score = backend.getCurrentScore())
-            Spacer(modifier = Modifier.height(16.dp))
-            FCQuestionShow(problem = problem)
-            Spacer(modifier = Modifier.height(16.dp))
+            Row() {
+                Column() {
+                    FCRoundState(round = round, score = backend.getCurrentScore())
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Problem ${problem.index + 1} of 10",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    )
+                }
+                FCQuestionShow(problem = problem)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
             // Input field for the answer
             OutlinedTextField(
+                modifier = if (configuration == Configuration.ORIENTATION_LANDSCAPE) Modifier.align(Alignment.End)
+                        else Modifier.align(Alignment.Start),
                 value = answer,
                 maxLines = 1,
                 singleLine = true,
@@ -193,13 +216,15 @@ class FCHome : AppCompatActivity() {
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number
                 ),
-                enabled = backend.getCurrentIndex() != 10
+                enabled = backend.getCurrentIndex() != 10,
             )
+
+
             // Submit button
             Spacer(modifier = Modifier.height(16.dp))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier =  if (configuration == Configuration.ORIENTATION_LANDSCAPE) Modifier.align(Alignment.End)
+                else Modifier.align(Alignment.Start),
             ) {
                 Button(
                     onClick = {
