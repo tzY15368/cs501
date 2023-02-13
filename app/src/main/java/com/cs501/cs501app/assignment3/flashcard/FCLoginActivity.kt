@@ -21,8 +21,8 @@ class FCLoginActivity : AppCompatActivity(), View.OnClickListener{
 
     }
 
-    private var nameLegal: Boolean = false
-    private var psdLegal: Boolean = false
+    private var nameLegal: Boolean = true
+    private var psdLegal: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +85,7 @@ class FCLoginActivity : AppCompatActivity(), View.OnClickListener{
                     return
                 }
                 Alert.success(v, "Login successfully! $VALID_NAME")
-                //跳转到home
+                //jump to home
                 val intent: Intent = Intent(this, FCHome::class.java)
 
                 startActivity(intent)
