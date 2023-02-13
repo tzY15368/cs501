@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -177,6 +178,8 @@ class FCHome : AppCompatActivity() {
             // Input field for the answer
             OutlinedTextField(
                 value = answer,
+                maxLines = 1,
+                singleLine = true,
                 onValueChange = {
                     answer = it
                     Log.d(TAG, "Answer: $answer")
@@ -184,7 +187,6 @@ class FCHome : AppCompatActivity() {
                 },
                 label = { Text("Answer") },
                 placeholder = { Text("Enter your answer here") },
-                singleLine = true,
                 textStyle = TextStyle(
                     fontSize = 24.sp
                 ),
