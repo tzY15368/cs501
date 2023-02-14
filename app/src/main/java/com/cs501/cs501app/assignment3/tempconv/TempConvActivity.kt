@@ -2,9 +2,11 @@ package com.cs501.cs501app.assignment3.tempconv
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.Snackbar
 import com.cs501.cs501app.databinding.ActivityTempConvBinding
 
 class TempConvActivity : AppCompatActivity() {
