@@ -26,6 +26,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import com.cs501.cs501app.utils.TAlert
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
@@ -83,6 +84,7 @@ class FCHome : AppCompatActivity() {
     fun FCRoundState(round: Int, score: Int) {
         Column() {
             Text(
+                modifier = Modifier.testTag("roundCnt"),
                 text = "Round ${round + 1}",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
@@ -113,11 +115,14 @@ class FCHome : AppCompatActivity() {
             }
             Text(
                 text = problem.operand1,
+                modifier = Modifier.testTag("problemCnt"),
+                //text = "Problem ${problem.index + 1} of 10",
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 48.sp,
                     textAlign = TextAlign.Right
                 )
+
             )
             Text(
                 text = (if (problem.isPlus) "+ " else "- ") + problem.operand2,
@@ -199,8 +204,7 @@ class FCHome : AppCompatActivity() {
             }
             // Input field for the answer
             OutlinedTextField(
-                modifier = if (configuration == Configuration.ORIENTATION_LANDSCAPE) Modifier.align(Alignment.End)
-                        else Modifier.align(Alignment.Start),
+                modifier = Modifier.testTag("answerField").align(if(configuration == Configuration.ORIENTATION_LANDSCAPE) Alignment.End else Alignment.Start),
                 value = answer,
                 maxLines = 1,
                 singleLine = true,
@@ -228,6 +232,7 @@ class FCHome : AppCompatActivity() {
                 else Modifier.align(Alignment.Start),
             ) {
                 Button(
+                    modifier = Modifier.testTag("submitBtn"),
                     onClick = {
                         handleSubmit()
                     },
@@ -238,6 +243,7 @@ class FCHome : AppCompatActivity() {
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 Button(
+                    modifier = Modifier.testTag("generateBtn"),
                     onClick = {
                         handleGenerate()
                     },
