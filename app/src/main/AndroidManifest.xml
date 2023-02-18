@@ -11,8 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CS501App"
         tools:targetApi="31">
+        <activity android:name=".example.PictureExample"
+            android:exported="true"/>
         <activity
-            android:name=".ComposeExampleActivity"
+            android:name=".example.ComposeExampleActivity"
             android:exported="false" />
         <activity
             android:name=".assignment3.geoquiz.CheatActivity"
