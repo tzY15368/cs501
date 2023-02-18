@@ -14,7 +14,13 @@
         <activity android:name=".example.PictureExample"
             android:exported="true"/>
         <activity
-            android:name=".example.ComposeExampleActivity"
+            android:name=".assignment4.boggle.BoggleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".assignment4.hangman.HangManActivity"
+            android:exported="false" />
+        <activity
+            android:name=".assignment4.cintent.CriminalIntentActivity"
             android:exported="false" />
         <activity
             android:name=".assignment3.geoquiz.CheatActivity"

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,6 +20,9 @@ import com.cs501.cs501app.assignment2.Calc2Activity
 import com.cs501.cs501app.assignment3.flashcard.FCLoginActivity
 import com.cs501.cs501app.assignment3.geoquiz.GeoQuizActivity
 import com.cs501.cs501app.assignment3.tempconv.TempConvActivity
+import com.cs501.cs501app.assignment4.boggle.BoggleActivity
+import com.cs501.cs501app.assignment4.cintent.CriminalIntentActivity
+import com.cs501.cs501app.assignment4.hangman.HangManActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         GeoQuizActivity::class,
         TempConvActivity::class,
         FCLoginActivity::class,
+        CriminalIntentActivity::class,
+        HangManActivity::class,
+        BoggleActivity::class,
     )
 
     @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +53,8 @@ class MainActivity : AppCompatActivity() {
                                 .padding(innerPadding)
                                 .padding(16.dp)
                                 .fillMaxWidth()
-                                .fillMaxHeight(),
+                                .fillMaxHeight()
+                                .verticalScroll(rememberScrollState()),
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
