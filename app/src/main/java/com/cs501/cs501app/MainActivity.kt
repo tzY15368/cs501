@@ -20,9 +20,9 @@ import com.cs501.cs501app.assignment2.Calc2Activity
 import com.cs501.cs501app.assignment3.flashcard.FCLoginActivity
 import com.cs501.cs501app.assignment3.geoquiz.GeoQuizActivity
 import com.cs501.cs501app.assignment3.tempconv.TempConvActivity
-import com.cs501.cs501app.assignment4.BoggleActivity
-import com.cs501.cs501app.assignment4.CriminalIntentActivity
-import com.cs501.cs501app.assignment4.HangManActivity
+import com.cs501.cs501app.assignment4.boggle.BoggleActivity
+import com.cs501.cs501app.assignment4.cintent.CriminalIntentActivity
+import com.cs501.cs501app.assignment4.hangman.HangManActivity
 
 class MainActivity : AppCompatActivity() {
 

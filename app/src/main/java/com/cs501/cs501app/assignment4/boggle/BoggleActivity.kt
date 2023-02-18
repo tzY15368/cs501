@@ -1,12 +1,12 @@
-package com.cs501.cs501app.assignment4
+package com.cs501.cs501app.assignment4.boggle
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.cs501.cs501app.R
 
-class CriminalIntentActivity : AppCompatActivity() {
+class BoggleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_criminal_intent)
+        setContentView(R.layout.activity_boggle)
     }
 }

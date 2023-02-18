@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".assignment4.BoggleActivity">
+    tools:context=".assignment4.boggle.BoggleActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,13 +12,13 @@
         android:theme="@style/Theme.CS501App"
         tools:targetApi="31">
         <activity
-            android:name=".assignment4.BoggleActivity"
+            android:name=".assignment4.boggle.BoggleActivity"
             android:exported="false" />
         <activity
-            android:name=".assignment4.HangManActivity"
+            android:name=".assignment4.hangman.HangManActivity"
             android:exported="false" />
         <activity
-            android:name=".assignment4.CriminalIntentActivity"
+            android:name=".assignment4.cintent.CriminalIntentActivity"
             android:exported="false" />
         <activity
             android:name=".assignment3.geoquiz.CheatActivity"
