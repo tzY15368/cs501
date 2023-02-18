@@ -5,5 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".assignment4.hangman.HangManActivity">
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container"
+        android:name="com.cs501.cs501app.assignment4.hangman.HintFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".assignment4.hangman.HangManActivity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
