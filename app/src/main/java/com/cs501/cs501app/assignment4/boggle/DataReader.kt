@@ -1,8 +1,10 @@
-package com.cs501.cs501app.assignment4.boogle
+package com.cs501.cs501app.assignment4.boggle
 
+import com.cs501.cs501app.R
 import java.io.File
+import java.io.InputStream
 
-class DataReader(private val file: String, private val wordLength: Int) {
+class DataReader(private val inStream: InputStream, private val wordLength: Int) {
     private val data = ArrayList<String>()
 
     init {
@@ -10,7 +12,8 @@ class DataReader(private val file: String, private val wordLength: Int) {
     }
 
     private fun readData() {
-        val reader = File(file).bufferedReader()
+        // create buffered reader from instream
+        val reader = inStream.bufferedReader()
         var line = reader.readLine()
         while (line != null) {
             if (isValidWord(line)) {
@@ -70,7 +73,9 @@ class DataReader(private val file: String, private val wordLength: Int) {
 
 // unit test
 fun main() {
-    val reader = DataReader("app/src/main/java/com/cs501/cs501app/assignment4/boogle/words.txt", 4)
+    // FIXME: WIP: this is incorrect. Fix this
+    val inStream = File("app/src/main/java/com/cs501/cs501app/assignment4/boggle/words.txt").inputStream()
+    val reader = DataReader(inStream, 4)
     println(reader.getData())
     println(reader.getRandWord())
     println(reader.getRandWordList(16))

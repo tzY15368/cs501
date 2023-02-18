@@ -1,6 +1,6 @@
-package com.cs501.cs501app.assignment4.boogle
+package com.cs501.cs501app.assignment4.boggle
 
-class BoogleGame(private val boardSize: Int = 4, private val wordLength: Int = 4) {
+class Boggle(private val boardSize: Int = 4, private val wordLength: Int = 4) {
     private var board = Array(boardSize) { Array(boardSize) { ' ' } }
     private var score = 0
     private var answer = ""
@@ -163,7 +163,7 @@ class BoogleGame(private val boardSize: Int = 4, private val wordLength: Int = 4
 
 // unit test
 fun main() {
-    val game = BoogleGame()
+    val game = Boggle()
     game.displayBoard()
     println(game.findAllValidWords())
 }
