@@ -1,12 +1,17 @@
 package com.cs501.cs501app.assignment4.boggle
 
-class Boggle(private val boardSize: Int = 4, private val wordLength: Int = 4) {
+import java.io.InputStream
+
+class BoggleGame(
+    private val boardSize: Int = 4,
+    private val wordLength: Int = 4,
+    inputStream: InputStream
+) {
     private var board = Array(boardSize) { Array(boardSize) { ' ' } }
     private var score = 0
     private var answer = ""
     private var answerMap = HashMap<String, Boolean>()
-    private val dataReader =
-        DataReader("app/src/main/java/com/cs501/cs501app/assignment4/boogle/words.txt", wordLength)
+    private val dataReader = DataReader(inputStream, wordLength)
 
     init {
         answer = ""
@@ -163,7 +168,8 @@ class Boggle(private val boardSize: Int = 4, private val wordLength: Int = 4) {
 
 // unit test
 fun main() {
-    val game = Boggle()
+    // FIXME: THIS WILL NOT WORK OUTSIDE OF ANDROID classes
+    val game = BoggleGame()
     game.displayBoard()
     println(game.findAllValidWords())
 }
