@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:text="@string/hangman_choose_letter_title_label"
+            android:textSize="33sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
+
+        <Button
+            android:id="@+id/hangman_btn_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/hangman_btn_a"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/hangman_btn_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/hangman_btn_b"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_a"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/hangman_btn_c"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/hangman_btn_c"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_b"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/hangman_btn_d"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/hangman_btn_d"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_c"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/hangman_btn_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/hangman_btn_e"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_a" />
+
+        <Button
+            android:id="@+id/hangman_btn_f"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_f"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_e"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_b" />
+
+        <Button
+            android:id="@+id/hangman_btn_g"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_g"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_f"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_c" />
+
+        <Button
+            android:id="@+id/hangman_btn_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_h"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_g"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_d" />
+
+        <Button
+            android:id="@+id/hangman_btn_i"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/hangman_btn_i"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_e" />
+
+        <Button
+            android:id="@+id/hangman_btn_j"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_j"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_i"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_f" />
+
+        <Button
+            android:id="@+id/hangman_btn_k"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_k"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_j"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_g" />
+
+        <Button
+            android:id="@+id/hangman_btn_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_l"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_k"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_h" />
+
+
+        <Button
+            android:id="@+id/hangman_btn_m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/hangman_btn_m"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_i" />
+
+        <Button
+            android:id="@+id/hangman_btn_n"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_n"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_m"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_j" />
+
+        <Button
+            android:id="@+id/hangman_btn_o"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_o"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_n"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_k" />
+
+        <Button
+            android:id="@+id/hangman_btn_p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_p"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_o"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_l" />
+
+        <Button
+            android:id="@+id/hangman_btn_q"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/hangman_btn_q"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_m" />
+
+        <Button
+            android:id="@+id/hangman_btn_r"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_r"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_q"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_n" />
+
+        <Button
+            android:id="@+id/hangman_btn_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_s"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_r"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_o" />
+
+        <Button
+            android:id="@+id/hangman_btn_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_t"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_s"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_p" />
+
+        <Button
+            android:id="@+id/hangman_btn_u"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/hangman_btn_u"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_q" />
+
+        <Button
+            android:id="@+id/hangman_btn_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_v"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_u"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_r" />
+
+        <Button
+            android:id="@+id/hangman_btn_w"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_w"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_v"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_s" />
+
+        <Button
+            android:id="@+id/hangman_btn_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_x"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_w"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_t" />
+
+        <Button
+            android:id="@+id/hangman_btn_y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/hangman_btn_y"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_u" />
+
+        <Button
+            android:id="@+id/hangman_btn_z"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/hangman_btn_z"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_btn_y"
+            app:layout_constraintTop_toBottomOf="@+id/hangman_btn_v" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+        <TextView
+            android:id="@+id/hangman_hint_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:textColor="#000000"
+            android:text="@string/hangman_hint_label"
+            android:textSize="33sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/hangman_hint_content_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:textColor="#000000"
+            android:textSize="33sp"
+            app:layout_constraintStart_toEndOf="@+id/hangman_hint_label"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
