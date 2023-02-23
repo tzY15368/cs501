@@ -332,6 +332,7 @@
             android:textSize="33sp"
             app:layout_constraintStart_toEndOf="@+id/hangman_hint_label"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
