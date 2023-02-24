@@ -7,28 +7,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
 import com.cs501.cs501app.R
+import com.cs501.cs501app.assignment3.flashcard.FCBackend
 import com.cs501.cs501app.databinding.FragmentHintBinding
+import kotlin.system.exitProcess
 
 private const val TAG = "HintFragment"
 
-interface HintFragmentListener {
-    fun onHintPressed()
-}
+class HintFragment : Fragment(){
 
-class HintFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private lateinit var listener: HintFragmentListener
-//    private lateinit var binding: FragmentHintBinding
+//    private lateinit var listener: ButtonStateListener
+    private val hmBackend: HMBackend by activityViewModels()
 
     private var _binding: FragmentHintBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
+
     private var hintCounter = 0
-    private var disabledLetters = mutableListOf<Char>()
-    private var disabledVowels = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,24 +36,26 @@ class HintFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is HintFragmentListener) {
-            listener = context
-            Log.d(TAG, "onAttach: ")
-            listener.onHintPressed()
-        } else {
-            throw RuntimeException("$context must implement HintFragmentListener")
-        }
+        Log.d(TAG, "onAttach: ")
+//        if (context is ButtonStateListener) {
+//            listener = context
+//            Log.d(TAG, "onAttach: ")
+//            listener.onButtonStateChanged(buttonStates)
+//        } else {
+//            throw RuntimeException("$context must implement HintFragmentListener")
+//        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentHintBinding.inflate(inflater, container, false)
         binding.hintButton.setOnClickListener(View.OnClickListener {
                 if (hintCounter == 0) {
                     Log.d(TAG, "This is your first hint!")
+                    changeHintText(hmBackend.getHint())
                 } else if (hintCounter == 1) {
                     disableHalfLetters()
                     Log.d(TAG, "Half of the letters have been disabled.")
@@ -62,16 +64,17 @@ class HintFragment : Fragment() {
                     Log.d(TAG, "All the vowels have been shown.")
                 } else {
                     Log.d(TAG, "Hint not available.")
+                    binding.hintButton.isEnabled = false
+//                    exitProcess(0)
+                    //TODO: How to exit the game after failing?
                 }
                 hintCounter++
             }
         )
-//        binding.apply{
-//            // ...
-//        }
-        listener.onHintPressed()
+
         return binding.root
     }
+
     override fun onDestroy() {
         super.onDestroy()
         println("destroyed")
@@ -83,60 +86,32 @@ class HintFragment : Fragment() {
 
 
     fun changeHintText(text: String) {
-        binding.hintButton.text = text
+        binding.hintText.text = text
     }
 
     private fun disableHalfLetters() {
-        val remainingLetters = getRemainingLetters()
+        val remainingLetters = hmBackend.getAvailableChars()
         val half = remainingLetters.size / 2
+        val currentRemainingLetters = mutableListOf<Char>()
         for (i in 0 until half) {
             val letter = remainingLetters[i]
-            disableLetterButton(letter)
-            disabledLetters.add(letter)
+            currentRemainingLetters.add(letter)
         }
+        hmBackend.setAvailableChars(currentRemainingLetters)
     }
 
     private fun showVowels() {
-        val remainingLetters = getRemainingLetters()
-        for (letter in remainingLetters) {
-            if (isVowel(letter)) {
-                showLetterButton(letter)
-            }
+        val disabledVowels = hmBackend.getDisabledVowels()
+        if (disabledVowels == false) {
+            hmBackend.setDisabledVowels(true)
         }
-        disabledVowels = true
-    }
-
-    private fun getRemainingLetters(): List<Char> {
-        val letters = mutableListOf<Char>()
-        for (i in 0 until letterButtonsContainer.childCount) {
-            val button = letterButtonsContainer.getChildAt(i) as Button
-            val letter = button.text.toString()[0]
-            if (!disabledLetters.contains(letter) && (disabledVowels || !isVowel(letter))) {
-                letters.add(letter)
-            }
-        }
-        return letters
-    }
-
-    private fun disableLetterButton(letter: Char) {
-        for (i in 0 until letterButtonsContainer.childCount) {
-            val button = letterButtonsContainer.getChildAt(i) as Button
-            if (button.text.toString()[0] == letter) {
-                button.isEnabled = false
-            }
-        }
-    }
-
-    private fun showLetterButton(letter: Char) {
-        for (i in 0 until letterButtonsContainer.childCount) {
-            val button = letterButtonsContainer.getChildAt(i) as Button
-            if (button.text.toString()[0] == letter) {
-                button.visibility = View.VISIBLE
-            }
+        else {
+            Log.d(TAG,"Already displayed all the vowels!")
         }
     }
 
     private fun isVowel(letter: Char): Boolean {
         return letter == 'A' || letter == 'E' || letter == 'I' || letter == 'O' || letter == 'U'
     }
+
 }
