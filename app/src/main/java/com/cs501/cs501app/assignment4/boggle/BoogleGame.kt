@@ -167,9 +167,9 @@ class BoggleGame(
 }
 
 // unit test
-fun main() {
-    // FIXME: THIS WILL NOT WORK OUTSIDE OF ANDROID classes
-    val game = BoggleGame()
-    game.displayBoard()
-    println(game.findAllValidWords())
-}
+//fun main() {
+//    // FIXME: THIS WILL NOT WORK OUTSIDE OF ANDROID classes
+//    val game = BoggleGame()
+//    game.displayBoard()
+//    println(game.findAllValidWords())
+//}
