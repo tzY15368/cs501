@@ -56,11 +56,14 @@ class HintFragment : Fragment(){
                 if (hintCounter == 0) {
                     Log.d(TAG, "This is your first hint!")
                     changeHintText(hmBackend.getHint())
+                    hmBackend.setHP(hmBackend.getHP()-1)
                 } else if (hintCounter == 1) {
                     disableHalfLetters()
+                    hmBackend.setHP(hmBackend.getHP()-1)
                     Log.d(TAG, "Half of the letters have been disabled.")
                 } else if (hintCounter == 2) {
                     showVowels()
+                    hmBackend.setHP(hmBackend.getHP()-1)
                     Log.d(TAG, "All the vowels have been shown.")
                 } else {
                     Log.d(TAG, "Hint not available.")

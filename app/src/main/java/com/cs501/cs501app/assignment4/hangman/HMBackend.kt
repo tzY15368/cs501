@@ -16,6 +16,7 @@ class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
 //
 //    // returns the player's current HP, 0 for dead (hanged/lost), max value is 6.
     fun getHP(): Int{}
+    fun setHP(hp : Int){}
 //
 //    // returns if s is the correct character to add
     fun addChar(s: Char): Boolean{}
