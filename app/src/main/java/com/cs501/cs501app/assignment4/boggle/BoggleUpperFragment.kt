@@ -2,29 +2,33 @@ package com.cs501.cs501app.assignment4.boggle
 
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.Observer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.cs501.cs501app.databinding.FragmentBoggleUpperBinding
+import com.cs501.cs501app.utils.Alert
 import java.util.*
 
-class BoggleUpperFragment : Fragment(){
-//    private lateinit var crime: Crime
+class BoggleUpperFragment : Fragment() {
+
     private var _binding: FragmentBoggleUpperBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
 
+    private var _model: FragmentSharedViewModel? = null
+    private val model
+        get() = checkNotNull(_model) {
+            "Cannot access model because it is null. Is the view visible?"
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        crime = Crime(
-//            id = UUID.randomUUID(),
-//            title = "",
-//            date = Date(),
-//            isSolved = false
-//        )
+        _model = ViewModelProvider(requireActivity()).get(FragmentSharedViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -40,21 +44,17 @@ class BoggleUpperFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            button00.setOnClickListener {
-                Log.d("test", "test")
+            boggleClear.setOnClickListener {
+                model.setMessageClear("upper fragment clicks CLEAR button")
             }
-//            crimeTitle.doOnTextChanged { text, _, _, _ ->
-//                crime = crime.copy(title = text.toString())
-//            }
-//            crimeDate.apply {
-//                text = crime.date.toString()
-//                isEnabled = false
-//            }
-//
-//            crimeSolved.setOnCheckedChangeListener { _, isChecked ->
-//                crime = crime.copy(isSolved = isChecked)
-//            }
+            boggleSubmit.setOnClickListener {
+                model.setMessageSubmit("upper fragment clicks SUBMIT button")
+            }
         }
+        model.getMessageNewGame().observe(viewLifecycleOwner, Observer { message ->
+            // Update UI with the new message
+            Alert.success(view, message)
+        })
     }
 
     override fun onDestroyView() {
