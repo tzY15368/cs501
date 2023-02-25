@@ -1,17 +1,19 @@
 package com.cs501.cs501app.assignment4.boggle
 
+import android.content.Context
 import java.io.InputStream
 
 class BoggleGame(
     private val boardSize: Int = 4,
     private val wordLength: Int = 4,
-    inputStream: InputStream
+    inputStream: InputStream,
+    private val context: Context
 ) {
     private var board = Array(boardSize) { Array(boardSize) { ' ' } }
     private var score = 0
-    private var answer = ""
+    public var answer = ""
     private var answerMap = HashMap<String, Boolean>()
-    private val dataReader = DataReader(inputStream, wordLength)
+    private val dataReader = DataReader(inputStream, wordLength, context)
 
     init {
         answer = ""
@@ -20,7 +22,7 @@ class BoggleGame(
         generateBoard()
     }
 
-    private fun generateBoard() {
+    fun generateBoard() {
         // fill the rest of the board with random letters
         for (i in 0 until boardSize) {
             for (j in 0 until boardSize) {
@@ -114,8 +116,16 @@ class BoggleGame(
         return score
     }
 
+    fun setScore(new_score: Int) {
+        score = new_score
+    }
+
     fun getBoard(): Array<Array<Char>> {
         return board
+    }
+
+    fun getBoardByPosition(x : Int, y : Int): Char {
+        return board[x][y]
     }
 
     fun displayBoard() {
