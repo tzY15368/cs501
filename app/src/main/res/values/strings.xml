@@ -88,6 +88,12 @@
     <string name="hangman_btn_x">X</string>
     <string name="hangman_btn_y">Y</string>
     <string name="hangman_btn_z">Z</string>
-    
-    
+
+    <string name="boggle_guide">Enter a word then hit</string>
+    <string name="boggle_input">Your Input</string>
+    <string name="boggle_score">SCORE: </string>
+    <string name="boggle_current_score">Your current score</string>
+    <string name="boggle_clear">CLEAR</string>
+    <string name="boggle_submit">SUBMIT</string>
+    <string name="boggle_new_game">NEW GAME</string>
 </resources>

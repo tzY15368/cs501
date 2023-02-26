@@ -98,9 +98,15 @@ class BoggleUpperFragment: Fragment() {
             boggleSubmit.setOnClickListener {
                 if (boggleBackend.checkAnswer()) {
                     curButtonList = listOf()
+                    resultView.text = ""
+                    boggleBackend.clearAnswer()
+                    prevButton = null
+                    Alert.success(view, "CORRECT ANSWER")
+                } else {
+                    Alert.fail(view, "INCORRECT ANSWER")
                 }
-                Log.d("checkAnswer", boggleBackend.answer)
-                Log.d("checkScore", boggleBackend.getScore().toString())
+//                Log.d("checkAnswer", boggleBackend.answer)
+//                Log.d("checkScore", boggleBackend.getScore().toString())
                 model.setMessageSubmit(boggleBackend.getScore().toString())
             }
 
@@ -125,10 +131,15 @@ class BoggleUpperFragment: Fragment() {
             boggleBackend.generateBoard()
             binding.apply {
                 boggleClear.performClick()
+                val newGameList = listOf(button00, button01, button02, button03,
+                    button10, button11, button12, button13,
+                    button20, button21, button22, button23,
+                    button30, button31, button32, button33)
+                resetButtonState(newGameList)
             }
             getButtonsChar()
             boggleBackend.setScore(0)
-            Alert.success(view, message)
+//            Alert.success(view, message)
         })
     }
 

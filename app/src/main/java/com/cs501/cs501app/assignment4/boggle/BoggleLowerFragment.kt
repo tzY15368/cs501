@@ -78,18 +78,18 @@ class BoggleLowerFragment : Fragment() {
 
         model.getMessageClear().observe(viewLifecycleOwner, Observer { message ->
             // Update UI with the new message
-            Alert.success(view, message)
+//            Alert.success(view, message)
         })
         model.getMessageSubmit().observe(viewLifecycleOwner, Observer { message ->
             // Update UI with the new message
             setCurScore(message)
-            Alert.success(view, message)
+//            Alert.success(view, message)
         })
     }
 
     private fun setCurScore(score: String) {
         binding.apply {
-            Log.d("checkScore2", score)
+//            Log.d("checkScore2", score)
             curScore.text = score
         }
     }
