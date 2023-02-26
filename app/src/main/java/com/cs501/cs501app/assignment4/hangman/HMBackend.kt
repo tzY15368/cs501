@@ -8,6 +8,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
 class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
+    // if vowels don't ever display with hints, set it as false.
+    // in input fragment, detect this variable to set vowels display
+    private var disabledVowels = false
     var randomWordArray = charArrayOf() // word selected put into char array
     private var hangmanBody: Array<ImageView?> = Array(6) { null }
     var countWrong = 0 // number wrong
@@ -17,32 +20,30 @@ class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
             : TextView? = null
     var counthint = 0
     var category: String? = null
-    // returns the hint for the current word, this could change state in the backend
-//    fun getHint(): String
-//
-//    // returns the player's current HP, 0 for dead (hanged/lost), max value is 6.
-//    fun getHP(): Int
+    fun setHP(hp : Int){}
 //
 //    // returns if s is the correct character to add
-//    fun addChar(s: Char): Boolean
+    fun addChar(s: Char): Boolean{}
 //
-//    // returns available chars (excluding ones players already used)
-//    fun getAvailableChars(): List<Char>
-//
-//    // returns the current word with blanks for unguessed chars
-//    fun getWord(): String
-//
-//    // returns if the player has won
-//    fun hasWon(): Boolean
+//    // returns available chars (excluding ones players already used as well as disabled)
+    fun getAvailableChars(): List<Char> {}
+    fun setAvailableChars(avaliableChars: List<Char>){}
+    fun getDisabledVowels() : Boolean{}
+    fun setDisabledVowels(disabledVowelsState: Boolean) {}
 
-    public fun gameEnd(): Boolean{
+    //
+//    // returns the current word with blanks for unguessed chars
+    fun getWord(): String{}
+
+    fun gameEnd(): Boolean{
         if (countWrong == hangmanBody.size) {
            return true;
         }
         return false;
     }
 
-    public fun hasWon(): Boolean{
+    // returns if the player has won
+    fun hasWon(): Boolean{
         // whole word completed
         var contains = false
         for (c in wordSelectedUnderscoresArr) {
@@ -54,7 +55,8 @@ class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
         return !contains;
     }
 
-    public fun getHint():String{
+    // returns the hint for the current word, this could change state in the backend
+    fun getHint():String{
         counthint++
         if (counthint < 2) {
            return category.toString()
@@ -63,13 +65,14 @@ class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
 
     }
 
-    public fun getHP(): Int{
+    //    // returns the player's current HP, 0 for dead (hanged/lost), max value is 6.
+    fun getHP(): Int{
         return 6 - countWrong
     }
 
 
 
-    public fun letterChecker(fromButton: Char) {
+    fun letterChecker(fromButton: Char) {
         // linear search to check if input letter is in the word
         var check = false
         for (c in randomWordArray) {
