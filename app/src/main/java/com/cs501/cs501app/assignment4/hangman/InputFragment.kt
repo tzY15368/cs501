@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.cs501.cs501app.R
 
 private const val TAG = "InputFragment"
+//  define an interface in the InputFragment and make the parent activity implement it.
 
 class InputFragment : Fragment() {
 
@@ -22,5 +23,6 @@ class InputFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_input, container, false)
     }
+
 
 }
