@@ -53,4 +53,47 @@
     <string name="show_answer_button">Show Answer</string>
     <string name="cheat_button">Cheat!</string>
     <string name="judgment_toast">Cheating is wrong.</string>
+
+    <string name="crime_title_hint">Enter a title for the crime.</string>
+    <string name="crime_title_label">Title</string>
+    <string name="crime_details_label">Details</string>
+    <string name="crime_solved_label">Solved</string>
+    <string name="crime_require_police">Require Police</string>
+
+    <string name="hangman_choose_letter_title_label">CHOOSE A LETTER</string>
+    <string name="hangman_hint_label">Hint:</string>
+    <string name="hangman_btn_a">A</string>
+    <string name="hangman_btn_b">B</string>
+    <string name="hangman_btn_c">C</string>
+    <string name="hangman_btn_d">D</string>
+    <string name="hangman_btn_e">E</string>
+    <string name="hangman_btn_f">F</string>
+    <string name="hangman_btn_g">G</string>
+    <string name="hangman_btn_h">H</string>
+    <string name="hangman_btn_i">I</string>
+    <string name="hangman_btn_j">J</string>
+    <string name="hangman_btn_k">K</string>
+    <string name="hangman_btn_l">L</string>
+    <string name="hangman_btn_m">M</string>
+    <string name="hangman_btn_n">N</string>
+    <string name="hangman_btn_o">O</string>
+    <string name="hangman_btn_p">P</string>
+    <string name="hangman_btn_q">Q</string>
+    <string name="hangman_btn_r">R</string>
+    <string name="hangman_btn_s">S</string>
+    <string name="hangman_btn_t">T</string>
+    <string name="hangman_btn_u">U</string>
+    <string name="hangman_btn_v">V</string>
+    <string name="hangman_btn_w">W</string>
+    <string name="hangman_btn_x">X</string>
+    <string name="hangman_btn_y">Y</string>
+    <string name="hangman_btn_z">Z</string>
+
+    <string name="boggle_guide">Enter a word then hit</string>
+    <string name="boggle_input">Your Input</string>
+    <string name="boggle_score">SCORE: </string>
+    <string name="boggle_current_score">Your current score</string>
+    <string name="boggle_clear">CLEAR</string>
+    <string name="boggle_submit">SUBMIT</string>
+    <string name="boggle_new_game">NEW GAME</string>
 </resources>

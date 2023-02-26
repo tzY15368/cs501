@@ -26,6 +26,9 @@
             android:name=".assignment3.geoquiz.CheatActivity"
             android:exported="false" />
         <activity
+            android:name=".assignment3.geoquiz.CheatActivity"
+            android:exported="false" />
+        <activity
             android:name=".assignment3.flashcard.FCHome"
             android:exported="false" />
         <activity
