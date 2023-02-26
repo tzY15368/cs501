@@ -20,15 +20,6 @@ class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
             : TextView? = null
     var counthint = 0
     var category: String? = null
-    // returns the hint for the current word, this could change state in the backend
-    fun getHint(): String {
-
-        return ""
-
-    }
-//
-//    // returns the player's current HP, 0 for dead (hanged/lost), max value is 6.
-    fun getHP(): Int{}
     fun setHP(hp : Int){}
 //
 //    // returns if s is the correct character to add
@@ -43,19 +34,16 @@ class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
     //
 //    // returns the current word with blanks for unguessed chars
     fun getWord(): String{}
-//
-//    // returns if the player has won
-    //fun hasWon(): Boolean{}
-//    fun hasWon(): Boolean
 
-    public fun gameEnd(): Boolean{
+    fun gameEnd(): Boolean{
         if (countWrong == hangmanBody.size) {
            return true;
         }
         return false;
     }
 
-    public fun hasWon(): Boolean{
+    // returns if the player has won
+    fun hasWon(): Boolean{
         // whole word completed
         var contains = false
         for (c in wordSelectedUnderscoresArr) {
@@ -67,7 +55,8 @@ class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
         return !contains;
     }
 
-    public fun getHint():String{
+    // returns the hint for the current word, this could change state in the backend
+    fun getHint():String{
         counthint++
         if (counthint < 2) {
            return category.toString()
@@ -76,13 +65,14 @@ class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
 
     }
 
-    public fun getHP(): Int{
+    //    // returns the player's current HP, 0 for dead (hanged/lost), max value is 6.
+    fun getHP(): Int{
         return 6 - countWrong
     }
 
 
 
-    public fun letterChecker(fromButton: Char) {
+    fun letterChecker(fromButton: Char) {
         // linear search to check if input letter is in the word
         var check = false
         for (c in randomWordArray) {

@@ -18,7 +18,7 @@ class HangManActivity : AppCompatActivity() {
         val hintText = backend.getHint()
         val avaliableChars = backend.getAvailableChars()
         savedInstanceState?.putString("hintText", hintText)
-        savedInstanceState?.putCharArray("availableChars", avaliableChars)
+        savedInstanceState?.putCharArray("availableChars", avaliableChars.toCharArray())
 
         fragment.arguments = savedInstanceState
         // need get backend returns for hintfragment
