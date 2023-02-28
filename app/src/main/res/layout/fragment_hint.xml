@@ -36,13 +36,23 @@
         android:id="@+id/hintButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
+        android:layout_marginStart="108dp"
         android:layout_marginTop="600dp"
         android:text="Hint"
         app:layout_constraintBottom_toTopOf="@id/hintText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.068"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints,NotSibling" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="Reset"
+        app:layout_constraintLeft_toRightOf="@id/hintButton"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintTop_toTopOf="@id/hintButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
