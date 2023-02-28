@@ -10,15 +10,15 @@
 
     <LinearLayout
 
+        android:id="@+id/hintFragment"
         android:layout_width="225dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="608dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
         android:orientation="vertical"
         android:padding="10dip"
-        android:id="@+id/hintFragment"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="104dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hintButton"
+        tools:ignore="MissingConstraints">
 
         <TextView
             android:id="@+id/hintText"
@@ -28,7 +28,7 @@
             android:layout_marginTop="25dp"
             android:text=""
             android:textColor="@color/black"
-            android:textSize="25dp" />
+            android:textSize="18dp" />
 
     </LinearLayout>
 
@@ -36,9 +36,13 @@
         android:id="@+id/hintButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="600dp"
         android:text="Hint"
-        tools:layout_editor_absoluteX="165dp"
-        tools:layout_editor_absoluteY="550dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toTopOf="@id/hintText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.068"
+        tools:ignore="MissingConstraints,NotSibling" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
