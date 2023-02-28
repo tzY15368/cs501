@@ -11,6 +11,7 @@ private const val TAG = "HangManActivity"
 
 class HangManActivity : AppCompatActivity() {
     private val backend by viewModels<HMBackend>()
+    /** Not usable
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hang_man)
@@ -27,6 +28,7 @@ class HangManActivity : AppCompatActivity() {
             .add(R.id.hintFragment, fragment)
             .commit()
     }
+    */
 //
 //    override fun onButtonStateChanged(buttonStates: Map<String, Boolean>) {
 //        // Pass the button state map from the InputFragment to the HintFragment
@@ -43,4 +45,19 @@ class HangManActivity : AppCompatActivity() {
 //        }
 //    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_hang_man)
+        val fragment = ChooseLetterFragment()
+        val hp = backend.getHP()
+//        val avaliableChars = backend.getAvailableChars()
+        savedInstanceState?.putString("HP", hp.toString())
+
+        fragment.arguments = savedInstanceState
+        // need get backend returns for hintfragment
+        // this would cause hintfragment to init twice, use this for imagefragment
+//        supportFragmentManager.beginTransaction()
+//            .add(R.id.hangmen, fragment)
+//            .commit()
+    }
 }

@@ -30,7 +30,7 @@ class ChooseLetterFragment: Fragment() {
     ): View? {
         _binding =
             FragmentChooseLetterBinding.inflate(layoutInflater, container, false)
-        binding.hangmanHintContentLabel.text = backend.getHint()
+//        binding.hangmanHintContentLabel.text = backend.getHint()
         return binding.root
     }
 

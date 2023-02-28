@@ -23,17 +23,26 @@ class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
     fun setHP(hp : Int){}
 //
 //    // returns if s is the correct character to add
-    fun addChar(s: Char): Boolean{}
+    fun addChar(s: Char): Boolean{
+        return true
+    }
 //
 //    // returns available chars (excluding ones players already used as well as disabled)
-    fun getAvailableChars(): List<Char> {}
+    fun getAvailableChars(): List<Char> {
+        val go: List<Char> = listOf()
+        return go
+    }
     fun setAvailableChars(avaliableChars: List<Char>){}
-    fun getDisabledVowels() : Boolean{}
+    fun getDisabledVowels() : Boolean{
+        return true
+    }
     fun setDisabledVowels(disabledVowelsState: Boolean) {}
 
     //
 //    // returns the current word with blanks for unguessed chars
-    fun getWord(): String{}
+    fun getWord(): String{
+        return ""
+    }
 
     fun gameEnd(): Boolean{
         if (countWrong == hangmanBody.size) {
