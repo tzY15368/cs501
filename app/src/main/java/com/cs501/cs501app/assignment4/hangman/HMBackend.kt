@@ -10,6 +10,17 @@ import androidx.lifecycle.ViewModel
 class HMBackend(private val savedStateHandle: SavedStateHandle): ViewModel() {
     // if vowels don't ever display with hints, set it as false.
     // in input fragment, detect this variable to set vowels display
+    
+    /* 10 animals */
+    static final String[] animals = {"bear","bee","bird","cat","crab","dolphin","cow","duck","snake","frog"};
+    /* 10 foods*/
+    static final String[] food = {"rice","soup","pasta","noodles","corn","bread","apple","butter","beef","pork"};
+    /* 10 music*/
+    static final String[] music = {"guitar","violin","viola","cello","bass","piano","drums","clarinet","flute","trumpet"};
+    
+    static final String[][] allWords = {animals, food, music};
+
+    static final String[] categories = {"animals", "food", "music"};
     private var disabledVowels = false
     var randomWordArray = charArrayOf() // word selected put into char array
     private var hangmanBody: Array<ImageView?> = Array(6) { null }
