@@ -6,10 +6,29 @@
     android:layout_height="match_parent"
     tools:context=".assignment4.hangman.HangManActivity">
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container"
+        android:id="@+id/hangman_hint"
         android:name="com.cs501.cs501app.assignment4.hangman.HintFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".assignment4.hangman.HangManActivity" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+<!--        app:layout_constraintTop_toBottomOf="@id/hangman_letters"/>-->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/hangman_letters"
+        android:name="com.cs501.cs501app.assignment4.hangman.ChooseLetterFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/hangman_picture"
+        android:name="com.cs501.cs501app.assignment4.hangman.ImageFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
