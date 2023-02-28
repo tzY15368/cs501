@@ -5,24 +5,31 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.compose.ui.text.toLowerCase
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.cs501.cs501app.databinding.FragmentChooseLetterBinding
 
 private const val TAG = "ChooseLetterFragment"
 
 class ChooseLetterFragment: Fragment() {
-    private val backend by viewModels<HMBackend>()
+    private var _model: HMBackend? = null
+    private val model
+        get() = checkNotNull(_model) {
+            "Cannot access model because it is null. Is the view visible?"
+        }
     private var _binding: FragmentChooseLetterBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
 
+        _model = ViewModelProvider(requireActivity()).get(HMBackend::class.java)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,174 +37,69 @@ class ChooseLetterFragment: Fragment() {
     ): View? {
         _binding =
             FragmentChooseLetterBinding.inflate(layoutInflater, container, false)
-//        binding.hangmanHintContentLabel.text = backend.getHint()
         return binding.root
     }
 
 
-
+    private fun handleInput(btn: Button) {
+        model.handleInput(btn.text.first())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // add hangmanBtn A-Z to a list
+        val btnList = listOf(
+            binding.hangmanBtnA,
+            binding.hangmanBtnB,
+            binding.hangmanBtnC,
+            binding.hangmanBtnD,
+            binding.hangmanBtnE,
+            binding.hangmanBtnF,
+            binding.hangmanBtnG,
+            binding.hangmanBtnH,
+            binding.hangmanBtnI,
+            binding.hangmanBtnJ,
+            binding.hangmanBtnK,
+            binding.hangmanBtnL,
+            binding.hangmanBtnM,
+            binding.hangmanBtnN,
+            binding.hangmanBtnO,
+            binding.hangmanBtnP,
+            binding.hangmanBtnQ,
+            binding.hangmanBtnR,
+            binding.hangmanBtnS,
+            binding.hangmanBtnT,
+            binding.hangmanBtnU,
+            binding.hangmanBtnV,
+            binding.hangmanBtnW,
+            binding.hangmanBtnX,
+            binding.hangmanBtnY,
+            binding.hangmanBtnZ
+        )
         binding.apply {
-            hangmanBtnA.setOnClickListener {
-                var text = hangmanBtnA.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnA.isEnabled = false
+            // add click listener to each button
+            // when click, call handleInput()
+            for (btn in btnList) {
+                btn.setOnClickListener {
+                    handleInput(btn)
+                }
             }
-            hangmanBtnB.setOnClickListener {
-                var text = hangmanBtnB.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnB.isEnabled = false
+        }
+        model.remainingLetters.observe(viewLifecycleOwner) {
+            // turn everything in it to upper case
+            val that = it.map { it.uppercaseChar() }
+            binding.apply {
+                for(btn in btnList) {
+                    btn.isEnabled = btn.text.first() in that
+                }
             }
-            hangmanBtnC.setOnClickListener {
-                var text = hangmanBtnC.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnC.isEnabled = false
+        }
+        model.gameState.observe(viewLifecycleOwner) {
+            binding.apply {
+                for(btn in btnList) {
+                    btn.isEnabled = it == GameState.IN_PROGRESS
+                }
             }
-            hangmanBtnD.setOnClickListener {
-                var text = hangmanBtnD.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnD.isEnabled = false
-            }
-            hangmanBtnE.setOnClickListener {
-                var text = hangmanBtnE.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnE.isEnabled = false
-            }
-            hangmanBtnF.setOnClickListener {
-                var text = hangmanBtnF.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnF.isEnabled = false
-            }
-            hangmanBtnG.setOnClickListener {
-                var text = hangmanBtnG.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnG.isEnabled = false
-            }
-            hangmanBtnH.setOnClickListener {
-                var text = hangmanBtnH.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnH.isEnabled = false
-            }
-            hangmanBtnI.setOnClickListener {
-                var text = hangmanBtnI.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnI.isEnabled = false
-            }
-            hangmanBtnJ.setOnClickListener {
-                var text = hangmanBtnJ.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnJ.isEnabled = false
-            }
-            hangmanBtnK.setOnClickListener {
-                var text = hangmanBtnK.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnK.isEnabled = false
-            }
-            hangmanBtnL.setOnClickListener {
-                var text = hangmanBtnL.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnL.isEnabled = false
-            }
-            hangmanBtnM.setOnClickListener {
-                var text = hangmanBtnM.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnM.isEnabled = false
-            }
-            hangmanBtnN.setOnClickListener {
-                var text = hangmanBtnN.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnN.isEnabled = false
-            }
-            hangmanBtnO.setOnClickListener {
-                var text = hangmanBtnO.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnO.isEnabled = false
-            }
-            hangmanBtnP.setOnClickListener {
-                var text = hangmanBtnP.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnP.isEnabled = false
-            }
-            hangmanBtnQ.setOnClickListener {
-                var text = hangmanBtnQ.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnQ.isEnabled = false
-            }
-            hangmanBtnR.setOnClickListener {
-                var text = hangmanBtnR.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnR.isEnabled = false
-            }
-            hangmanBtnS.setOnClickListener {
-                var text = hangmanBtnS.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnS.isEnabled = false
-            }
-            hangmanBtnT.setOnClickListener {
-                var text = hangmanBtnT.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnT.isEnabled = false
-            }
-            hangmanBtnU.setOnClickListener {
-                var text = hangmanBtnU.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnU.isEnabled = false
-            }
-            hangmanBtnV.setOnClickListener {
-                var text = hangmanBtnV.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnV.isEnabled = false
-            }
-            hangmanBtnW.setOnClickListener {
-                var text = hangmanBtnW.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnW.isEnabled = false
-            }
-
-            hangmanBtnX.setOnClickListener {
-                var text = hangmanBtnX.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnX.isEnabled = false
-            }
-            hangmanBtnY.setOnClickListener {
-                var text = hangmanBtnY.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnY.isEnabled = false
-            }
-            hangmanBtnZ.setOnClickListener {
-                var text = hangmanBtnZ.text.toString()
-                val c: Char = text.first()
-                backend.letterChecker(c)
-                hangmanBtnZ.isEnabled = false
-            }
-
         }
     }
     override fun onDestroyView() {
