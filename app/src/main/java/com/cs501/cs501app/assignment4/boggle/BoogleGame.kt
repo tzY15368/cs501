@@ -7,7 +7,7 @@ class BoggleGame(
     private val boardSize: Int = 4,
     private val wordLength: Int = 4,
     inputStream: InputStream,
-    private val context: Context
+    private val context: Context? = null
 ) {
     private var board = Array(boardSize) { Array(boardSize) { ' ' } }
     private var score = 0
@@ -60,13 +60,13 @@ class BoggleGame(
         }
     }
 
-    private fun isValidWord(currentWord: String): Boolean {
+    fun isValidWord(currentWord: String): Boolean {
         return dataReader.getData().contains(currentWord)
     }
 
     fun findAllValidWords(): Set<String> {
         val validWords = mutableSetOf<String>()
-        val visited = Array(4) { BooleanArray(4) }
+        val visited = Array(boardSize) { BooleanArray(boardSize) }
         var count = 0
 
         fun searchWords(
@@ -75,6 +75,9 @@ class BoggleGame(
             visited: Array<BooleanArray>,
             currentWord: String,
         ) {
+            if (row < 0 || col < 0 || row >= boardSize || col >= boardSize) {
+                return
+            }
             count++
             val newWord = currentWord + board[row][col]
             // check if the current word is valid
