@@ -51,7 +51,7 @@ class HMBackend(application: Application): AndroidViewModel(application) {
     private var selectedWord = MutableLiveData(wordMap[selectedCategory.value]!!.random())
 
     // repeated underscores with length of word
-    val currentDisplayWord = MutableLiveData(getSelectedWord().replace("[a-zA-Z]".toRegex(), "_"))
+    val currentDisplayWord = MutableLiveData(getDW())
 
     private var currentIndex = MutableLiveData(0)
 
@@ -61,6 +61,16 @@ class HMBackend(application: Application): AndroidViewModel(application) {
     fun getSelectedWord(): String{return selectedWord.value!!}
     fun getRemainingLetters(): List<Char>{return remainingLetters.value!!}
     fun getCurrentIndex(): Int{return currentIndex.value!!}
+
+    fun getDW():String{
+        val w = getSelectedWord()
+        val sb:StringBuilder= StringBuilder()
+        for(i in w.indices){
+            sb.append('_')
+        }
+        println("dw:"+sb.toString())
+        return sb.toString()
+    }
 
     fun reset(){
         println("resetting")
@@ -94,13 +104,15 @@ class HMBackend(application: Application): AndroidViewModel(application) {
     }
     private fun showVowels(){
         decrCurrentHP()
+        val sWord = getSelectedWord()
+        val dWord = getCurrentDisplayWord()
         // loop through the word by index
-        for(i in 0 until getSelectedWord().length){
+        for(i in sWord.indices){
             // if the index is even, replace the underscore with the letter
             if(vowels.contains(""+getSelectedWord()[i])){
-                val b = currentDisplayWord.value?.toCharArray()
-                b?.set(i, getSelectedWord()[i])
-                currentDisplayWord.value = b.toString()
+                val b = dWord.toCharArray()
+                b[i] = sWord[i]
+                currentDisplayWord.value = b.concatToString()
             }
         }
     }
@@ -150,7 +162,9 @@ class HMBackend(application: Application): AndroidViewModel(application) {
                 remainingLetters.value = getRemainingLetters().filter { it != c }
             }
         } else {
-            remainingLetters.value = getRemainingLetters().filter { it != c }
+            if(!getSelectedWord().contains(c)){
+                remainingLetters.value = getRemainingLetters().filter { it != c }
+            }
             decrCurrentHP()
         }
         println("current word: ${selectedWord.value}|${currentDisplayWord.value}, " +
