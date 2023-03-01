@@ -30,7 +30,7 @@ class BoggleLowerFragmentTest {
         // Verify that the button is disabled
         Espresso.onView(ViewMatchers.withId(R.id.cur_score))
             .check(
-                ViewAssertions.matches(ViewMatchers.withText(""))
+                ViewAssertions.matches(ViewMatchers.withText("0"))
             )
     }
 }
