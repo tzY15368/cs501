@@ -26,7 +26,7 @@ class BoggleUpperFragmentTest {
             .perform(ViewActions.click())
 
         // Verify that the button is disabled
-        Espresso.onView(ViewMatchers.withId(R.id.boggle_clear))
+        Espresso.onView(ViewMatchers.withId(R.id.result_view))
             .check(
                 ViewAssertions.matches(ViewMatchers.withText(""))
             )
