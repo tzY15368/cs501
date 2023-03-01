@@ -38,8 +38,7 @@ class InputFragment : Fragment() {
         hangman_input_text.text = model.currentDisplayWord.value
         model.currentDisplayWord.observe(viewLifecycleOwner, Observer {
             Log.d(TAG, "onViewCreated: $it")
-            val displayWord = it
-            hangman_input_text.text = displayWord
+            hangman_input_text.text = it
         })
     }
 
