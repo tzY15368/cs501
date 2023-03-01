@@ -7,44 +7,70 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.activity.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.cs501.cs501app.R
+import com.cs501.cs501app.assignment3.flashcard.FCBackend
 import com.cs501.cs501app.databinding.FragmentHintBinding
+import kotlin.system.exitProcess
 
 private const val TAG = "HintFragment"
 
-public interface HintFragmentListener {
-    fun onHintPressed()
-}
+class HintFragment : Fragment(){
 
-class HintFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private lateinit var listener: HintFragmentListener
-    private lateinit var binding: FragmentHintBinding
-
+    private var _model: HMBackend? = null
+    private val model
+        get() = checkNotNull(_model) {
+            "Cannot access model because it is null. Is the view visible?"
+        }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        _model = ViewModelProvider(requireActivity()).get(HMBackend::class.java)
     }
+    private var _binding: FragmentHintBinding? = null
+    private val binding
+        get() = checkNotNull(_binding) {
+            "Cannot access binding because it is null. Is the view visible?"
+        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is HintFragmentListener) {
-            listener = context
-            Log.d(TAG, "onAttach: ")
-            listener.onHintPressed()
-        } else {
-            throw RuntimeException("$context must implement HintFragmentListener")
-        }
+        Log.d(TAG, "onAttach: ")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        binding = FragmentHintBinding.inflate(inflater, container, false)
-        binding.apply{
-            // ...
-        }
+        _binding = FragmentHintBinding.inflate(inflater, container, false)
+        binding.hintButton.setOnClickListener(View.OnClickListener {
+            model.getHint()
+            }
+        )
+        binding.resetButton.setOnClickListener(View.OnClickListener {
+            model.reset()
+        })
+        model.hint.observe(viewLifecycleOwner, Observer{ hint ->
+            binding.hintText.text = hint
+        })
+        model.gameState.observe(viewLifecycleOwner, Observer{ state ->
+                binding.hintButton.isEnabled = state==GameState.IN_PROGRESS
+        })
         return binding.root
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        println("destroyed")
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        println("destroyed view")
+    }
+
 }
