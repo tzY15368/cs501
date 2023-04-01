@@ -24,11 +24,13 @@ import com.cs501.cs501app.assignment4.boggle.BoggleActivity
 import com.cs501.cs501app.assignment4.cintent.CriminalIntentActivity
 import com.cs501.cs501app.assignment4.hangman.HangManActivity
 import com.cs501.cs501app.buotg.HomeActivity
+import com.cs501.cs501app.example.WebViewDemo
 
 class MainActivity : AppCompatActivity() {
 
     private val activities = listOf(
         HomeActivity::class,
+        WebViewDemo::class,
         Calc1Activity::class,
         Calc2Activity::class,
         GeoQuizActivity::class,
