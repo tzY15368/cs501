@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".assignment4.hangman.HangManActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="landscape" />
+    <!--    from left to right-->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/hangman_picture"
+        android:name="com.cs501.cs501app.assignment4.hangman.ImageFragment"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout="@layout/fragment_image" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/hangman_letters"
+        android:name="com.cs501.cs501app.assignment4.hangman.ChooseLetterFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-210dp"
+        app:layout_constraintLeft_toRightOf="@id/hangman_picture"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_choose_letter" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/textsLayout"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintLeft_toRightOf="@id/hangman_letters"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/hangman_input"
+            android:name="com.cs501.cs501app.assignment4.hangman.InputFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            tools:layout="@layout/fragment_input" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/hangman_hint"
+            android:name="com.cs501.cs501app.assignment4.hangman.HintFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hangman_input"
+            tools:layout="@layout/fragment_hint" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,45 +8,51 @@ import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
 
-class DataReader(private val inStream: InputStream, private val wordLength: Int, private val context: Context) {
+class DataReader(
+    private val inStream: InputStream,
+    private val wordLength: Int,
+    private val context: Context?
+) {
     private val data = ArrayList<String>()
 
     init {
         readData()
-//        inStream.close()
     }
 
     private fun readData() {
         // create buffered reader from instream
-
-//        val reader = inStream.bufferedReader()
-//        var line = reader.readLine()
-//        while (line != null) {
-//            if (isValidWord(line)) {
-//                data.add(line.lowercase())
+        if (context === null) {
+//            val reader = inStream.bufferedReader()
+//            var line = reader.readLine()
+//            while (line != null) {
+//                if (isValidWord(line)) {
+//                    data.add(line.lowercase())
+//                }
+//                line = reader.readLine()
 //            }
-//            line = reader.readLine()
-//        }
-//        reader.close()
-
-//        val contents = inStream.bufferedReader().use { it.readText() }
-//        for (line in contents.lines()) {
-//            if (isValidWord(line)) {
-//                data.add(line.lowercase())
-//            }
-//        }
-        val inputStream = context.assets.open("words.txt")
-        val reader = BufferedReader(InputStreamReader(inputStream))
-        val words = ArrayList<String>()
-        var line = reader.readLine()
-        while (line != null) {
-            if (isValidWord(line)) {
-                data.add(line.lowercase())
-//                println(data.size)
+//            reader.close()
+            val contents = inStream.bufferedReader().use { it.readText() }
+            for (line in contents.lines()) {
+                if (isValidWord(line)) {
+                    data.add(line.lowercase())
+                }
             }
-            line = reader.readLine()
-        }
+            // if using inputStream, need to close it
+            inStream.close()
 
+        } else {
+            val inputStream = context.assets.open("words.txt")
+            val reader = BufferedReader(InputStreamReader(inputStream))
+            val words = ArrayList<String>()
+            var line = reader.readLine()
+            while (line != null) {
+                if (isValidWord(line)) {
+                    data.add(line.lowercase())
+//                println(data.size)
+                }
+                line = reader.readLine()
+            }
+        }
     }
 
     private fun isValidWord(word: String): Boolean {
@@ -73,7 +79,6 @@ class DataReader(private val inStream: InputStream, private val wordLength: Int,
     }
 
     fun getData(): ArrayList<String> {
-        readData()
         return data
     }
 
