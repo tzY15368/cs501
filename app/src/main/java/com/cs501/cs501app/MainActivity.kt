@@ -23,10 +23,12 @@ import com.cs501.cs501app.assignment3.tempconv.TempConvActivity
 import com.cs501.cs501app.assignment4.boggle.BoggleActivity
 import com.cs501.cs501app.assignment4.cintent.CriminalIntentActivity
 import com.cs501.cs501app.assignment4.hangman.HangManActivity
+import com.cs501.cs501app.buotg.HomeActivity
 
 class MainActivity : AppCompatActivity() {
 
     private val activities = listOf(
+        HomeActivity::class,
         Calc1Activity::class,
         Calc2Activity::class,
         GeoQuizActivity::class,
@@ -74,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         TopAppBar(
             title = {
                 Text(
-                    text = "CS501",
+                    text = "BU On-the-go",
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         fontSize = 20.sp
