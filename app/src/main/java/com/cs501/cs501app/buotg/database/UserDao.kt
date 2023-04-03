@@ -6,6 +6,6 @@ import com.cs501.cs501app.buotg.entities.User
 
 @Dao
 interface UserDao{
-    @Query("SELECT * from user where id={:id}")
+    @Query("SELECT * from user where user_id=(:id)")
     suspend fun getUser(id:Int): User?
 }
