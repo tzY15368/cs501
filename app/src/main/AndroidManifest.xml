@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".buotg.BUOTGApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -11,8 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CS501App"
         tools:targetApi="31">
-        <activity android:name=".example.PictureExample"
-            android:exported="true"/>
+        <activity
+            android:name=".example.PictureExample"
+            android:exported="true" />
         <activity
             android:name=".assignment4.boggle.BoggleActivity"
             android:exported="false" />
@@ -21,9 +23,6 @@
             android:exported="false" />
         <activity
             android:name=".assignment4.cintent.CriminalIntentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".assignment3.geoquiz.CheatActivity"
             android:exported="false" />
         <activity
             android:name=".assignment3.geoquiz.CheatActivity"
@@ -47,7 +46,7 @@
             android:name=".assignment2.Calc1Activity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".buotg.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
