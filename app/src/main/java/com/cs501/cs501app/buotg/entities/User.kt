@@ -3,7 +3,7 @@ package com.cs501.cs501app.buotg.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
-
+const val CURRENT_USER_ID = 0
 enum class UserType{
     student,
     teacher,
