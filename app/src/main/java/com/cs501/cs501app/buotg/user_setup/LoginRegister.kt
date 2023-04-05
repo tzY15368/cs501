@@ -78,6 +78,7 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
                 }
             } catch (e: Exception) {
                 TAlert.fail(ctx, e.message?:"An error occurred")
+                Log.e("LoginRegister", "error: ${e.message}", e)
                 return@launch
             }
         }
