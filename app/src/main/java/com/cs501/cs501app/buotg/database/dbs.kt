@@ -7,8 +7,9 @@ import com.cs501.cs501app.buotg.entities.Event
 import com.cs501.cs501app.buotg.entities.SharedEvent
 import com.cs501.cs501app.buotg.entities.User
 
-@Database(entities = [Event::class, SharedEvent::class, User::class],version=1)
+@Database(entities = [Event::class, SharedEvent::class, User::class], version=2)
 @TypeConverters(DateTimeConverter::class)
 abstract class AppDatabase: RoomDatabase(){
     abstract fun userDao(): UserDao
+    abstract fun eventDao(): EventDao
 }

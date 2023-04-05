@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.buotg.database.AppRepository
+import com.cs501.cs501app.buotg.dayNightTheme.EventTrackerTheme
+import com.cs501.cs501app.buotg.entities.Event
 import com.cs501.cs501app.buotg.entities.User
 import com.cs501.cs501app.utils.GenericTopAppBar
 import kotlinx.coroutines.launch
@@ -24,30 +26,35 @@ class HomeActivity : AppCompatActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            MaterialTheme {
-                Scaffold(
-                    topBar = {
-                        GenericTopAppBar()
-                    },
-                    content = { innerPadding ->
-                        // center the column
-                        Column(
-                            modifier = Modifier
-                                .padding(innerPadding)
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                                .fillMaxHeight()
-                                .verticalScroll(rememberScrollState()),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            ShowUser()
-                        }
-                    }
-                )
+        setContent{
+            EventTrackerTheme {
+                EventTracker()
             }
         }
+//        setContent {
+//            MaterialTheme {
+//                Scaffold(
+//                    topBar = {
+//                        GenericTopAppBar()
+//                    },
+//                    content = { innerPadding ->
+//                        // center the column
+//                        Column(
+//                            modifier = Modifier
+//                                .padding(innerPadding)
+//                                .padding(16.dp)
+//                                .fillMaxWidth()
+//                                .fillMaxHeight()
+//                                .verticalScroll(rememberScrollState()),
+//                            horizontalAlignment = Alignment.CenterHorizontally,
+//                            verticalArrangement = Arrangement.Center,
+//                        ) {
+//                            ShowUser()
+//                        }
+//                    }
+//                )
+//            }
+//        }
     }
 
     @Composable

@@ -11,9 +11,13 @@ class AppRepository private constructor(context:Context){
         context.applicationContext,
         AppDatabase::class.java,
         DB_NAME
-    ).build()
+    ).fallbackToDestructiveMigration().build()
 
     suspend fun getUser(id:Int): User? = database.userDao().getUser(id)
+
+    private val eventRepository:EventRepository = EventRepositoryImpl(database.eventDao())
+
+    fun getEventRepository():EventRepository = eventRepository
 
     companion object {
         private var instance:AppRepository? = null
