@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "e2a4ed105708957c900dddb10c8e4e60",
+    "version": 3,
+    "identityHash": "5734ff01e07cde3672c0eb9a2fbe0d54",
     "entities": [
       {
         "tableName": "event",
@@ -159,12 +159,38 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "kv_entry",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))",
+        "fields": [
+          {
+            "fieldPath": "key",
+            "columnName": "key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "key"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e2a4ed105708957c900dddb10c8e4e60')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5734ff01e07cde3672c0eb9a2fbe0d54')"
     ]
   }
 }

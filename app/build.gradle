@@ -60,6 +60,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.compose.material:material:1.1.1'
+    implementation 'androidx.databinding:databinding-runtime:7.1.2'
     debugImplementation 'androidx.fragment:fragment-testing:1.5.5'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -87,4 +88,8 @@ dependencies {
     implementation 'androidx.room:room-ktx:2.5.1'
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1"
     kapt 'androidx.room:room-compiler:2.5.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'org.jsoup:jsoup:1.15.4'
 }

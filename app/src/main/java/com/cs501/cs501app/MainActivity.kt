@@ -25,19 +25,23 @@ import com.cs501.cs501app.assignment4.boggle.BoggleActivity
 import com.cs501.cs501app.assignment4.cintent.CriminalIntentActivity
 import com.cs501.cs501app.assignment4.hangman.HangManActivity
 import com.cs501.cs501app.buotg.HomeActivity
+import com.cs501.cs501app.buotg.user_setup.SetupActivity
+import com.cs501.cs501app.example.WebViewDemo
 
 class MainActivity : AppCompatActivity() {
 
     private val activities = listOf(
         HomeActivity::class,
-        Calc1Activity::class,
-        Calc2Activity::class,
-        GeoQuizActivity::class,
-        TempConvActivity::class,
-        FCLoginActivity::class,
-        CriminalIntentActivity::class,
-        HangManActivity::class,
-        BoggleActivity::class,
+        WebViewDemo::class,
+        SetupActivity::class,
+//        Calc1Activity::class,
+//        Calc2Activity::class,
+//        GeoQuizActivity::class,
+//        TempConvActivity::class,
+//        FCLoginActivity::class,
+//        CriminalIntentActivity::class,
+//        HangManActivity::class,
+//        BoggleActivity::class,
     )
 
     @OptIn(ExperimentalMaterial3Api::class)
