@@ -1,19 +1,27 @@
 package com.cs501.cs501app.buotg.database.repositories
 
+import com.cs501.cs501app.buotg.connection.API
+import com.cs501.cs501app.buotg.connection.LoginResponse
+import com.cs501.cs501app.buotg.connection.SafeAPIRequest
+import com.cs501.cs501app.buotg.connection.SignupResponse
 import com.cs501.cs501app.buotg.database.AppDatabase
-import com.cs501.cs501app.buotg.database.connection.API
-import com.cs501.cs501app.buotg.database.connection.AuthResponses
-import com.cs501.cs501app.buotg.database.connection.SafeAPIRequest
+import com.cs501.cs501app.buotg.database.connection.*
+import com.cs501.cs501app.buotg.entities.KVEntry
+import com.cs501.cs501app.buotg.entities.USER_TOKEN_KEY
 import com.cs501.cs501app.buotg.entities.User
 
 class UserRepository(
-    private val api: API,
-    private val db: AppDatabase
+    db: AppDatabase
+) : SafeAPIRequest() {
+    private val api: API = API.getClient()
+    private val userDao = db.userDao()
+    private val kvDao = db.kvDao()
 
-) : SafeAPIRequest(){
+    suspend fun userLogin(email: String, password: String): LoginResponse {
+        val res = apiRequest { api.userLogin(email, password) }
+        kvDao.put(KVEntry(USER_TOKEN_KEY, res.token))
 
-    suspend fun userLogin(email: String, password: String): AuthResponses {
-        return apiRequest { api.userLogin(email, password) }
+        return res
     }
 
     suspend fun userSignup(
@@ -21,13 +29,14 @@ class UserRepository(
         email: String,
         password: String,
         user_type: String
-    ):AuthResponses{
-        return apiRequest { api.userSignup(name,email,password,user_type) }
+    ): SignupResponse {
+        val res = apiRequest { api.userSignup(name, email, password, user_type) }
+        assert(res.user.user_id != 0)
+        userDao.upsert(res.user)
+        return res
     }
 
+    fun getCurrentUser() = userDao.getCurrentUser()
 
-    suspend fun saveUser(user: User) = db.userDao().upsert(user)
-
-    fun getUser() = db.userDao().getuser()
-
+    fun logout() = userDao.logout()
 }
