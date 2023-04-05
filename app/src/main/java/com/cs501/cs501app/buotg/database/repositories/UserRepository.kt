@@ -5,7 +5,7 @@ import com.cs501.cs501app.buotg.connection.LoginResponse
 import com.cs501.cs501app.buotg.connection.SafeAPIRequest
 import com.cs501.cs501app.buotg.connection.SignupResponse
 import com.cs501.cs501app.buotg.database.AppDatabase
-import com.cs501.cs501app.buotg.database.connection.*
+import com.cs501.cs501app.buotg.connection.*
 import com.cs501.cs501app.buotg.entities.KVEntry
 import com.cs501.cs501app.buotg.entities.USER_TOKEN_KEY
 import com.cs501.cs501app.buotg.entities.User

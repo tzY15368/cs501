@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "ebf0b6fc7aaf0a5c8bf92aaa0a7fffdc",
+    "version": 3,
+    "identityHash": "5734ff01e07cde3672c0eb9a2fbe0d54",
     "entities": [
       {
         "tableName": "event",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` INTEGER NOT NULL, `event_name` TEXT NOT NULL, `latitude` INTEGER NOT NULL, `longitude` INTEGER NOT NULL, `start_time` INTEGER NOT NULL, `end_time` INTEGER NOT NULL, `repeat_mode` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `desc` TEXT NOT NULL, PRIMARY KEY(`event_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `event_name` TEXT NOT NULL, `latitude` INTEGER NOT NULL, `longitude` INTEGER NOT NULL, `start_time` INTEGER NOT NULL, `end_time` INTEGER NOT NULL, `repeat_mode` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `desc` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "event_id",
@@ -64,7 +64,7 @@
           }
         ],
         "primaryKey": {
-          "autoGenerate": false,
+          "autoGenerate": true,
           "columnNames": [
             "event_id"
           ]
@@ -190,7 +190,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ebf0b6fc7aaf0a5c8bf92aaa0a7fffdc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5734ff01e07cde3672c0eb9a2fbe0d54')"
     ]
   }
 }

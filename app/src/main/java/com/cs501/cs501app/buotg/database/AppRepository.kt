@@ -13,10 +13,15 @@ class AppRepository private constructor(context:Context){
         context.applicationContext,
         AppDatabase::class.java,
         DB_NAME
-    ).build()
-    private val userRepo = UserRepository(database)
+    ).fallbackToDestructiveMigration().build()
 
     suspend fun getUser(id:Int): User? = database.userDao().getUser(id)
+
+    private val eventRepository:EventRepository = EventRepositoryImpl(database.eventDao())
+
+    fun getEventRepository():EventRepository = eventRepository
+
+    private val userRepo = UserRepository(database)
 
     fun kvDao() = database.kvDao()
     fun userRepo() = userRepo
