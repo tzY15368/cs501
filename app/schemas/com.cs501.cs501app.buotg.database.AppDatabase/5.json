@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 3,
-    "identityHash": "5cd32ad6437a0768fbd78c263ca58c2c",
+    "version": 5,
+    "identityHash": "5734ff01e07cde3672c0eb9a2fbe0d54",
     "entities": [
       {
         "tableName": "event",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `event_name` TEXT NOT NULL, `latitude` INTEGER NOT NULL, `longitude` INTEGER NOT NULL, `start_time` TEXT NOT NULL, `end_time` TEXT NOT NULL, `repeat_mode` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `desc` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `event_name` TEXT NOT NULL, `latitude` INTEGER NOT NULL, `longitude` INTEGER NOT NULL, `start_time` INTEGER NOT NULL, `end_time` INTEGER NOT NULL, `repeat_mode` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `desc` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "event_id",
@@ -35,13 +35,13 @@
           {
             "fieldPath": "start_time",
             "columnName": "start_time",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "end_time",
             "columnName": "end_time",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -74,7 +74,7 @@
       },
       {
         "tableName": "shared_event",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`shared_event_id` INTEGER NOT NULL, `event_id` INTEGER NOT NULL, `owner_id` INTEGER NOT NULL, `created_at` TEXT NOT NULL, `checkin_time` TEXT NOT NULL, PRIMARY KEY(`shared_event_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`shared_event_id` INTEGER NOT NULL, `event_id` INTEGER NOT NULL, `owner_id` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `checkin_time` INTEGER NOT NULL, PRIMARY KEY(`shared_event_id`))",
         "fields": [
           {
             "fieldPath": "shared_event_id",
@@ -97,13 +97,13 @@
           {
             "fieldPath": "created_at",
             "columnName": "created_at",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "checkin_time",
             "columnName": "checkin_time",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -118,7 +118,7 @@
       },
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `email` TEXT NOT NULL, `full_name` TEXT NOT NULL, `created_at` TEXT NOT NULL, `user_type` TEXT NOT NULL, PRIMARY KEY(`user_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `email` TEXT NOT NULL, `full_name` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `user_type` TEXT NOT NULL, PRIMARY KEY(`user_id`))",
         "fields": [
           {
             "fieldPath": "user_id",
@@ -141,7 +141,7 @@
           {
             "fieldPath": "created_at",
             "columnName": "created_at",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -190,7 +190,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5cd32ad6437a0768fbd78c263ca58c2c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5734ff01e07cde3672c0eb9a2fbe0d54')"
     ]
   }
 }

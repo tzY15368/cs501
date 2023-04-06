@@ -12,11 +12,12 @@ open class SafeAPIRequest {
             // if response is successful, we expect the operation to succeed FULLY
             // decode the response body from json and cast it to T
             // T is the type of the response body
+            println("Success: ${response.body()}")
             return response.body()!!
         }else{
             // otherwise decode the response body from json and look for the message field
             val error = response.errorBody()?.string()
-
+            println("Error: $error")
             val message = StringBuilder()
             error.let {
                 try {

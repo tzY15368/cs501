@@ -36,7 +36,7 @@ class UserRepository(
         return res
     }
 
-    fun getCurrentUser() = userDao.getCurrentUser()
+    suspend fun getCurrentUser() = userDao.getCurrentUser()
 
-    fun logout() = userDao.logout()
+    suspend fun logout() = userDao.logout()
 }

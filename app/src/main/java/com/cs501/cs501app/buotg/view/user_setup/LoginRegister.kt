@@ -42,15 +42,16 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
     val isLogin = rememberSaveable { mutableStateOf(true) }
-    Log.d("LoginRegister", "rendered: msg=$msg")
 
     LaunchedEffect(true) {
         // FIXME: room breaks
-//        val user = userRepo.getCurrentUser()
-//        if (user != null) {
-//            Log.d("LoginRegister", "logging out user: $user")
-//            AppRepository.get().userRepo().logout()
-//        }
+        coroutineScope.launch {
+            val user = userRepo.getCurrentUser()
+            if (user != null) {
+                Log.d("LoginRegister", "logging out user: $user")
+                AppRepository.get().userRepo().logout()
+            }
+        }
     }
 
     val handleSubmit: () -> Unit = {
@@ -75,6 +76,8 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
                 // goto login
                 if(!isLogin.value){
                     isLogin.value = true
+                } else {
+                    done()
                 }
             } catch (e: Exception) {
                 TAlert.fail(ctx, e.message?:"An error occurred")
