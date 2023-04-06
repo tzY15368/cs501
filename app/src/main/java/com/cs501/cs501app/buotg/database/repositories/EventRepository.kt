@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.database
+package com.cs501.cs501app.buotg.database.repositories
 
 import com.cs501.cs501app.buotg.entities.Event
 import kotlinx.coroutines.flow.Flow

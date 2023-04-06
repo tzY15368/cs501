@@ -2,7 +2,7 @@ package com.cs501.cs501app.buotg.homeScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cs501.cs501app.buotg.database.EventRepository
+import com.cs501.cs501app.buotg.database.repositories.EventRepository
 import com.cs501.cs501app.buotg.entities.Event
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

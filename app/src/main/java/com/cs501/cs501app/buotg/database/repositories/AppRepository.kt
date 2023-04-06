@@ -1,15 +1,14 @@
-package com.cs501.cs501app.buotg.database
+package com.cs501.cs501app.buotg.database.repositories
 
 import android.content.Context
-import androidx.room.AutoMigration
 import androidx.room.Room
-import com.cs501.cs501app.buotg.database.repositories.UserRepository
+import com.cs501.cs501app.buotg.database.AppDatabase
 import com.cs501.cs501app.buotg.entities.User
 
 private const val DB_NAME = "buotg-db"
 
 class AppRepository private constructor(context:Context){
-    private val database:AppDatabase = Room.databaseBuilder(
+    private val database: AppDatabase = Room.databaseBuilder(
         context.applicationContext,
         AppDatabase::class.java,
         DB_NAME
@@ -17,9 +16,9 @@ class AppRepository private constructor(context:Context){
 
     suspend fun getUser(id:Int): User? = database.userDao().getUser(id)
 
-    private val eventRepository:EventRepository = EventRepositoryImpl(database.eventDao())
+    private val eventRepository: EventRepository = EventRepositoryImpl(database.eventDao())
 
-    fun getEventRepository():EventRepository = eventRepository
+    fun getEventRepository(): EventRepository = eventRepository
 
     private val userRepo = UserRepository(database)
 
@@ -27,16 +26,16 @@ class AppRepository private constructor(context:Context){
     fun userRepo() = userRepo
 
     companion object {
-        private var instance:AppRepository? = null
+        private var instance: AppRepository? = null
 
         fun initialize(context:Context){
-            if(instance==null){
+            if(instance ==null){
                 instance = AppRepository(context)
             }
         }
 
-        fun get():AppRepository{
-            return instance?:throw IllegalStateException("db init")
+        fun get(): AppRepository {
+            return instance ?:throw IllegalStateException("db init")
         }
     }
 }

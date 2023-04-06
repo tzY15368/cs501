@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.cs501.cs501app.buotg.database.AppRepository
+import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.connection.StdResponse
 import com.cs501.cs501app.buotg.entities.UserType
 import com.cs501.cs501app.utils.TAlert

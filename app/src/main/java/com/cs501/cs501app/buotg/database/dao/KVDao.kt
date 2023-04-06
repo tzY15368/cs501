@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.database
+package com.cs501.cs501app.buotg.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
