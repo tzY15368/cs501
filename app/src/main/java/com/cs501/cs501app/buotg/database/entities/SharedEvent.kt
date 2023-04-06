@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.entities
+package com.cs501.cs501app.buotg.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

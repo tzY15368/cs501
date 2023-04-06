@@ -96,4 +96,19 @@
     <string name="boggle_clear">CLEAR</string>
     <string name="boggle_submit">SUBMIT</string>
     <string name="boggle_new_game">NEW GAME</string>
+
+    <string name="delete">Delete</string>
+    <string name="event_priority">event_priority</string>
+    <string name="high_priority">HIGH</string>
+    <string name="medium_priority">MID</string>
+    <string name="low_priority">LOW</string>
+    <string name="event_app_name">Event_Tracker</string>
+    <string name="add_event">Add event</string>
+    <string name="bottom_sheet_headline">Edit your event</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_description">Event Description</string>
+    <string name="priority">Event Priority</string>
+    <string name="cancel">CANCEL</string>
+    <string name="save">SAVE</string>
+    <string name="event_start_time">Start time</string>
 </resources>
