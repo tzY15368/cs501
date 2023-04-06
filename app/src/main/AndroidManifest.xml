@@ -13,9 +13,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.CS501App"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".buotg.user_setup.SetupActivity"
+            android:name=".buotg.view.user_setup.SetupActivity"
             android:exported="false" />
         <activity
             android:name=".example.WebViewDemo"

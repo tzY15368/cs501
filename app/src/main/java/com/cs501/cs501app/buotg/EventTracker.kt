@@ -9,19 +9,18 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.cs501.cs501app.buotg.database.AppRepository
-import com.cs501.cs501app.buotg.homeScreen.EventTrackerViewModel
+import com.cs501.cs501app.buotg.database.repositories.AppRepository
+import com.cs501.cs501app.buotg.view.homeScreen.EventTrackerViewModel
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.cs501.cs501app.buotg.bottomsheet.EventBottomSheet
-import com.cs501.cs501app.buotg.homeScreen.EventTrackerFAB
-import com.cs501.cs501app.buotg.homeScreen.EventTrackerList
-import com.cs501.cs501app.buotg.homeScreen.EventTrackerTopAppBar
+import com.cs501.cs501app.buotg.view.bottomsheet.EventBottomSheet
+import com.cs501.cs501app.buotg.view.homeScreen.EventTrackerFAB
+import com.cs501.cs501app.buotg.view.homeScreen.EventTrackerList
+import com.cs501.cs501app.buotg.view.homeScreen.EventTrackerTopAppBar
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

@@ -6,9 +6,9 @@ import com.cs501.cs501app.buotg.connection.SafeAPIRequest
 import com.cs501.cs501app.buotg.connection.SignupResponse
 import com.cs501.cs501app.buotg.database.AppDatabase
 import com.cs501.cs501app.buotg.connection.*
-import com.cs501.cs501app.buotg.entities.KVEntry
-import com.cs501.cs501app.buotg.entities.USER_TOKEN_KEY
-import com.cs501.cs501app.buotg.entities.User
+import com.cs501.cs501app.buotg.database.entities.KVEntry
+import com.cs501.cs501app.buotg.database.entities.USER_TOKEN_KEY
+import com.cs501.cs501app.buotg.database.entities.User
 
 class UserRepository(
     db: AppDatabase
@@ -36,7 +36,7 @@ class UserRepository(
         return res
     }
 
-    fun getCurrentUser() = userDao.getCurrentUser()
+    suspend fun getCurrentUser() = userDao.getCurrentUser()
 
-    fun logout() = userDao.logout()
+    suspend fun logout() = userDao.logout()
 }

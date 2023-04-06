@@ -1,9 +1,7 @@
 package com.cs501.cs501app.buotg
 
 import android.app.Application
-import androidx.activity.compose.setContent
-import com.cs501.cs501app.buotg.database.AppRepository
-import com.cs501.cs501app.buotg.dayNightTheme.EventTrackerTheme
+import com.cs501.cs501app.buotg.database.repositories.AppRepository
 
 class BUOTGApplication:Application() {
     override fun onCreate() {

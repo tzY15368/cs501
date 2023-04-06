@@ -16,10 +16,10 @@ interface API {
         @Field("password") password: String
     ): Response<LoginResponse>
 
-    @POST("signup")
+    @POST("register")
     @FormUrlEncoded
     suspend fun userSignup(
-        @Field("name") name: String,
+        @Field("full_name") name: String,
         @Field("email") email: String,
         @Field("password") password: String,
         @Field("user_type") user_type: String
@@ -36,7 +36,7 @@ interface API {
 
             return Retrofit.Builder()
                 .client(okkHttpClient)
-                .baseUrl("https://github.com/RickWayne1125/bu-on-the-go-backend/") //TODO:temp one, need to change
+                .baseUrl("http://192.9.226.22:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(API::class.java)
