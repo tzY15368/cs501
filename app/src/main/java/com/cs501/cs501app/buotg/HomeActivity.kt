@@ -9,8 +9,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
-import com.cs501.cs501app.buotg.dayNightTheme.EventTrackerTheme
-import com.cs501.cs501app.buotg.entities.User
+import com.cs501.cs501app.buotg.view.dayNightTheme.EventTrackerTheme
+import com.cs501.cs501app.buotg.database.entities.User
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -55,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
         LaunchedEffect(true){
             coroutineScope.launch {
 
-                val currentUser:User? = AppRepository.get().getUser(0)
+                val currentUser: User? = AppRepository.get().getUser(0)
                 Log.d("Home", "got user:$currentUser")
                 setUser(currentUser)
             }

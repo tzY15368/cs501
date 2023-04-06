@@ -1,6 +1,6 @@
 package com.cs501.cs501app.buotg.connection
 
-import com.cs501.cs501app.buotg.entities.User
+import com.cs501.cs501app.buotg.database.entities.User
 
 open class StdResponse{
     lateinit var message: String

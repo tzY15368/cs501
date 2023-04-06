@@ -1,7 +1,7 @@
 package com.cs501.cs501app.buotg.database.dao
 
 import androidx.room.*
-import com.cs501.cs501app.buotg.entities.Event
+import com.cs501.cs501app.buotg.database.entities.Event
 import kotlinx.coroutines.flow.Flow
 
 @Dao

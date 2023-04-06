@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.dayNightTheme
+package com.cs501.cs501app.buotg.view.dayNightTheme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

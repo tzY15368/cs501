@@ -1,7 +1,7 @@
 package com.cs501.cs501app.buotg.database.repositories
 
 import com.cs501.cs501app.buotg.database.dao.EventDao
-import com.cs501.cs501app.buotg.entities.Event
+import com.cs501.cs501app.buotg.database.entities.Event
 import kotlinx.coroutines.flow.Flow
 
 class EventRepositoryImpl (private val dao: EventDao) : EventRepository {

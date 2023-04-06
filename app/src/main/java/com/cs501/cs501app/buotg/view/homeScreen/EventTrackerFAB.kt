@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.homeScreen
+package com.cs501.cs501app.buotg.view.homeScreen
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add

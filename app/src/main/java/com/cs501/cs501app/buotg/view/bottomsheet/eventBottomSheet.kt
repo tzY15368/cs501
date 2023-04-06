@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.bottomsheet
+package com.cs501.cs501app.buotg.view.bottomsheet
 
 import android.util.Log
 import android.widget.DatePicker
@@ -11,14 +11,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.cs501.cs501app.buotg.homeScreen.EventTrackerViewModel
+import com.cs501.cs501app.buotg.view.homeScreen.EventTrackerViewModel
 import java.util.*
 import androidx.compose.material.*
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.*
 import com.cs501.cs501app.R
-import com.cs501.cs501app.buotg.entities.Event
-import com.cs501.cs501app.buotg.entities.EventPriority
+import com.cs501.cs501app.buotg.database.entities.Event
+import com.cs501.cs501app.buotg.database.entities.EventPriority
 import com.google.android.material.datepicker.*
 import java.time.LocalDate
 

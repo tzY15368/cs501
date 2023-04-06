@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.cs501.cs501app.buotg.entities.CURRENT_USER_KEY
-import com.cs501.cs501app.buotg.entities.User
+import com.cs501.cs501app.buotg.database.entities.CURRENT_USER_KEY
+import com.cs501.cs501app.buotg.database.entities.User
 
 @Dao
 interface UserDao{

@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.homeScreen
+package com.cs501.cs501app.buotg.view.homeScreen
 
 import android.util.Log
 import androidx.compose.foundation.clickable
@@ -16,8 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.R
-import com.cs501.cs501app.buotg.entities.Event
-import com.cs501.cs501app.buotg.entities.EventPriority
+import com.cs501.cs501app.buotg.database.entities.Event
+import com.cs501.cs501app.buotg.database.entities.EventPriority
 import java.util.*
 
 @Composable

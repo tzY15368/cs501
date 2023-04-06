@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.user_setup
+package com.cs501.cs501app.buotg.view.user_setup
 
 import android.util.Log
 import android.webkit.WebView

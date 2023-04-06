@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.homeScreen
+package com.cs501.cs501app.buotg.view.homeScreen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Icon
@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.cs501.cs501app.R
-import com.cs501.cs501app.buotg.entities.EventPriority
+import com.cs501.cs501app.buotg.database.entities.EventPriority
 
 @Composable
 fun EventIcon(priority: Int, modifier: Modifier = Modifier) {

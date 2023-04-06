@@ -25,7 +25,7 @@ import com.cs501.cs501app.assignment4.boggle.BoggleActivity
 import com.cs501.cs501app.assignment4.cintent.CriminalIntentActivity
 import com.cs501.cs501app.assignment4.hangman.HangManActivity
 import com.cs501.cs501app.buotg.HomeActivity
-import com.cs501.cs501app.buotg.user_setup.SetupActivity
+import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
 import com.cs501.cs501app.example.WebViewDemo
 
 class MainActivity : AppCompatActivity() {
