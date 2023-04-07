@@ -1,9 +1,6 @@
 package com.cs501.cs501app.buotg.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.cs501.cs501app.buotg.database.entities.CURRENT_USER_KEY
 import com.cs501.cs501app.buotg.database.entities.User
 
@@ -20,4 +17,10 @@ interface UserDao{
 
     @Query("DELETE FROM kv_entry WHERE key = (:userKey)")
     suspend fun logout(userKey:String= CURRENT_USER_KEY)
+
+    @Query("SELECT * FROM user")
+    suspend fun listUsers(): List<User>
+
+    @Upsert
+    suspend fun upsertAll(users: List<User>)
 }
