@@ -101,7 +101,7 @@ fun EventTrackerListPreview() {
         EventTrackerList(
             events = listOf(
                 Event(
-                    event_id = 1,
+                    event_id = UUID.randomUUID(),
                     event_name = "Event 1",
                     latitude = 1234,
                     longitude = 9876,
@@ -112,7 +112,7 @@ fun EventTrackerListPreview() {
                     desc = "Event 1 description"
                 ),
                 Event(
-                    event_id = 2,
+                    event_id = UUID.randomUUID(),
                     event_name = "Event 2",
                     latitude = 234567,
                     longitude = 876,
@@ -123,7 +123,7 @@ fun EventTrackerListPreview() {
                     desc = "Event 2 description"
                 ),
                 Event(
-                    event_id = 3,
+                    event_id = UUID.randomUUID(),
                     event_name = "Event 3",
                     latitude = 341,
                     longitude = 7654329,
@@ -134,7 +134,7 @@ fun EventTrackerListPreview() {
                     desc = "Event 3 description"
                 ),
                 Event(
-                    event_id = 4,
+                    event_id = UUID.randomUUID(),
                     event_name = "Event 4",
                     latitude = 4562,
                     longitude = 6548,
@@ -145,7 +145,7 @@ fun EventTrackerListPreview() {
                     desc = "Event 4 description"
                 ),
                 Event(
-                    event_id = 5,
+                    event_id = UUID.randomUUID(),
                     event_name = "Event 5",
                     latitude = 5673,
                     longitude = 5487,

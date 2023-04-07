@@ -11,7 +11,7 @@ import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.entities.SharedEvent
 import com.cs501.cs501app.buotg.database.entities.User
 
-@Database(entities = [Event::class, SharedEvent::class, User::class, KVEntry::class], version=5)
+@Database(entities = [Event::class, SharedEvent::class, User::class, KVEntry::class], version=6)
 @TypeConverters(DateTimeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao

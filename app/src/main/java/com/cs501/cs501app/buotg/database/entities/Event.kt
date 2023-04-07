@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.cs501.cs501app.R
 import java.util.Date
+import java.util.UUID
 
 /*
 https://github.com/RickWayne1125/bu-on-the-go-backend/blob/master/app/models.py
@@ -13,8 +14,7 @@ https://github.com/RickWayne1125/bu-on-the-go-backend/blob/master/app/models.py
 
 @Entity(tableName = "event")
 data class Event(
-//    @PrimaryKey val event_id: Int,
-    @PrimaryKey(autoGenerate = true) val event_id: Int = 0,
+    @PrimaryKey val event_id: UUID,
     val event_name: String,
     val latitude: Long,
     val longitude: Long,
