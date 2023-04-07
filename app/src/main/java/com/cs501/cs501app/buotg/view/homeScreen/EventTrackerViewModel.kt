@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class EventTrackerViewModel(private val eventRepository: EventRepository) : ViewModel() {
-    private val emptyEvent = Event(event_id = 0, event_name = "Empty Event", latitude = 1234, longitude = 9876, start_time = Date(), end_time = Date(),
+    private val emptyEvent = Event(event_id = UUID.randomUUID(), event_name = "Empty Event", latitude = 1234, longitude = 9876, start_time = Date(), end_time = Date(),
         repeat_mode = 0, priority = 1, desc = "Empty Event description")
     private val _currentEventStream = MutableStateFlow(emptyEvent)
     val currentEventStream: StateFlow<Event> = _currentEventStream
@@ -22,11 +22,12 @@ class EventTrackerViewModel(private val eventRepository: EventRepository) : View
     fun updateCurrentEvent(event: Event) = _currentEventStream.update { event }
 
     fun saveEvent() = viewModelScope.launch {
-        if (_currentEventStream.value.event_id > 0) {
-            eventRepository.updateEvent(_currentEventStream.value)
-        } else {
-            eventRepository.addEvent(_currentEventStream.value)
-        }
+        // FIXME: this is broken
+        eventRepository.updateEvent(_currentEventStream.value)
+//        if (_currentEventStream.value.event_id > 0) {
+//            eventRepository.updateEvent(_currentEventStream.value)
+//        } else {
+//        }
     }
 
     fun deleteEvent(event: Event) = viewModelScope.launch {

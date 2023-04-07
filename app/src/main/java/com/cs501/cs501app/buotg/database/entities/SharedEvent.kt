@@ -14,8 +14,8 @@ https://github.com/RickWayne1125/bu-on-the-go-backend/blob/master/app/models.py
 @Entity(tableName = "shared_event")
 data class SharedEvent(
     @PrimaryKey val shared_event_id: Int,
-    val event_id: Int,
-    val owner_id: Int,
+    val event_id: UUID,
+    val owner_id: UUID,
     val created_at: Date,
     val checkin_time: Date
 )

@@ -5,11 +5,8 @@ import com.cs501.cs501app.buotg.connection.LoginResponse
 import com.cs501.cs501app.buotg.connection.SafeAPIRequest
 import com.cs501.cs501app.buotg.connection.SignupResponse
 import com.cs501.cs501app.buotg.database.AppDatabase
-import com.cs501.cs501app.buotg.connection.*
 import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.entities.USER_TOKEN_KEY
-import com.cs501.cs501app.buotg.database.entities.User
-
 class UserRepository(
     db: AppDatabase
 ) : SafeAPIRequest() {
@@ -31,7 +28,6 @@ class UserRepository(
         user_type: String
     ): SignupResponse {
         val res = apiRequest { api.userSignup(name, email, password, user_type) }
-        assert(res.user.user_id != 0)
         userDao.upsert(res.user)
         return res
     }
