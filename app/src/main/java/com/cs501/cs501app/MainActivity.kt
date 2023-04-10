@@ -32,6 +32,7 @@ import com.cs501.cs501app.buotg.HomeActivity
 import com.cs501.cs501app.buotg.database.AppDatabase
 import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
+import com.cs501.cs501app.buotg.view.user_setting.SettingActivity
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
 import com.cs501.cs501app.example.WebViewDemo
 import com.cs501.cs501app.utils.GenericTopAppBar
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         HomeActivity::class,
         WebViewDemo::class,
         SetupActivity::class,
+        SettingActivity::class,
 //        Calc1Activity::class,
 //        Calc2Activity::class,
 //        GeoQuizActivity::class,

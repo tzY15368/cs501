@@ -23,4 +23,7 @@ interface UserDao{
 
     @Upsert
     suspend fun upsertAll(users: List<User>)
+
+    @Update
+    suspend fun updateUser(user: User)
 }

@@ -16,6 +16,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".buotg.view.user_setting.UserInfoEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".buotg.view.user_setting.StudentLinkActivity"
+            android:exported="false" />
+        <activity
+            android:name=".buotg.view.user_setting.SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".buotg.view.user_setup.SetupActivity"
             android:exported="false" />
         <activity
