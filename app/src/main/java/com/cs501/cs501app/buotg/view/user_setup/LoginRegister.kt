@@ -44,7 +44,6 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
     val isLogin = rememberSaveable { mutableStateOf(true) }
 
     LaunchedEffect(true) {
-        // FIXME: room breaks
         coroutineScope.launch {
             val user = userRepo.getCurrentUser()
             if (user != null) {
@@ -60,29 +59,27 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
                 TAlert.fail(ctx, "Please enter your email and password")
                 return@launch
             }
-            try{
-                var res: StdResponse = if (isLogin.value) {
-                    userRepo.userLogin(email.value, password.value)
-                } else {
-                    userRepo.userSignup(
-                        fullName.value,
-                        email.value,
-                        password.value,
-                        UserType.student.name
-                    )
-                }
-                TAlert.success(ctx, res.message)
-                delay(1000)
-                // goto login
-                if(!isLogin.value){
-                    isLogin.value = true
-                } else {
-                    done()
-                }
-            } catch (e: Exception) {
-                TAlert.fail(ctx, e.message?:"An error occurred")
-                Log.e("LoginRegister", "error: ${e.message}", e)
-                return@launch
+            if (isLogin.value) {
+                userRepo.userLogin(
+                    ctx,
+                    email.value,
+                    password.value
+                )
+            } else {
+                userRepo.userSignup(
+                    ctx,
+                    fullName.value,
+                    email.value,
+                    password.value,
+                    UserType.student.name
+                )
+            }
+            delay(1000)
+            // goto login
+            if (!isLogin.value) {
+                isLogin.value = true
+            } else {
+                done()
             }
         }
 

@@ -7,7 +7,7 @@ import com.cs501.cs501app.buotg.database.entities.Group
 
 @Dao
 interface GroupDao {
-    @Query("SELECT * FROM group")
+    @Query("SELECT * from `group`")
     suspend fun listGroups(): List<Group>
 
     @Upsert

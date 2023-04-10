@@ -1,5 +1,6 @@
 package com.cs501.cs501app.buotg.database.repositories
 
+import android.content.Context
 import com.cs501.cs501app.buotg.connection.API
 import com.cs501.cs501app.buotg.connection.LoginResponse
 import com.cs501.cs501app.buotg.connection.SafeAPIRequest
@@ -10,25 +11,26 @@ import com.cs501.cs501app.buotg.database.entities.USER_TOKEN_KEY
 class UserRepository(
     db: AppDatabase
 ) : SafeAPIRequest() {
-    private val api: API = API.getClient()
     private val userDao = db.userDao()
     private val kvDao = db.kvDao()
 
-    suspend fun userLogin(email: String, password: String): LoginResponse {
-        val res = apiRequest { api.userLogin(email, password) }
-        kvDao.put(KVEntry(USER_TOKEN_KEY, res.token))
-
+    suspend fun userLogin(ctx: Context, email: String, password: String): LoginResponse? {
+        val res = apiRequest(ctx, {API.getClient().userLogin(email, password)})
+        res?.let {
+            kvDao.put(KVEntry(USER_TOKEN_KEY, res.token))
+        }
         return res
     }
 
     suspend fun userSignup(
+        ctx: Context,
         name: String,
         email: String,
         password: String,
         user_type: String
-    ): SignupResponse {
-        val res = apiRequest { api.userSignup(name, email, password, user_type) }
-        userDao.upsert(res.user)
+    ): SignupResponse? {
+        val res = apiRequest(ctx,{ API.getClient().userSignup(name, email, password, user_type) })
+        res?.let { userDao.upsert(res.user) }
         return res
     }
 
