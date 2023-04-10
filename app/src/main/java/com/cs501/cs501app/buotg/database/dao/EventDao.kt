@@ -17,4 +17,10 @@ interface EventDao {
 
     @Update
     suspend fun update(event: Event)
+
+    @Query("SELECT * FROM event")
+    suspend fun listEvents(): List<Event>
+
+    @Upsert
+    suspend fun upsertAll(events: List<Event>)
 }

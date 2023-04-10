@@ -21,9 +21,17 @@ class AppRepository private constructor(context:Context){
     fun getEventRepository(): EventRepository = eventRepository
 
     private val userRepo = UserRepository(database)
+    fun userRepo() = userRepo
 
     fun kvDao() = database.kvDao()
-    fun userRepo() = userRepo
+    fun eventDao() = database.eventDao()
+    fun userDao() = database.userDao()
+    fun groupDao() = database.groupDao()
+    fun groupMemberDao() = database.groupMemberDao()
+    fun sharedEventDao() = database.sharedEventDao()
+    fun sharedEventParticipanceDao() = database.sharedEventParticipanceDao()
+
+    fun getAppDatabase() = database
 
     companion object {
         private var instance: AppRepository? = null
