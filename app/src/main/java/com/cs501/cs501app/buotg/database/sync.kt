@@ -1,5 +1,6 @@
 package com.cs501.cs501app.buotg.database
 
+import android.content.Context
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cs501.cs501app.buotg.connection.API
 import com.cs501.cs501app.buotg.connection.SafeAPIRequest
@@ -19,11 +20,10 @@ data class SyncData(
 class SyncRepo(
 
 ) : SafeAPIRequest() {
-    private val api: API = API.getClient()
     private val db: SupportSQLiteDatabase =
         AppRepository.get().getAppDatabase().openHelper.writableDatabase
     private val appRepository = AppRepository.get()
-    suspend fun sync() {
+    suspend fun sync(ctx: Context) {
         println("begin sync, locking db")
         // lock table, push all data to remote, remote will return all entities not present in local db.
         db.beginTransactionNonExclusive()
@@ -36,15 +36,15 @@ class SyncRepo(
                 sharedEvents = appRepository.sharedEventDao().listSharedEvents(),
                 sharedEventParticipances = appRepository.sharedEventParticipanceDao().listSharedEventParticipances(),
             )
-            val syncRes = apiRequest { api.sync(syncData) }
-            syncRes.data?.let {
-                println("sync success, begin insert")
-                appRepository.userDao().upsertAll(it.users)
-                appRepository.groupDao().upsertAll(it.groups)
-                appRepository.groupMemberDao().upsertAll(it.groupMembers)
-                appRepository.eventDao().upsertAll(it.events)
-                appRepository.sharedEventDao().upsertAll(it.sharedEvents)
-                appRepository.sharedEventParticipanceDao().upsertAll(it.sharedEventParticipances)
+            val syncRes = apiRequest(ctx, { API.getClient().sync(syncData) })
+            syncRes?.let {
+                val itt = it.data
+                appRepository.userDao().upsertAll(itt.users)
+                appRepository.groupDao().upsertAll(itt.groups)
+                appRepository.groupMemberDao().upsertAll(itt.groupMembers)
+                appRepository.eventDao().upsertAll(itt.events)
+                appRepository.sharedEventDao().upsertAll(itt.sharedEvents)
+                appRepository.sharedEventParticipanceDao().upsertAll(itt.sharedEventParticipances)
             }
             db.setTransactionSuccessful()
         } catch (e: Exception) {

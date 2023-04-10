@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,8 @@ import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
 import com.cs501.cs501app.example.WebViewDemo
+import com.cs501.cs501app.utils.GenericTopAppBar
+import com.cs501.cs501app.utils.TAlert
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -58,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             MaterialTheme {
                 Scaffold(
                     topBar = {
-                        MainTopAppBar()
+                        GenericTopAppBar()
                     },
                     content = { innerPadding ->
                         // center the column
@@ -76,28 +79,14 @@ class MainActivity : AppCompatActivity() {
                                 ActivityEntry(idx)
                             }
                             Divider()
+                            Ping()
+                            Divider()
                             KVInterface()
                         }
                     }
                 )
             }
         }
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun MainTopAppBar() {
-        TopAppBar(
-            title = {
-                Text(
-                    text = "BU On-the-go",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp
-                    )
-                )
-            }
-        )
     }
 
     @Composable
@@ -113,6 +102,21 @@ class MainActivity : AppCompatActivity() {
             Text(text = "Goto $simpleName")
         }
         Spacer(modifier = Modifier.padding(8.dp))
+    }
+
+    @Composable
+    fun Ping(){
+        val coroutineScope = rememberCoroutineScope()
+        val ctx = LocalContext.current
+        Button(onClick = {
+            coroutineScope.launch {
+                val response = AppRepository.get().ping(ctx)
+                Log.d("Ping", "response: $response")
+                //response?.let { TAlert.success(this@MainActivity, "Ping:${response.message}") }
+            }
+        }) {
+            Text("Ping")
+        }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
