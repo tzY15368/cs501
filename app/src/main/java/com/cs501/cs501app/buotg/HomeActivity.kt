@@ -22,30 +22,6 @@ class HomeActivity : AppCompatActivity() {
                 EventTracker()
             }
         }
-//        setContent {
-//            MaterialTheme {
-//                Scaffold(
-//                    topBar = {
-//                        GenericTopAppBar()
-//                    },
-//                    content = { innerPadding ->
-//                        // center the column
-//                        Column(
-//                            modifier = Modifier
-//                                .padding(innerPadding)
-//                                .padding(16.dp)
-//                                .fillMaxWidth()
-//                                .fillMaxHeight()
-//                                .verticalScroll(rememberScrollState()),
-//                            horizontalAlignment = Alignment.CenterHorizontally,
-//                            verticalArrangement = Arrangement.Center,
-//                        ) {
-//                            ShowUser()
-//                        }
-//                    }
-//                )
-//            }
-//        }
     }
 
     @Composable
