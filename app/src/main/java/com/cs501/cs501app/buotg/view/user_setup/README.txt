@@ -1,0 +1,2 @@
+user_setup package is where users setup their app: login/register/studentlink import.
+The package has one activity and several fragments corresponding to several steps in the setup process to do the job.
