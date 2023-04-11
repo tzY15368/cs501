@@ -59,6 +59,7 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
                 TAlert.fail(ctx, "Please enter your email and password")
                 return@launch
             }
+            val res: StdResponse? =
             if (isLogin.value) {
                 userRepo.userLogin(
                     ctx,
@@ -73,6 +74,9 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
                     password.value,
                     UserType.student.name
                 )
+            }
+            if (res == null) {
+                return@launch
             }
             delay(1000)
             // goto login

@@ -7,6 +7,7 @@ import java.util.UUID
 
 const val CURRENT_USER_KEY = "current_user_id"
 const val USER_TOKEN_KEY = "user_token"
+var CURRENT_USER_ID: UUID? = null
 enum class UserType{
     student,
     teacher,
