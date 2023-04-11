@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 5,
-    "identityHash": "19d3de055e64bb53f6b1b9a6184266f9",
+    "version": 9,
+    "identityHash": "86899cdde41be03f053d84aab5f14463",
     "entities": [
       {
         "tableName": "event",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` BLOB NOT NULL, `event_name` TEXT NOT NULL, `latitude` INTEGER NOT NULL, `longitude` INTEGER NOT NULL, `start_time` INTEGER NOT NULL, `end_time` INTEGER NOT NULL, `repeat_mode` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `desc` TEXT NOT NULL, PRIMARY KEY(`event_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`event_id` BLOB NOT NULL, `event_name` TEXT NOT NULL, `latitude` INTEGER NOT NULL, `longitude` INTEGER NOT NULL, `start_time` INTEGER NOT NULL, `end_time` INTEGER NOT NULL, `repeat_mode` INTEGER NOT NULL, `priority` INTEGER NOT NULL, `desc` TEXT NOT NULL, `created_by` BLOB NOT NULL, `notify_time` INTEGER NOT NULL, PRIMARY KEY(`event_id`))",
         "fields": [
           {
             "fieldPath": "event_id",
@@ -61,6 +61,18 @@
             "columnName": "desc",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "created_by",
+            "columnName": "created_by",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "notify_time",
+            "columnName": "notify_time",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -104,6 +116,38 @@
             "fieldPath": "checkin_time",
             "columnName": "checkin_time",
             "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "shared_event_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "shared_event_participance",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`shared_event_id` INTEGER NOT NULL, `user_id` BLOB NOT NULL, `status` TEXT NOT NULL, PRIMARY KEY(`shared_event_id`))",
+        "fields": [
+          {
+            "fieldPath": "shared_event_id",
+            "columnName": "shared_event_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user_id",
+            "columnName": "user_id",
+            "affinity": "BLOB",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -185,12 +229,83 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "group",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_id` INTEGER NOT NULL, `group_name` TEXT NOT NULL, `desc` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `owner_id` BLOB NOT NULL, PRIMARY KEY(`group_id`))",
+        "fields": [
+          {
+            "fieldPath": "group_id",
+            "columnName": "group_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "group_name",
+            "columnName": "group_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "desc",
+            "columnName": "desc",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "created_at",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "owner_id",
+            "columnName": "owner_id",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "group_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "group_member",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`group_id` INTEGER NOT NULL, `user_id` BLOB NOT NULL, PRIMARY KEY(`group_id`, `user_id`))",
+        "fields": [
+          {
+            "fieldPath": "group_id",
+            "columnName": "group_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user_id",
+            "columnName": "user_id",
+            "affinity": "BLOB",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "group_id",
+            "user_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '19d3de055e64bb53f6b1b9a6184266f9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '86899cdde41be03f053d84aab5f14463')"
     ]
   }
 }

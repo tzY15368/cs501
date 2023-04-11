@@ -33,8 +33,6 @@ fun EventBottomSheet(
     content: @Composable () -> Unit,
 ) {
     val event by eventTrackerViewModel.currentEventStream.collectAsState()
-    Log.d("EventBottomSheet0", "Event: ${event.priority}")
-    Log.d("EventBottomSheet0", "Event: ${event.event_name}")
     ModalBottomSheetLayout(
         modifier = modifier,
         sheetState = sheetState,

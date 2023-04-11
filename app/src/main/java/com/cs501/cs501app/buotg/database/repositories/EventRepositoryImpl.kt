@@ -19,4 +19,8 @@ class EventRepositoryImpl (private val dao: EventDao) : EventRepository {
     override suspend fun updateEvent(event: Event) {
         dao.update(event)
     }
+
+    override suspend fun upsertAll(events: List<Event>) {
+        dao.upsertAll(events)
+    }
 }

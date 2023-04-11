@@ -3,18 +3,31 @@ package com.cs501.cs501app.buotg.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.cs501.cs501app.buotg.database.dao.EventDao
-import com.cs501.cs501app.buotg.database.dao.KVDao
-import com.cs501.cs501app.buotg.database.dao.UserDao
-import com.cs501.cs501app.buotg.database.entities.Event
-import com.cs501.cs501app.buotg.database.entities.KVEntry
-import com.cs501.cs501app.buotg.database.entities.SharedEvent
-import com.cs501.cs501app.buotg.database.entities.User
+import com.cs501.cs501app.buotg.database.dao.*
+import com.cs501.cs501app.buotg.database.entities.*
 
-@Database(entities = [Event::class, SharedEvent::class, User::class, KVEntry::class], version=5)
+@Database(
+    entities = [
+        Event::class,
+        SharedEvent::class,
+        SharedEventParticipance::class,
+        User::class,
+        KVEntry::class,
+        Group::class,
+        GroupMember::class,
+    ], version = 9
+)
 @TypeConverters(DateTimeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun eventDao(): EventDao
     abstract fun kvDao(): KVDao
+
+    abstract fun groupDao(): GroupDao
+
+    abstract fun groupMemberDao(): GroupMemberDao
+
+    abstract fun sharedEventDao(): SharedEventDao
+
+    abstract fun sharedEventParticipanceDao(): SharedEventParticipanceDao
 }

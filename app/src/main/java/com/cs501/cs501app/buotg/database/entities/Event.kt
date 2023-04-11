@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.cs501.cs501app.R
 import java.util.Date
+import java.util.UUID
 
 /*
 https://github.com/RickWayne1125/bu-on-the-go-backend/blob/master/app/models.py
@@ -13,16 +14,18 @@ https://github.com/RickWayne1125/bu-on-the-go-backend/blob/master/app/models.py
 
 @Entity(tableName = "event")
 data class Event(
-//    @PrimaryKey val event_id: Int,
-    @PrimaryKey(autoGenerate = true) val event_id: Int = 0,
+    @PrimaryKey val event_id: UUID,
     val event_name: String,
     val latitude: Long,
     val longitude: Long,
     val start_time: Date,
     val end_time: Date,
+    // the value of repeat_mode means that event happens every N days
     val repeat_mode: Int,
     val priority: Int,
-    val desc: String
+    val desc: String,
+    val created_by: UUID,
+    val notify_time: Int // notify time in minutes
 )
 
 enum class EventPriority(val color: Color, @StringRes val priority: Int) {

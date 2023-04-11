@@ -14,4 +14,6 @@ interface EventRepository {
     suspend fun deleteEvent(event: Event)
 
     suspend fun updateEvent(event: Event)
+
+    suspend fun upsertAll(events: List<Event>)
 }
