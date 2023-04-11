@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -12,13 +13,19 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.buotg.database.SyncRepo
+import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
+import com.cs501.cs501app.buotg.view.user_setup.LoginRegister
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
+import com.cs501.cs501app.buotg.view.user_setup.StuLinkImport
 import com.cs501.cs501app.utils.GenericTopAppBar
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SettingActivity() : AppCompatActivity()  {
 
@@ -34,29 +41,82 @@ class SettingActivity() : AppCompatActivity()  {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun RenderScaffold() {
+        val page = listOf("Import from Student Link","User Info Edit")
+        val (step, setStep) = remember { mutableStateOf(0) }
+        val title = page[step]
         val userRepo = AppRepository.get().userRepo()
+        val currentUser = remember { mutableStateOf<User?>(null) }
         val coroutineScope = rememberCoroutineScope()
         // State to track whether sync is in progress
         val syncInProgress = remember { mutableStateOf(false) }
 
+        LaunchedEffect(key1 = Unit) {
+            currentUser.value = withContext(Dispatchers.IO) {
+                userRepo.getCurrentUser()
+            }
+        }
+        // callback for when a step is done
+        val stepDone: () -> Unit = {
+            var msg = if (step == 0){
+                "Import Student Link Done"
+            }else{
+                "Update User Info Done"
+            }
+            Log.d("SettingActivity", msg)
+        }
         Scaffold(
             topBar = {
-                GenericTopAppBar()
-            },
-            content = { innerPadding ->
-                // center the column
-                Column(
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
+                GenericTopAppBar(title = title)
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
+            ) {
+                when (step) {
+                    0 -> StuLinkImport(stepDone)
+                    1 -> UserInfoEdit(stepDone,this@SettingActivity)
+                    2 -> LoginRegister(stepDone,"1")
+                }
+                // spacer to keep things to the bottom
+                // https://stackoverflow.com/questions/70904979/how-align-to-bottom-a-row-in-jetpack-compose
+                Spacer(modifier = Modifier.weight(1f))
+                // row of buttons, sticks to the bottom
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    StudentLinkEntry(syncInProgress)
-                    UserInfoEditEntry(syncInProgress)
+                    Button(
+                        onClick = {
+                            setStep(0)
+                        },
+                        // Disable button if sync is in progress
+                        enabled = !syncInProgress.value && currentUser.value!=null
+                    ) {
+                        Text(text = "Goto Student Link")
+                    }
+                    Button(
+                        onClick = {
+                            setStep(1)
+                        },
+                        // Disable button if sync is in progress
+                        enabled = !syncInProgress.value && currentUser.value!=null
+                    ) {
+                        Text(text = "Goto UserInfo Edit")
+                    }
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
                     Button(
                         onClick = {
                             // Launch a coroutine to perform sync
@@ -71,7 +131,7 @@ class SettingActivity() : AppCompatActivity()  {
                             }
                         },
                         // Disable button if sync is in progress
-                        enabled = !syncInProgress.value
+                        enabled = !syncInProgress.value && currentUser.value!=null
                     ){
                         if (syncInProgress.value) {
                             // Show a loading indicator if sync is in progress
@@ -96,45 +156,27 @@ class SettingActivity() : AppCompatActivity()  {
                             finish()
                         },
                         // Disable button if sync is in progress
-                        enabled = !syncInProgress.value
+                        enabled = !syncInProgress.value && currentUser.value!=null
                     ){
                         Text(text = "Logout")
                     }
+                    LoginRegisterEntry(syncInProgress, currentUser.value==null)
                 }
             }
-        )
-    }
-
-
-
-
-
-    @Composable
-    fun StudentLinkEntry(syncInProgress: MutableState<Boolean>) {
-        val simpleName = "Student Link"
-        Button(
-            onClick = {
-                val intent = Intent(this, StudentLinkActivity::class.java)
-                startActivity(intent)
-            },
-            // Disable button if sync is in progress
-            enabled = !syncInProgress.value
-        ) {
-            Text(text = "Goto $simpleName")
         }
-
     }
 
     @Composable
-    fun UserInfoEditEntry(syncInProgress: MutableState<Boolean>) {
-        val simpleName = "UserInfo Edit"
+    fun LoginRegisterEntry(syncInProgress: MutableState<Boolean>, visible : Boolean) {
+        val simpleName = "Login/Register"
         Button(
             onClick = {
-                val intent = Intent(this, UserInfoEditActivity::class.java)
+                val intent = Intent(this, SetupActivity::class.java)
                 startActivity(intent)
             },
             // Disable button if sync is in progress
-            enabled = !syncInProgress.value
+            enabled = !syncInProgress.value,
+            modifier = Modifier.alpha(if(visible) 1f else 0f)
         ) {
             Text(text = "Goto $simpleName")
         }
