@@ -22,7 +22,7 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserInfoEdit(done: () -> Unit = {}, context : Context) {
+fun UserInfoEdit(done: () -> Unit = {}, context: Context) {
     val userRepo = AppRepository.get().userRepo()
     val coroutineScope = rememberCoroutineScope()
     val currentUser = remember { mutableStateOf<User?>(null) }
@@ -33,12 +33,12 @@ fun UserInfoEdit(done: () -> Unit = {}, context : Context) {
 //        Date(),
 //        UserType.student
 //    )
-     //Fetch the current user info
-        LaunchedEffect(key1 = Unit) {
-            currentUser.value = withContext(Dispatchers.IO) {
-                userRepo.getCurrentUser()
-            }
+    //Fetch the current user info
+    LaunchedEffect(key1 = Unit) {
+        currentUser.value = withContext(Dispatchers.IO) {
+            userRepo.getCurrentUser()
         }
+    }
 
 
     Column(
@@ -46,35 +46,25 @@ fun UserInfoEdit(done: () -> Unit = {}, context : Context) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
-
-                    currentUser.value?.let { user ->
-                        // Show the user's info in a form
-                        UserInfoForm(user = user) { updatedUser ->
-                            // Update the user info in the database
-                            coroutineScope.launch {
-                                withContext(Dispatchers.IO) {
-                                    userRepo.updateUser(updatedUser)
-                                }
-                                Toast.makeText(context, "User info updated", Toast.LENGTH_SHORT).show()
-                                done()
-                            }
+        if (currentUser.value == null) {
+            Text("Please log in first")
+        } else {
+            currentUser.value?.let { user ->
+                // Show the user's info in a form
+                UserInfoForm(user = user) { updatedUser ->
+                    // Update the user info in the database
+                    coroutineScope.launch {
+                        withContext(Dispatchers.IO) {
+                            userRepo.updateUser(updatedUser)
                         }
+                        Toast.makeText(context, "User info updated", Toast.LENGTH_SHORT).show()
+                        done()
                     }
-
-//                currentUser?.let { user ->
-//                    // Show the user's info in a form
-//                    UserInfoForm(user = user) { updatedUser ->
-//                        // Update the user info in the database
-//                        coroutineScope.launch {
-//                            withContext(Dispatchers.IO) {
-//                                userRepo.updateUser(updatedUser)
-//                            }
-//                            Toast.makeText(context, "User info updated", Toast.LENGTH_SHORT).show()
-//                            done()
-//                        }
-//                    }
-//                }
+                }
             }
+        }
+
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
