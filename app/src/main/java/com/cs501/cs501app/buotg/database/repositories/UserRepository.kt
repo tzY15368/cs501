@@ -8,6 +8,8 @@ import com.cs501.cs501app.buotg.connection.SignupResponse
 import com.cs501.cs501app.buotg.database.AppDatabase
 import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.entities.USER_TOKEN_KEY
+import com.cs501.cs501app.buotg.database.entities.User
+
 class UserRepository(
     db: AppDatabase
 ) : SafeAPIRequest() {
@@ -37,4 +39,9 @@ class UserRepository(
     suspend fun getCurrentUser() = userDao.getCurrentUser()
 
     suspend fun logout() = userDao.logout()
+
+    suspend fun updateUser(user: User) {
+        userDao.updateUser(user)
+    }
+
 }

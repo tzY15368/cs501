@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -15,7 +16,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.cs501.cs501app.buotg.database.entities.User
+import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.utils.TAlert
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
 import java.util.regex.Pattern
 
@@ -97,6 +102,17 @@ fun StuLinkImport(done: () -> Unit = {}) {
     val (html, setHtml) = remember { mutableStateOf("") }
     val (showConfirm, setShowConfirm) = remember { mutableStateOf(false) }
     val classesState = remember { mutableListOf<String>() }
+    val userRepo = AppRepository.get().userRepo()
+    val currentUser = remember { mutableStateOf<User?>(null) }
+    LaunchedEffect(key1 = Unit) {
+        currentUser.value = withContext(Dispatchers.IO) {
+            userRepo.getCurrentUser()
+        }
+    }
+    if(currentUser.value == null) {
+        Text(text = "Please log in first")
+        return
+    }
     if (showConfirm) {
         PreviewClasses(classes = classesState)
         // button row
