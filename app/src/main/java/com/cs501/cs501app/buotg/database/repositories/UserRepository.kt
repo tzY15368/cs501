@@ -21,6 +21,8 @@ class UserRepository(
     suspend fun userLogin(ctx: Context, email: String, password: String): LoginResponse? {
         val res = apiRequest(ctx, {API.getClient().userLogin(email, password)})
         res?.let {
+            userDao.upsert(res.user)
+//            kvDao.put(KVEntry(USER_TOKEN_KEY, res.token))
             kvDao.put(KVEntry(USER_TOKEN_KEY, it.token))
             CURRENT_USER_ID = it.user.user_id
             Log.d("userLogin", "userLogin: ${it.user.user_id}")
@@ -41,7 +43,7 @@ class UserRepository(
     }
 
     fun getCurrentUserID() = CURRENT_USER_ID!!
-    suspend fun getCurrentUser() = userDao.getCurrentUser()
+    suspend fun getCurrentUser():User? = userDao.getCurrentUser()
 
     suspend fun logout() = userDao.logout()
 
