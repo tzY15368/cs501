@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.tooling.preview.Preview
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.dayNightTheme.EventTrackerTheme
 import com.cs501.cs501app.buotg.database.entities.User
@@ -25,6 +26,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     @Composable
+    @Preview
     fun ShowUser(){
         val coroutineScope = rememberCoroutineScope()
         val (user, setUser) = remember{ mutableStateOf<User?>(null) }
