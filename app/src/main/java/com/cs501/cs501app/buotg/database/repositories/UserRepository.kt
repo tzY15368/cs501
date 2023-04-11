@@ -19,6 +19,7 @@ class UserRepository(
     suspend fun userLogin(ctx: Context, email: String, password: String): LoginResponse? {
         val res = apiRequest(ctx, {API.getClient().userLogin(email, password)})
         res?.let {
+            userDao.upsert(res.user)
             kvDao.put(KVEntry(USER_TOKEN_KEY, res.token))
         }
         return res
@@ -32,11 +33,18 @@ class UserRepository(
         user_type: String
     ): SignupResponse? {
         val res = apiRequest(ctx,{ API.getClient().userSignup(name, email, password, user_type) })
+        if(res==null){
+            println("res is null")
+        }
         res?.let { userDao.upsert(res.user) }
         return res
     }
 
-    suspend fun getCurrentUser() = userDao.getCurrentUser()
+    suspend fun getCurrentUser() : User?{
+        val u= userDao.getCurrentUser()
+        println("got user:"+u)
+        return u
+    }
 
     suspend fun logout() = userDao.logout()
 
