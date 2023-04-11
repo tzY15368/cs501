@@ -1,6 +1,7 @@
 package com.cs501.cs501app.buotg.database.repositories
 
 import android.content.Context
+import android.util.Log
 import com.cs501.cs501app.buotg.connection.API
 import com.cs501.cs501app.buotg.connection.LoginResponse
 import com.cs501.cs501app.buotg.connection.SafeAPIRequest
