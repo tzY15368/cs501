@@ -12,9 +12,9 @@ interface UserDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(user : User) : Long
 
-    //@Query("SELECT * FROM user WHERE user_id = (SELECT value FROM kv_entry WHERE key = (:userKey)) limit 1")
-    @Query("SELECT * FROM USER ORDER BY CREATED_AT DESC LIMIT 1")
-    suspend fun getCurrentUser() : User?
+    @Query("SELECT * FROM user WHERE user_id = (SELECT value FROM kv_entry WHERE key = (:userKey)) limit 1")
+    //@Query("SELECT * FROM USER ORDER BY CREATED_AT DESC LIMIT 1")
+    suspend fun getCurrentUser(userKey: String = CURRENT_USER_KEY) : User?
     // param: userKey = CURRENT_USER_KEY
 
     @Query("DELETE FROM kv_entry WHERE key = (:userKey)")

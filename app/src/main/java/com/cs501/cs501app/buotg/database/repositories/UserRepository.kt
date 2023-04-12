@@ -7,10 +7,7 @@ import com.cs501.cs501app.buotg.connection.LoginResponse
 import com.cs501.cs501app.buotg.connection.SafeAPIRequest
 import com.cs501.cs501app.buotg.connection.SignupResponse
 import com.cs501.cs501app.buotg.database.AppDatabase
-import com.cs501.cs501app.buotg.database.entities.CURRENT_USER_ID
-import com.cs501.cs501app.buotg.database.entities.KVEntry
-import com.cs501.cs501app.buotg.database.entities.USER_TOKEN_KEY
-import com.cs501.cs501app.buotg.database.entities.User
+import com.cs501.cs501app.buotg.database.entities.*
 
 class UserRepository(
     db: AppDatabase
@@ -22,8 +19,8 @@ class UserRepository(
         val res = apiRequest(ctx, {API.getClient().userLogin(email, password)})
         res?.let {
             userDao.upsert(res.user)
-//            kvDao.put(KVEntry(USER_TOKEN_KEY, res.token))
             kvDao.put(KVEntry(USER_TOKEN_KEY, it.token))
+            kvDao.put(KVEntry(CURRENT_USER_KEY, it.user.user_id.toString().replace("-","")))
             CURRENT_USER_ID = it.user.user_id
             Log.d("userLogin", "userLogin: ${it.user.user_id}")
         }
@@ -43,9 +40,16 @@ class UserRepository(
     }
 
     fun getCurrentUserID() = CURRENT_USER_ID!!
-    suspend fun getCurrentUser():User? = userDao.getCurrentUser()
+    suspend fun getCurrentUser():User?  {
+        val u = userDao.getCurrentUser()
+        println("getCurrentUser: $u")
+        return u
+    }
 
-    suspend fun logout() = userDao.logout()
+    suspend fun logout() {
+        userDao.logout()
+        CURRENT_USER_ID = null
+    }
 
     suspend fun updateUser(user: User) {
         userDao.updateUser(user)
