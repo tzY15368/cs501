@@ -88,7 +88,6 @@ fun FoldableListItem(
             leadingContent = leadingContent,
         )
         if (foldState.value) {
-            println("foldedContent")
             foldedContent()
         }
     }

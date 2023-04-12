@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -33,10 +32,7 @@ import com.cs501.cs501app.buotg.view.user_setup.LoginRegister
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
 import com.cs501.cs501app.buotg.view.user_setup.StuLinkImport
 import com.cs501.cs501app.utils.GenericTopAppBar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class SettingActivity() : AppCompatActivity() {
 
@@ -52,12 +48,15 @@ class SettingActivity() : AppCompatActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun RenderScaffold() {
-        val currentUser = remember { mutableStateOf<User?>(null) }
-        val userRepo = AppRepository.get().userRepo()
-
         val ctx = LocalContext.current
+        val userRepo = AppRepository.get().userRepo()
+        val coroutineScope = rememberCoroutineScope()
+
+        val currentUser = remember { mutableStateOf<User?>(null) }
         // State to track whether sync is in progress
         val syncInProgress = remember { mutableStateOf(false) }
+
+        // ViewModel to track fold state
         val foldViewModel: FoldViewModel = viewModel(factory = viewModelFactory {
             initializer {
                 FoldViewModel(listOf(false, false, false, false))
@@ -67,19 +66,29 @@ class SettingActivity() : AppCompatActivity() {
         // Collect StateFlow outside of composable
         val foldStates = foldStateList.map { it.collectAsState() }
 
-        LaunchedEffect(true) {
-            currentUser.value = withContext(Dispatchers.IO) {
-                userRepo.getCurrentUser()
+        fun updateData(){
+            coroutineScope.launch {
+                currentUser.value = withContext(Dispatchers.IO) {
+                    userRepo.getCurrentUser()
+                }
+
             }
         }
+
+        LaunchedEffect(true) {
+            updateData()
+        }
+
         // callback for when a step is done
         val stepDone: () -> Unit = {
             Log.d("Settings", "done")
             foldViewModel.foldAll()
+            updateData()
         }
-        val userN = if (currentUser.value == null) "No logon" else currentUser.value!!.full_name
+
+        val userName = if (currentUser.value == null) "No logon" else currentUser.value!!.full_name
         Scaffold(
-            topBar = { GenericTopAppBar(title = "Settings: $userN") }
+            topBar = { GenericTopAppBar(title = "Settings: $userName") }
         ) { innerPadding ->
             Column(
                 modifier = Modifier
@@ -155,6 +164,7 @@ fun LogoutButton(loading: MutableState<Boolean>, user: MutableState<User?>) {
             coroutineScope.launch {
                 Log.d("SettingActivity", "User Logout")
                 userRepo.logout()
+                user.value = null
                 // Navigate back to the setup activity
                 val intent = Intent(ctx, SetupActivity::class.java)
                 ctx.startActivity(intent)

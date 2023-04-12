@@ -45,11 +45,11 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
 
     LaunchedEffect(true) {
         coroutineScope.launch {
-            val user = userRepo.getCurrentUser()
-            if (user != null) {
-                Log.d("LoginRegister", "logging out user: $user")
-                AppRepository.get().userRepo().logout()
-            }
+//            val user = userRepo.getCurrentUser()
+//            if (user != null) {
+//                Log.d("LoginRegister", "logging out user: $user")
+//                AppRepository.get().userRepo().logout()
+//            }
         }
     }
 
