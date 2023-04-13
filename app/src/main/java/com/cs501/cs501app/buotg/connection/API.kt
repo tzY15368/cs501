@@ -1,20 +1,24 @@
 package com.cs501.cs501app.buotg.connection
 import com.cs501.cs501app.buotg.database.SyncData
-import com.cs501.cs501app.buotg.database.entities.USER_TOKEN_KEY
+import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 interface API {
+
+    @GET("/")
+    @FormUrlEncoded
+    suspend fun getIndex(): Response<StdResponse>
 
     @POST("login")
     @FormUrlEncoded
@@ -32,9 +36,101 @@ interface API {
         @Field("user_type") user_type: String
     ): Response<SignupResponse>
 
+    @GET("/event/<int:event_id>")
+    @FormUrlEncoded
+    suspend fun event_details():Response<EventResponse>
+
+    @GET("/event/list")
+    @FormUrlEncoded
+    suspend fun event_list(): Response<EventsResponse>
+
+    @POST("/event")
+    @FormUrlEncoded
+    suspend fun create_event(
+        @Field("event_name") event_name: String,
+        /** Should latitude and longtitude be in float?*/
+        @Field("latitude") latitude: Long,
+        @Field("longtitude") longtitude: Long,
+        @Field("start_time") start_time: SimpleDateFormat,
+        @Field("end_time") end_time: SimpleDateFormat,
+        @Field("repeat_mode") repeat_mode: Int,
+        @Field("Priority") priority: EventPriority,
+        @Field("desc") desc: String
+    ):Response<StdResponse>
+
+    @DELETE("/event/<int:event_id>")
+    @FormUrlEncoded
+    suspend fun delete_event():Response<StdResponse>
+
+    @GET("/shared_event/<int:event_id>")
+    @FormUrlEncoded
+    suspend fun get_shared_event():Response<SharedEventResponse>
+
+    @POST("/shared_event/<int:event_id>")
+    @FormUrlEncoded
+    suspend fun create_shared_event():Response<StdResponse>
+
+    @DELETE("/shared_event")
+    @FormUrlEncoded
+    suspend fun delete_shared_event(
+        @Field("shared_event_id") shared_event_id: UUID
+    ):Response<StdResponse>
+
+    @GET("/shared_event_participance/<int:shared_event_id>/list")
+    @FormUrlEncoded
+    suspend fun shared_event_participance_list():Response<SEPsResponse>
+
+
+    @POST("/shared_event_participance")
+    @FormUrlEncoded
+    suspend fun create_shared_event_participance(
+        @Field("shared_event_id") shared_event_id: UUID,
+        @Field("user_id") user_id: UUID,
+        @Field("status") status: Status
+    ):Response<StdResponse>
+
+    @DELETE("/shared_event_participance")
+    @FormUrlEncoded
+    suspend fun delete_shared_event_participance(
+        @Field("shared_event_id") shared_event_id: UUID,
+        @Field("user_id") user_id: UUID,
+    ):Response<StdResponse>
+
+    @GET("/group/<int:group_id>")
+    @FormUrlEncoded
+    suspend fun group():Response<GroupResponse>
+
+    @GET("/group/<int:group_id>/list")
+    @FormUrlEncoded
+    suspend fun group_member_lisy():Response<GMLResponse>
+
+    @POST("/group/<int:group_id>/list")
+    @FormUrlEncoded
+    suspend fun add_group_member(
+        @Field("user_id") user_id: UUID
+    ): Response<StdResponse>
+
+    @DELETE("/group/<int:group_id>/list")
+    @FormUrlEncoded
+    suspend fun remove_group_member(
+        @Field("user_id") user_id: UUID
+    ):Response<StdResponse>
+
+    @POST("/group")
+    @FormUrlEncoded
+    suspend fun create_group(
+        @Field("group_name") group_name:String
+    ):Response<StdResponse>
+
+    @DELETE("/group/<int:group_id>'")
+    @FormUrlEncoded
+    suspend fun delete_group():Response<StdResponse>
+
     @Headers("Content-Type: application/json")
-    @POST("users")
+    @POST("/sync")
     suspend fun sync(@Body syncData: SyncData): Response<SyncResponse>
+
+
 
     @POST("ping")
     suspend fun ping(): Response<StdResponse>
