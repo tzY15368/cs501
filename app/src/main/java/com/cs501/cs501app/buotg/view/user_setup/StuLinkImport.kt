@@ -20,16 +20,11 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.cs501.cs501app.buotg.database.entities.Event
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.utils.TAlert
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import com.cs501.cs501app.buotg.database.entities.User
-import com.cs501.cs501app.buotg.database.repositories.AppRepository
-import com.cs501.cs501app.utils.TAlert
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
