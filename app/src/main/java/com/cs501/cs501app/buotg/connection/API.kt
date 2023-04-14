@@ -4,7 +4,7 @@ import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import retrofit2.Call
+
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
