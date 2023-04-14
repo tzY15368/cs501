@@ -12,16 +12,26 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.cs501.cs501app.buotg.database.entities.Group
+import com.cs501.cs501app.buotg.database.repositories.AppRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+import java.util.*
 
-
-data class StudyGroup(val name: String)
 
 class StudyGroupActivity: AppCompatActivity() {
+
+    val groupRepo = AppRepository.get().groupRepo()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -34,12 +44,14 @@ class StudyGroupActivity: AppCompatActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun ShowView() {
-        var studyGroups by remember { mutableStateOf(emptyList<StudyGroup>()) }
+        val coroutineScope = rememberCoroutineScope()
+        val ctx = LocalContext.current
         var newGroupName by remember { mutableStateOf("") }
+        var newGroupID by remember { mutableStateOf("") }
         var creatingGroup by remember { mutableStateOf(false) }
         var joiningGroup by remember { mutableStateOf(false) }
         var leavingGroup by remember { mutableStateOf(false) }
-        //load all the study groups from the database
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -49,9 +61,7 @@ class StudyGroupActivity: AppCompatActivity() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            studyGroups.forEach { studyGroup ->
-                Text(text = studyGroup.name)
-            }
+
             Button(onClick = { creatingGroup = true }) {
                 Text(text = "Create group")
             }
@@ -82,8 +92,9 @@ class StudyGroupActivity: AppCompatActivity() {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                     )
                     Button(onClick = {
-                        studyGroups = studyGroups + StudyGroup(newGroupName)
-
+                        coroutineScope.launch {
+                            groupRepo.createGroup(ctx, newGroupName)
+                        }
                         creatingGroup = false
                     }) {
                         Text(text = "Create")
@@ -111,9 +122,6 @@ class StudyGroupActivity: AppCompatActivity() {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                     )
                     Button(onClick = {
-                        studyGroups = studyGroups + StudyGroup(newGroupName)
-                        //add backend code here
-
                         joiningGroup = false
                     }) {
                         Text(text = "Join")
@@ -141,9 +149,6 @@ class StudyGroupActivity: AppCompatActivity() {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                     )
                     Button(onClick = {
-                        studyGroups = studyGroups.filter { it.name != newGroupName }
-                        //add backend code here
-
                         leavingGroup = false
                     }) {
                         Text(text = "Leave")

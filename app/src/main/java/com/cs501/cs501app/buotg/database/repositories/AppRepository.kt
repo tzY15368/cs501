@@ -28,6 +28,10 @@ class AppRepository private constructor(context:Context) :SafeAPIRequest(){
     private val userRepo = UserRepository(database)
     fun userRepo() = userRepo
 
+    private val groupRepo = GroupRepository(database)
+    fun groupRepo() = groupRepo
+
+
     fun kvDao() = database.kvDao()
     fun eventDao() = database.eventDao()
     fun userDao() = database.userDao()
