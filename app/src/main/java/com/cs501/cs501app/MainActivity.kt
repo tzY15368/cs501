@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
 
     private val activities = listOf(
         HomeActivity::class,
-        WebViewDemo::class,
         SetupActivity::class,
         SettingActivity::class,
         StudyGroupActivity::class,
