@@ -20,9 +20,12 @@ data class Event(
     val longitude: Long,
     val start_time: Date,
     val end_time: Date,
+    // the value of repeat_mode means that event happens every N days
     val repeat_mode: Int,
     val priority: Int,
-    val desc: String
+    val desc: String,
+    val created_by: UUID,
+    val notify_time: Int // notify time in minutes
 )
 
 enum class EventPriority(val color: Color, @StringRes val priority: Int) {

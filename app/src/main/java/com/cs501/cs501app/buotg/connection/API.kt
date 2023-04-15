@@ -4,7 +4,7 @@ import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import retrofit2.Call
+
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -36,7 +36,8 @@ interface API {
         @Field("user_type") user_type: String
     ): Response<SignupResponse>
 
-    @GET("/event/<int:event_id>")
+
+    @GET("/event/{int:event_id}")
     @FormUrlEncoded
     suspend fun event_details():Response<EventResponse>
 
@@ -58,15 +59,16 @@ interface API {
         @Field("desc") desc: String
     ):Response<StdResponse>
 
-    @DELETE("/event/<int:event_id>")
+
+    @DELETE("/event/{int:event_id}")
     @FormUrlEncoded
     suspend fun delete_event():Response<StdResponse>
 
-    @GET("/shared_event/<int:event_id>")
+    @GET("/shared_event/{int:event_id}")
     @FormUrlEncoded
     suspend fun get_shared_event():Response<SharedEventResponse>
 
-    @POST("/shared_event/<int:event_id>")
+    @POST("/shared_event/{int:event_id}")
     @FormUrlEncoded
     suspend fun create_shared_event():Response<StdResponse>
 
@@ -76,7 +78,8 @@ interface API {
         @Field("shared_event_id") shared_event_id: UUID
     ):Response<StdResponse>
 
-    @GET("/shared_event_participance/<int:shared_event_id>/list")
+
+    @GET("/shared_event_participance/{int:shared_event_id}/list")
     @FormUrlEncoded
     suspend fun shared_event_participance_list():Response<SEPsResponse>
 
@@ -96,21 +99,22 @@ interface API {
         @Field("user_id") user_id: UUID,
     ):Response<StdResponse>
 
-    @GET("/group/<int:group_id>")
+    @GET("/group/{int:group_id}")
     @FormUrlEncoded
     suspend fun group():Response<GroupResponse>
 
-    @GET("/group/<int:group_id>/list")
+    @GET("/group/{int:group_id}/list")
     @FormUrlEncoded
     suspend fun group_member_lisy():Response<GMLResponse>
 
-    @POST("/group/<int:group_id>/list")
+    @POST("/group/{int:group_id}/list")
     @FormUrlEncoded
     suspend fun add_group_member(
         @Field("user_id") user_id: UUID
     ): Response<StdResponse>
 
-    @DELETE("/group/<int:group_id>/list")
+
+    @DELETE("/group/{int:group_id}/list")
     @FormUrlEncoded
     suspend fun remove_group_member(
         @Field("user_id") user_id: UUID
@@ -122,7 +126,8 @@ interface API {
         @Field("group_name") group_name:String
     ):Response<StdResponse>
 
-    @DELETE("/group/<int:group_id>'")
+
+    @DELETE("/group/{int:group_id}'")
     @FormUrlEncoded
     suspend fun delete_group():Response<StdResponse>
 

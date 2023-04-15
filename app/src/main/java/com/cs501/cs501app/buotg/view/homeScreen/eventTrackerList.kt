@@ -109,7 +109,9 @@ fun EventTrackerListPreview() {
                     end_time = Date(),
                     repeat_mode = 0,
                     priority = 1,
-                    desc = "Event 1 description"
+                    desc = "Event 1 description",
+                    created_by = UUID.randomUUID(),
+                    notify_time = 1
                 ),
                 Event(
                     event_id = UUID.randomUUID(),
@@ -120,7 +122,9 @@ fun EventTrackerListPreview() {
                     end_time = Date(),
                     repeat_mode = 0,
                     priority = 2,
-                    desc = "Event 2 description"
+                    desc = "Event 2 description",
+                    created_by = UUID.randomUUID(),
+                    notify_time = 1
                 ),
                 Event(
                     event_id = UUID.randomUUID(),
@@ -131,7 +135,9 @@ fun EventTrackerListPreview() {
                     end_time = Date(),
                     repeat_mode = 0,
                     priority = 3,
-                    desc = "Event 3 description"
+                    desc = "Event 3 description",
+                    created_by = UUID.randomUUID(),
+                    notify_time = 1
                 ),
                 Event(
                     event_id = UUID.randomUUID(),
@@ -142,7 +148,9 @@ fun EventTrackerListPreview() {
                     end_time = Date(),
                     repeat_mode = 0,
                     priority = 1,
-                    desc = "Event 4 description"
+                    desc = "Event 4 description",
+                    created_by = UUID.randomUUID(),
+                    notify_time = 1
                 ),
                 Event(
                     event_id = UUID.randomUUID(),
@@ -153,7 +161,9 @@ fun EventTrackerListPreview() {
                     end_time = Date(),
                     repeat_mode = 0,
                     priority = 2,
-                    desc = "Event 5 description"
+                    desc = "Event 5 description",
+                    created_by = UUID.randomUUID(),
+                    notify_time = 1
                 )
             ),
             onDelete = {},

@@ -13,7 +13,9 @@ interface UserDao{
     suspend fun upsert(user : User) : Long
 
     @Query("SELECT * FROM user WHERE user_id = (SELECT value FROM kv_entry WHERE key = (:userKey)) limit 1")
-    suspend fun getCurrentUser(userKey:String= CURRENT_USER_KEY) : User?
+    //@Query("SELECT * FROM USER ORDER BY CREATED_AT DESC LIMIT 1")
+    suspend fun getCurrentUser(userKey: String = CURRENT_USER_KEY) : User?
+    // param: userKey = CURRENT_USER_KEY
 
     @Query("DELETE FROM kv_entry WHERE key = (:userKey)")
     suspend fun logout(userKey:String= CURRENT_USER_KEY)
@@ -23,4 +25,7 @@ interface UserDao{
 
     @Upsert
     suspend fun upsertAll(users: List<User>)
+
+    @Update
+    suspend fun updateUser(user: User)
 }
