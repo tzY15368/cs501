@@ -28,7 +28,7 @@ fun EventTracker(
     modifier: Modifier = Modifier,
     eventTrackerViewModel: EventTrackerViewModel = viewModel(factory = viewModelFactory {
         initializer {
-            EventTrackerViewModel(AppRepository.get().getEventRepository())
+            EventTrackerViewModel(AppRepository.get().eventRepo())
         }
     })
 ) {
