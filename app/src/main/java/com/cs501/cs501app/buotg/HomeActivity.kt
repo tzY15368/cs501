@@ -24,20 +24,4 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
-
-    @Composable
-    @Preview
-    fun ShowUser(){
-        val coroutineScope = rememberCoroutineScope()
-        val (user, setUser) = remember{ mutableStateOf<User?>(null) }
-        LaunchedEffect(true){
-            coroutineScope.launch {
-
-                val currentUser: User? = AppRepository.get().getUser(0)
-                Log.d("Home", "got user:$currentUser")
-                setUser(currentUser)
-            }
-        }
-        Text(text = user.toString())
-    }
 }

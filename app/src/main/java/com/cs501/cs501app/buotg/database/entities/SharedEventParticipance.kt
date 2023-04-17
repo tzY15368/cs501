@@ -9,9 +9,9 @@ enum class Status {
     SUCCESS
 }
 
-@Entity(tableName = "shared_event_participance")
+@Entity(tableName = "shared_event_participance", primaryKeys = ["shared_event_id", "user_id"])
 data class SharedEventParticipance(
-    @PrimaryKey val shared_event_id: Int,
+    val shared_event_id: Int,
     val user_id: UUID,
     val status: Status
 )

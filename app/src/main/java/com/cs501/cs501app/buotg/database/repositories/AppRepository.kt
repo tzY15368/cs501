@@ -6,7 +6,6 @@ import com.cs501.cs501app.buotg.connection.API
 import com.cs501.cs501app.buotg.connection.SafeAPIRequest
 import com.cs501.cs501app.buotg.connection.StdResponse
 import com.cs501.cs501app.buotg.database.AppDatabase
-import com.cs501.cs501app.buotg.database.entities.User
 
 private const val DB_NAME = "buotg-db"
 
@@ -17,16 +16,16 @@ class AppRepository private constructor(context:Context) :SafeAPIRequest(){
         DB_NAME
     ).fallbackToDestructiveMigration().build()
 
-    suspend fun ping(ctx:Context):StdResponse? = apiRequest(ctx, { API.getClient().ping() })
-
-    suspend fun getUser(id:Int): User? = database.userDao().getUser(id)
-
-    private val eventRepository: EventRepository = EventRepositoryImpl(database.eventDao())
-
-    fun getEventRepository(): EventRepository = eventRepository
-
     private val userRepo = UserRepository(database)
+    private val eventRepository: EventRepository = EventRepositoryImpl(database.eventDao())
+    suspend fun ping(ctx:Context):StdResponse? = apiRequest(ctx, { API.getClient().ping() })
+    fun eventRepo(): EventRepository = eventRepository
+
     fun userRepo() = userRepo
+
+    fun sharedEventRepo() = SharedEventRepo(database)
+
+    fun sharedEventParticipanceRepo() = SharedEventParticipanceRepo(database)
 
     private val groupRepo = GroupRepository(database)
     fun groupRepo() = groupRepo

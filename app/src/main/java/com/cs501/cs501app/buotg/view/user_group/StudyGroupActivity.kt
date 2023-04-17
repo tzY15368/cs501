@@ -31,7 +31,6 @@ class StudyGroupActivity: AppCompatActivity() {
 
     val groupRepo = AppRepository.get().groupRepo()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -61,7 +60,6 @@ class StudyGroupActivity: AppCompatActivity() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-
             Button(onClick = { creatingGroup = true }) {
                 Text(text = "Create group")
             }
