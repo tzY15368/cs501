@@ -27,6 +27,10 @@ class AppRepository private constructor(context:Context) :SafeAPIRequest(){
 
     fun sharedEventParticipanceRepo() = SharedEventParticipanceRepo(database)
 
+    private val groupRepo = GroupRepository(database)
+    fun groupRepo() = groupRepo
+
+
     fun kvDao() = database.kvDao()
     fun eventDao() = database.eventDao()
     fun userDao() = database.userDao()

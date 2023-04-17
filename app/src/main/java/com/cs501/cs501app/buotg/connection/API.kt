@@ -98,21 +98,27 @@ interface API {
 
     @GET("/group/{int:group_id}")
     @FormUrlEncoded
-    suspend fun group():Response<GroupResponse>
+    suspend fun get_group(
+        @Field("group_id") group_id: Int
+    ):Response<GroupResponse>
 
     @GET("/group/{int:group_id}/list")
     @FormUrlEncoded
-    suspend fun group_member_lisy():Response<GMLResponse>
+    suspend fun group_member_list(
+        @Field("group_id") group_id: Int
+    ):Response<GMLResponse>
 
     @POST("/group/{int:group_id}/list")
     @FormUrlEncoded
     suspend fun add_group_member(
+        @Field("group_id") group_id: Int,
         @Field("user_id") user_id: UUID
     ): Response<StdResponse>
 
     @DELETE("/group/{int:group_id}/list")
     @FormUrlEncoded
     suspend fun remove_group_member(
+        @Field("group_id") group_id: Int,
         @Field("user_id") user_id: UUID
     ):Response<StdResponse>
 
@@ -124,7 +130,9 @@ interface API {
 
     @DELETE("/group/{int:group_id}'")
     @FormUrlEncoded
-    suspend fun delete_group():Response<StdResponse>
+    suspend fun delete_group(
+        @Field("group_id") group_id: Int
+    ):Response<StdResponse>
 
     @Headers("Content-Type: application/json")
     @POST("/sync")
