@@ -16,8 +16,14 @@ class GroupRepository(
         return res
     }
 
-    suspend fun createGroup(ctx: Context, name: String) : StdResponse?{
-        val res = apiRequest(ctx, {API.getClient().create_group(name)})
+    suspend fun listGroups(ctx:Context): GroupListResponse? {
+        val res = apiRequest(ctx, {API.getClient().group_list()})
+        res?.let { GroupDao.upsertAll(it.groups) }
+        return res
+    }
+
+    suspend fun createGroup(ctx: Context, name: String, desc:String) : StdResponse?{
+        val res = apiRequest(ctx, {API.getClient().create_group(name,desc)})
         return res
     }
 
@@ -40,9 +46,4 @@ class GroupRepository(
         val res = apiRequest(ctx, {API.getClient().group_member_list(ID)})
         return res
     }
-
-
-
-
-
 }

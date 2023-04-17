@@ -3,11 +3,12 @@ package com.cs501.cs501app.buotg.database.dao
 import androidx.room.*
 import com.cs501.cs501app.buotg.database.entities.CURRENT_USER_KEY
 import com.cs501.cs501app.buotg.database.entities.User
+import java.util.UUID
 
 @Dao
 interface UserDao{
     @Query("SELECT * from user where user_id=(:id)")
-    suspend fun getUser(id:Int): User?
+    suspend fun getUser(id:UUID): User?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(user : User) : Long
