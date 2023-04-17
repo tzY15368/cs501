@@ -30,6 +30,14 @@ class SEPsResponse: StdResponse(){
     lateinit var shared_event_participances: List<SharedEventParticipance>
 }
 
+class UserResponse: StdResponse(){
+    lateinit var user: User
+}
+
+class GroupListResponse: StdResponse(){
+    lateinit var groups: List<Group>
+}
+
 class GroupResponse: StdResponse(){
     lateinit var group: Group
 }
