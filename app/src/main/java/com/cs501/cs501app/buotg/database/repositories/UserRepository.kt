@@ -15,6 +15,18 @@ class UserRepository(
     private val userDao = db.userDao()
     private val kvDao = db.kvDao()
 
+    suspend fun userGoogleLogin(ctx: Context, token: String): LoginResponse? {
+        val res = apiRequest(ctx, {API.getClient().userGoogleLogin(token)})
+        res?.let {
+            userDao.upsert(res.user)
+            kvDao.put(KVEntry(USER_TOKEN_KEY, it.token))
+            kvDao.put(KVEntry(CURRENT_USER_KEY, it.user.user_id.toString().replace("-","")))
+            CURRENT_USER_ID = it.user.user_id
+            Log.d("userLogin", "userLogin: ${it.user.user_id}")
+        }
+        return res
+    }
+
     suspend fun userLogin(ctx: Context, email: String, password: String): LoginResponse? {
         val res = apiRequest(ctx, {API.getClient().userLogin(email, password)})
         res?.let {

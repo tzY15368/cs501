@@ -27,6 +27,12 @@ interface API {
         @Field("password") password: String
     ): Response<LoginResponse>
 
+    @POST("google_login")
+    @FormUrlEncoded
+    suspend fun userGoogleLogin(
+        @Field("google_token") token: String
+    ): Response<LoginResponse>
+
     @POST("register")
     @FormUrlEncoded
     suspend fun userSignup(
