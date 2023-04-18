@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cs501.cs501app.buotg.connection.LoginResponse
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.connection.StdResponse
 import com.cs501.cs501app.buotg.database.entities.UserType
@@ -149,6 +150,23 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
                 },
             color = Color.Gray
         )
+        GoogleSignInButton(onSignInSuccess = {
+            Log.d(
+                "email",
+                "onSignInSuccess: ${it.idToken}"
+            )
+            coroutineScope.launch {
+                val token = it.idToken
+                val res: LoginResponse = userRepo.userGoogleLogin(ctx, token!!) ?: return@launch
+                delay(1000)
+                // goto login
+                if (!isLogin.value) {
+                    isLogin.value = true
+                } else {
+                    done()
+                }
+            }
+        })
     }
 
 }

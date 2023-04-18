@@ -27,6 +27,12 @@ interface API {
         @Field("password") password: String
     ): Response<LoginResponse>
 
+    @POST("google_login")
+    @FormUrlEncoded
+    suspend fun userGoogleLogin(
+        @Field("google_token") token: String
+    ): Response<LoginResponse>
+
     @POST("register")
     @FormUrlEncoded
     suspend fun userSignup(
@@ -35,6 +41,9 @@ interface API {
         @Field("password") password: String,
         @Field("user_type") user_type: String
     ): Response<SignupResponse>
+
+    @GET("/user")
+    suspend fun getUser(@Query("user_id") id: UUID): Response<UserResponse>
 
     @GET("/event/{int:event_id}")
     @FormUrlEncoded
@@ -96,35 +105,43 @@ interface API {
         @Field("user_id") user_id: UUID,
     ):Response<StdResponse>
 
-    @GET("/group/{int:group_id}")
-    @FormUrlEncoded
-    suspend fun group():Response<GroupResponse>
+    @GET("/group/list")
+    suspend fun group_list():Response<GroupListResponse>
 
-    @GET("/group/{int:group_id}/list")
-    @FormUrlEncoded
-    suspend fun group_member_lisy():Response<GMLResponse>
+    @GET("/group/{group_id}")
+    suspend fun get_group(
+        @Path("group_id") group_id: Int
+    ):Response<GroupResponse>
 
-    @POST("/group/{int:group_id}/list")
+    @GET("/group/{group_id}/list")
+    suspend fun group_member_list(
+        @Path("group_id") group_id: Int
+    ):Response<GMLResponse>
+
+    @POST("/group/{group_id}/list")
     @FormUrlEncoded
     suspend fun add_group_member(
+        @Path("group_id") group_id: Int,
         @Field("user_id") user_id: UUID
     ): Response<StdResponse>
 
-    @DELETE("/group/{int:group_id}/list")
-    @FormUrlEncoded
+    @DELETE("/group/{group_id}/list")
     suspend fun remove_group_member(
-        @Field("user_id") user_id: UUID
+        @Path("group_id") group_id: Int,
+        @Query("user_id") user_id: UUID
     ):Response<StdResponse>
 
     @POST("/group")
     @FormUrlEncoded
     suspend fun create_group(
-        @Field("group_name") group_name:String
+        @Field("group_name") group_name:String,
+        @Field("desc") desc: String
     ):Response<StdResponse>
 
-    @DELETE("/group/{int:group_id}'")
-    @FormUrlEncoded
-    suspend fun delete_group():Response<StdResponse>
+    @DELETE("/group/{group_id}'")
+    suspend fun delete_group(
+        @Path("group_id") group_id: Int
+    ):Response<StdResponse>
 
     @Headers("Content-Type: application/json")
     @POST("/sync")

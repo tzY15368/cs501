@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg
+package com.cs501.cs501app.buotg.view.homeScreen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
