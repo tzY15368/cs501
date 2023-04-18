@@ -141,7 +141,25 @@ interface API {
     @POST("/sync")
     suspend fun sync(@Body syncData: SyncData): Response<SyncResponse>
 
+    @GET("/invite/listGroup")
+    suspend fun invite_list_group(
+        @Query("group_id") group_id: Int
+    ):Response<InviteResponse>
 
+    @GET("/invite/list")
+    suspend fun invite_list():Response<InviteResponse>
+
+    enum class InviteStatus{
+        PENDING, SUCCESS, FAIL
+    }
+
+    @POST("/invite")
+    @FormUrlEncoded
+    suspend fun invite(
+        @Field("group_id") group_id: Int,
+        @Field("user_email") user_email: String,
+        @Field("status") status: InviteStatus
+    ):Response<StdResponse>
 
     @POST("ping")
     suspend fun ping(): Response<StdResponse>
