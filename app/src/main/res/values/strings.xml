@@ -111,4 +111,6 @@
     <string name="cancel">CANCEL</string>
     <string name="save">SAVE</string>
     <string name="event_start_time">Start time</string>
+
+    <string name="server_client_id">535824934955-4qkrgeoin624iegcc7upt3f88pkcle3f.apps.googleusercontent.com</string>
 </resources>
