@@ -46,37 +46,38 @@ fun InviteRow(groupInvite: GroupInvite, reload: suspend () -> Unit, allowModify:
         )
         Text(text = "Group : ${group?.group_name}")
         Text(text = "Invited by : ${invitedBy?.full_name}")
-        if(!allowModify) return@Row
-        if (groupInvite.status != API.InviteStatus.SUCCESS) {
-            Button(onClick = {
-                coroutineScope.launch {
-                    val currentUser = AppRepository.get().userRepo().getCurrentUser()
-                    AppRepository.get().inviteRepository().upsertInvite(
-                        ctx,
-                        groupInvite.group_id,
-                        currentUser?.email!!,
-                        API.InviteStatus.SUCCESS
-                    )
-                    reload()
+        if(allowModify){
+            if (groupInvite.status != API.InviteStatus.SUCCESS) {
+                Button(onClick = {
+                    coroutineScope.launch {
+                        val currentUser = AppRepository.get().userRepo().getCurrentUser()
+                        AppRepository.get().inviteRepository().upsertInvite(
+                            ctx,
+                            groupInvite.group_id,
+                            currentUser?.email!!,
+                            API.InviteStatus.SUCCESS
+                        )
+                        reload()
+                    }
+                }) {
+                    Text(text = "Accept")
                 }
-            }) {
-                Text(text = "Accept")
             }
-        }
-        if (groupInvite.status != API.InviteStatus.FAIL) {
-            Button(onClick = {
-                coroutineScope.launch {
-                    val currentUser = AppRepository.get().userRepo().getCurrentUser()
-                    AppRepository.get().inviteRepository().upsertInvite(
-                        ctx,
-                        groupInvite.group_id,
-                        currentUser?.email!!,
-                        API.InviteStatus.FAIL
-                    )
-                    reload()
+            if (groupInvite.status != API.InviteStatus.FAIL) {
+                Button(onClick = {
+                    coroutineScope.launch {
+                        val currentUser = AppRepository.get().userRepo().getCurrentUser()
+                        AppRepository.get().inviteRepository().upsertInvite(
+                            ctx,
+                            groupInvite.group_id,
+                            currentUser?.email!!,
+                            API.InviteStatus.FAIL
+                        )
+                        reload()
+                    }
+                }) {
+                    Text(text = "Reject")
                 }
-            }) {
-                Text(text = "Reject")
             }
         }
     }

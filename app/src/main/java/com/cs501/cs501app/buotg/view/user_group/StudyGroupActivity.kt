@@ -1,6 +1,7 @@
 package com.cs501.cs501app.buotg.view.user_group
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.clickable
@@ -113,15 +114,14 @@ class StudyGroupActivity : AppCompatActivity() {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             TextField(
                 value = userEmail,
-                onValueChange = {},
+                onValueChange = {
+                    userEmail = it
+                },
                 label = { Text("User Email") },
                 placeholder = { Text("Enter User Email") },
                 leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) },
                 //add function for trailing icon
                 singleLine = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
             )
             Button(onClick = {
                 coroutineScope.launch {
@@ -142,7 +142,7 @@ class StudyGroupActivity : AppCompatActivity() {
         var groupOwner by remember { mutableStateOf<User?>(null) }
         var groupMmebers by remember { mutableStateOf(listOf<User>()) }
         var currentUser by remember { mutableStateOf<User?>(null) }
-        var invites = remember { mutableStateOf(listOf<GroupInvite>()) }
+        var invites by remember { mutableStateOf(listOf<GroupInvite>()) }
         val inviteRepo = AppRepository.get().inviteRepository()
         val ctx = LocalContext.current
 
@@ -151,6 +151,17 @@ class StudyGroupActivity : AppCompatActivity() {
                 group = it.group
                 groupOwner = userRepo.fetchUser(ctx, it.group.owner_id)
                 currentUser = userRepo.getCurrentUser()
+                if(group==null){
+                    return
+                }
+
+                // pull group invites
+                val newInvites = mutableListOf<GroupInvite>()
+                inviteRepo.listGroupInvites(ctx, group!!.group_id)?.let { ivts ->
+                    newInvites.addAll(ivts.group_invites)
+                }
+                invites = newInvites
+                Log.d("GroupDetails", "Invites: ${invites.size}")
             }
             groupRepo.getGroupMembers(ctx, groupID)?.let {
                 val uuids = it.group_members
@@ -161,11 +172,6 @@ class StudyGroupActivity : AppCompatActivity() {
                     }
                 }
                 groupMmebers = users
-            }
-            group?.let {
-                inviteRepo.listGroupInvites(ctx, it.group_id)?.let { ivts ->
-                    invites.value = ivts.group_invites
-                }
             }
         }
 
@@ -183,7 +189,6 @@ class StudyGroupActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .padding(paddingValues)
                     .padding(16.dp)
-                    .verticalScroll(rememberScrollState())
             ) {
                 Text("Group Info:", fontSize = 25.sp)
                 group?.let {
@@ -214,11 +219,12 @@ class StudyGroupActivity : AppCompatActivity() {
                 Spacer(modifier = Modifier.height(16.dp))
                 Divider()
                 Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Group Invites:", fontSize = 20.sp)
                 LazyColumn(content = {
-                    items(invites.value.size) { index ->
+                    items(invites.size) { index ->
                         InviteRow(
-                            groupInvite = invites.value[index],
-                            reload = ::loadGroup,
+                            groupInvite = invites[index],
+                            reload = ::nothing,
                             allowModify = false
                         )
                     }
@@ -226,13 +232,14 @@ class StudyGroupActivity : AppCompatActivity() {
                 Spacer(modifier = Modifier.height(16.dp))
                 Divider()
                 Spacer(modifier = Modifier.height(16.dp))
-                if(group!=null){
+                if (group != null) {
                     GroupInviteView(group!!.group_id)
                 }
             }
         }
     }
 
+    suspend fun nothing(){}
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
