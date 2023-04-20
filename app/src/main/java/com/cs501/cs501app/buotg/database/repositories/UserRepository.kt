@@ -21,7 +21,7 @@ class UserRepository(
         res?.let {
             userDao.upsert(res.user)
             kvDao.put(KVEntry(USER_TOKEN_KEY, it.token))
-            kvDao.put(KVEntry(CURRENT_USER_KEY, it.user.user_id.toString().replace("-","")))
+            kvDao.put(KVEntry(CURRENT_USER_KEY, it.user.user_id.toString()))
             CURRENT_USER_ID = it.user.user_id
             Log.d("userLogin", "userLogin: ${it.user.user_id}")
         }
