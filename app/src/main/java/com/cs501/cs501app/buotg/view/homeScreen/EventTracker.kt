@@ -1,5 +1,6 @@
 package com.cs501.cs501app.buotg.view.homeScreen
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -21,6 +22,11 @@ import com.cs501.cs501app.buotg.view.bottomsheet.EventBottomSheet
 import com.cs501.cs501app.buotg.view.homeScreen.EventTrackerFAB
 import com.cs501.cs501app.buotg.view.homeScreen.EventTrackerList
 import com.cs501.cs501app.buotg.view.homeScreen.EventTrackerTopAppBar
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.compose.ui.platform.LocalContext
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -38,7 +44,7 @@ fun EventTracker(
     )
     val scope = rememberCoroutineScope()
     val trackerState by eventTrackerViewModel.eventListStream.collectAsState(emptyList())
-
+    val context = LocalContext.current
     EventBottomSheet(
         eventTrackerViewModel = eventTrackerViewModel,
         modifier = modifier,
@@ -78,6 +84,12 @@ fun EventTracker(
                         scope.launch {
                             sheetState.show()
                         }
+                    },
+                    onShowSharedEvents = { event ->
+                        val intent = Intent(context, SharedEventActivity::class.java)
+                        intent.putExtra("eventId", event.event_id.toString())
+                        context.startActivity(intent)
+
                     },
                 )
             }
