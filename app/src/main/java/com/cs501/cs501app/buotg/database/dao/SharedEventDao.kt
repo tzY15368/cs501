@@ -22,7 +22,7 @@ interface SharedEventDao {
     ): List<SharedEvent>
 
 
-    @Query("SELECT * FROM shared_event WHERE event_id = {:eventId}")
+    @Query("SELECT * FROM shared_event WHERE event_id=(:eventId)")
     suspend fun getAllSharedEventByEventId(
         eventId : UUID
     ): List<SharedEvent>

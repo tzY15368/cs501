@@ -86,6 +86,10 @@ class SharedEventActivity : AppCompatActivity() {
                     navController.navigate("event/{eventId}/sharedEvent/$it")
                 })
             }
+            composable("sharedEvents/{sharedEventId}") { backStackEntry ->
+                println(backStackEntry.arguments)
+                SharedEventDetail(Integer.parseInt(backStackEntry.arguments?.getString("sharedEventId")))
+            }
         }
     }
 
