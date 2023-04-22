@@ -57,6 +57,32 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, callback: suspend () -> 
     }
 }
 
+@Composable
+fun importUsersBtn(sharedEventId: Int, groupId: Int, callback: suspend () -> Unit) {
+    val coroutineScope = rememberCoroutineScope()
+    val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
+    val groupMemberRepo = AppRepository.get().groupMemberDao()
+    val ctx = LocalContext.current
+    OutlinedButton(modifier = Modifier.size(30.dp),
+        onClick = {
+            coroutineScope.launch {
+                var groupMembers = groupMemberRepo.getGroupMembersById(groupId)
+                for(gm in groupMembers) {
+                    val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = gm.user_id, status = Status.FAIL)
+                    sharedEventParticipanceRepo.updateParticipance(participance)
+                }
+                sharedEventParticipanceRepo
+            }
+
+        }) {
+        Icon(
+            Icons.Outlined.Add,
+            contentDescription = "Import Study Group Members",
+            modifier = Modifier.size(20.dp)
+        )
+    }
+}
+
 class SharedEventActivity : AppCompatActivity() {
 
     val userRepo = AppRepository.get().userRepo()
@@ -101,6 +127,7 @@ class SharedEventActivity : AppCompatActivity() {
         var sharedEventCreator by remember { mutableStateOf<SharedEvent?>(null) }
 //        var sharedEvent
         val ctx = LocalContext.current
+
     }
 
 
@@ -127,6 +154,8 @@ class SharedEventActivity : AppCompatActivity() {
         @Composable
         fun SharedEventView(SharedEvent: SharedEvent) {
             var createdbyUser by remember { mutableStateOf<User?>(null) }
+            var importingGroupMembers by remember { mutableStateOf(false) }
+            var groupId by remember { mutableStateOf(0) }
             LaunchedEffect(true) {
                 currentUser = userRepo.getCurrentUser()
                 userRepo.fetchUser(ctx, SharedEvent.owner_id)?.let {
@@ -152,20 +181,42 @@ class SharedEventActivity : AppCompatActivity() {
                         .padding(10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-//                    Text(text = SharedEvent.shared_event_id, fontSize = 15.sp)
-//                    currentUser?.let {
-//                        LeaveSharedEventBtn(
-//                            SharedEventID = SharedEvent.shared_event_id,
-//                            userId = it.user_id,
-//                            callback = {
-//                                reloadSharedEvents()
-//                            }
-//                        )
-//                    }
+                    Text(text = SharedEvent.shared_event_id.toString(), fontSize = 15.sp)
+                    currentUser?.let { takeAttendanceBtn(sharedEventId = SharedEvent.shared_event_id, userId = it.user_id, callback = { reloadSharedEvents() }) }
+                    Button(onClick = { importingGroupMembers = true }) {
+                        Text(text = "Import Group Members")
+                    }
+                    Text(text = "Group id:", fontSize = 20.sp)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Divider()
             }
+
+
+            //import group members
+            if (importingGroupMembers) {
+                Dialog(onDismissRequest = { importingGroupMembers = false }) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .padding(16.dp)
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(text = "Import Group Members")
+                        TextField(
+                            value = groupId.toString(),
+                            onValueChange = { groupId = it.toInt() },
+                            label = { Text(text = "Group Id") },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                        )
+                        importUsersBtn(sharedEventId =SharedEvent.shared_event_id, groupId = groupId, callback = { reloadSharedEvents() })
+                    }
+                }
+            }
+
         }
 
         @Composable
