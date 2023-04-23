@@ -7,12 +7,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.R
@@ -20,6 +25,7 @@ import com.cs501.cs501app.buotg.database.entities.Event
 import com.cs501.cs501app.buotg.database.entities.EventPriority
 import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventTrackerList(
     events: List<Event>,
@@ -27,12 +33,78 @@ fun EventTrackerList(
     onUpdate: (Event) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = PaddingValues(vertical = 8.dp),
+    val (today, past, future) = divide_events(events)
+    Column(modifier = modifier) {
+        ScaffoldList(
+            text = "Past",
+            events = past,
+            isExpanded = false,
+            onDelete = onDelete,
+            onUpdate = onUpdate
+        )
+        ScaffoldList(
+            text = "Today",
+            events = today,
+            isExpanded = true,
+            onDelete = onDelete,
+            onUpdate = onUpdate
+        )
+        ScaffoldList(
+            text = "Future",
+            events = future,
+            isExpanded = false,
+            onDelete = onDelete,
+            onUpdate = onUpdate
+        )
+    }
+
+}
+
+@Composable
+fun ScaffoldList(
+    text: String,
+    events: List<Event>,
+    isExpanded: Boolean,
+    onDelete: (Event) -> Unit,
+    onUpdate: (Event) -> Unit,
+) {
+    var isListExpanded by remember { mutableStateOf(isExpanded) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.clickable { isListExpanded = !isListExpanded }
     ) {
-        items(items = events) { event ->
-            EventTrackerListItem(event, onDelete, onUpdate)
+        Text(
+            text = text,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 8.dp)
+        )
+        Icon(
+            painter = painterResource(if (isListExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down),
+            contentDescription = "Expand list",
+            modifier = Modifier.padding(end = 8.dp)
+        )
+    }
+    if (isListExpanded) {
+        if (events.isEmpty()) {
+            // center text
+            Text(
+                text = "No $text events yet.",
+                style = MaterialTheme.typography.bodyLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
+                color = Color.Gray,
+                fontWeight = FontWeight.Bold
+            )
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(vertical = 8.dp)
+            ) {
+                items(items = events) { event ->
+                    EventTrackerListItem(event, onDelete, onUpdate)
+                }
+            }
         }
     }
 }
@@ -62,6 +134,31 @@ fun EventTrackerListItem(
             modifier = Modifier.align(Alignment.Top)
         )
     }
+}
+
+// divide events by today, past, future
+fun divide_events(events: List<Event>): Triple<List<Event>, List<Event>, List<Event>> {
+    val today = Calendar.getInstance()
+    val past = mutableListOf<Event>()
+    val future = mutableListOf<Event>()
+    val today_events = mutableListOf<Event>()
+    for (event in events) {
+        val event_date = Calendar.getInstance()
+        event_date.time = event.start_time
+        Log.d("divide_events:event", event_date.toString())
+        Log.d("divide_events:today", today.toString())
+        if (event_date.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+            event_date.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
+            event_date.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)
+        ) {
+            today_events.add(event)
+        } else if (event_date.before(today)) {
+            past.add(event)
+        } else {
+            future.add(event)
+        }
+    }
+    return Triple(today_events, past, future)
 }
 
 @Composable

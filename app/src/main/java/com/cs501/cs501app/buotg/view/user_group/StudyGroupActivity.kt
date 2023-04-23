@@ -1,14 +1,18 @@
 package com.cs501.cs501app.buotg.view.user_group
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.ExitToApp
 
@@ -26,10 +30,13 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.cs501.cs501app.buotg.connection.API
 import com.cs501.cs501app.buotg.database.entities.Group
+import com.cs501.cs501app.buotg.database.entities.GroupInvite
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.common.UserCardView
+import com.cs501.cs501app.buotg.view.user_invite.InviteRow
 import com.cs501.cs501app.utils.GenericTopAppBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -95,6 +102,38 @@ class StudyGroupActivity : AppCompatActivity() {
         }
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun GroupInviteView(groupID: Int) {
+        val inviteRepo = AppRepository.get().inviteRepository()
+        var userEmail by remember { mutableStateOf("") }
+        val loading = remember { mutableStateOf(false) }
+        val coroutineScope = rememberCoroutineScope()
+        val ctx = LocalContext.current
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            TextField(
+                value = userEmail,
+                onValueChange = {
+                    userEmail = it
+                },
+                label = { Text("User Email") },
+                placeholder = { Text("Enter User Email") },
+                leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) },
+                //add function for trailing icon
+                singleLine = true,
+            )
+            Button(onClick = {
+                coroutineScope.launch {
+                    loading.value = true
+                    inviteRepo.upsertInvite(ctx, groupID, userEmail, API.InviteStatus.PENDING)
+                    loading.value = false
+                }
+            }, enabled = !loading.value) {
+                Text("Send Invite")
+            }
+        }
+    }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -103,6 +142,8 @@ class StudyGroupActivity : AppCompatActivity() {
         var groupOwner by remember { mutableStateOf<User?>(null) }
         var groupMmebers by remember { mutableStateOf(listOf<User>()) }
         var currentUser by remember { mutableStateOf<User?>(null) }
+        var invites by remember { mutableStateOf(listOf<GroupInvite>()) }
+        val inviteRepo = AppRepository.get().inviteRepository()
         val ctx = LocalContext.current
 
         suspend fun loadGroup() {
@@ -110,6 +151,17 @@ class StudyGroupActivity : AppCompatActivity() {
                 group = it.group
                 groupOwner = userRepo.fetchUser(ctx, it.group.owner_id)
                 currentUser = userRepo.getCurrentUser()
+                if(group==null){
+                    return
+                }
+
+                // pull group invites
+                val newInvites = mutableListOf<GroupInvite>()
+                inviteRepo.listGroupInvites(ctx, group!!.group_id)?.let { ivts ->
+                    newInvites.addAll(ivts.group_invites)
+                }
+                invites = newInvites
+                Log.d("GroupDetails", "Invites: ${invites.size}")
             }
             groupRepo.getGroupMembers(ctx, groupID)?.let {
                 val uuids = it.group_members
@@ -137,7 +189,6 @@ class StudyGroupActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .padding(paddingValues)
                     .padding(16.dp)
-                    .verticalScroll(rememberScrollState())
             ) {
                 Text("Group Info:", fontSize = 25.sp)
                 group?.let {
@@ -149,20 +200,46 @@ class StudyGroupActivity : AppCompatActivity() {
                 Divider()
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = "Group Members:", fontSize = 20.sp)
-                for (user in groupMmebers) {
-                    Row {
-                        UserCardView(User = user)
-                        currentUser?.let { currentU ->
-                            if (currentU.user_id == groupOwner?.user_id) {
-                                LeaveGroupBtn(groupID, user.user_id, { loadGroup() })
+                LazyColumn(content = {
+                    items(groupMmebers.size) { index ->
+                        Row {
+                            UserCardView(User = groupMmebers[index])
+                            currentUser?.let { currentU ->
+                                if (currentU.user_id == groupOwner?.user_id) {
+                                    LeaveGroupBtn(
+                                        groupID,
+                                        groupMmebers[index].user_id,
+                                        callback = ::loadGroup
+                                    )
+                                }
                             }
                         }
                     }
+                })
+                Spacer(modifier = Modifier.height(16.dp))
+                Divider()
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Group Invites:", fontSize = 20.sp)
+                LazyColumn(content = {
+                    items(invites.size) { index ->
+                        InviteRow(
+                            groupInvite = invites[index],
+                            reload = ::nothing,
+                            allowModify = false
+                        )
+                    }
+                })
+                Spacer(modifier = Modifier.height(16.dp))
+                Divider()
+                Spacer(modifier = Modifier.height(16.dp))
+                if (group != null) {
+                    GroupInviteView(group!!.group_id)
                 }
             }
         }
     }
 
+    suspend fun nothing(){}
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -233,7 +310,7 @@ class StudyGroupActivity : AppCompatActivity() {
             LaunchedEffect(true) {
                 reloadGroups()
             }
-            if(groups.isEmpty()) {
+            if (groups.isEmpty()) {
                 Text(text = "No groups found")
             }
             Column {
@@ -319,35 +396,35 @@ class StudyGroupActivity : AppCompatActivity() {
             }
         }
         //join study group
-        if (joiningGroup) {
-            Dialog(onDismissRequest = { joiningGroup = false }) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .padding(16.dp)
-                        .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    Text(text = "Join a study group")
-                    TextField(
-                        value = newGroupName,
-                        onValueChange = { newGroupName = it },
-                        label = { Text(text = "Group name") },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-                    )
-                    Button(onClick = {
-                        coroutineScope.launch {
-                            joiningGroup = false
-                            reloadGroups()
-                        }
-                    }) {
-                        Text(text = "Join")
-                    }
-                }
-            }
-        }
+//        if (joiningGroup) {
+//            Dialog(onDismissRequest = { joiningGroup = false }) {
+//                Column(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .fillMaxHeight()
+//                        .padding(16.dp)
+//                        .verticalScroll(rememberScrollState()),
+//                    horizontalAlignment = Alignment.CenterHorizontally,
+//                    verticalArrangement = Arrangement.Center,
+//                ) {
+//                    Text(text = "Join a study group")
+//                    TextField(
+//                        value = newGroupName,
+//                        onValueChange = { newGroupName = it },
+//                        label = { Text(text = "Group name") },
+//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+//                    )
+//                    Button(onClick = {
+//                        coroutineScope.launch {
+//                            joiningGroup = false
+//                            reloadGroups()
+//                        }
+//                    }) {
+//                        Text(text = "Join")
+//                    }
+//                }
+//            }
+//        }
     }
 }
 

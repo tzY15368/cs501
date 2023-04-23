@@ -17,17 +17,21 @@ class AppRepository private constructor(context:Context) :SafeAPIRequest(){
     ).fallbackToDestructiveMigration().build()
 
     private val userRepo = UserRepository(database)
+    private val inviteRepository = InviteRepository()
+    private val sharedEventRepo = SharedEventRepo(database)
+    private val sharedEventParticipanceRepo = SharedEventParticipanceRepo(database)
+    private val groupRepo = GroupRepository(database)
     private val eventRepository: EventRepository = EventRepositoryImpl(database.eventDao())
     suspend fun ping(ctx:Context):StdResponse? = apiRequest(ctx, { API.getClient().ping() })
     fun eventRepo(): EventRepository = eventRepository
 
     fun userRepo() = userRepo
 
-    fun sharedEventRepo() = SharedEventRepo(database)
+    fun sharedEventRepo() = sharedEventRepo
 
-    fun sharedEventParticipanceRepo() = SharedEventParticipanceRepo(database)
+    fun inviteRepository() = inviteRepository
 
-    private val groupRepo = GroupRepository(database)
+    fun sharedEventParticipanceRepo() = sharedEventParticipanceRepo
     fun groupRepo() = groupRepo
 
 
