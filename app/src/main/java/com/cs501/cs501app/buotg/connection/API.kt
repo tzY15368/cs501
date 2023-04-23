@@ -73,7 +73,7 @@ interface API {
 
     @GET("/shared_event/{int:event_id}")
     @FormUrlEncoded
-    suspend fun get_shared_event():Response<SharedEventResponse>
+    suspend fun get_shared_event():Response<SharedEventListResponse>
 
     @POST("/shared_event/{int:event_id}")
     @FormUrlEncoded

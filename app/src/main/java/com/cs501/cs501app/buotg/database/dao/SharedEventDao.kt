@@ -21,6 +21,12 @@ interface SharedEventDao {
         checkinTimeEnd: Date=Date(Timestamp(0x7fffffff).time),
     ): List<SharedEvent>
 
+
+    @Query("SELECT * FROM shared_event WHERE event_id=(:eventId)")
+    suspend fun getAllSharedEventByEventId(
+        eventId : UUID
+    ): List<SharedEvent>
+
     // only query for shared events that current user created
     @Query("SELECT * FROM shared_event WHERE owner_id=(SELECT value FROM kv_entry WHERE key = (:userKey))")
     suspend fun getMySharedEvents(userKey: String = CURRENT_USER_KEY): List<SharedEvent>

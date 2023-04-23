@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 11,
-    "identityHash": "0df8a956a3981231e4eb88d0f68a29ba",
+    "identityHash": "b3ef0e27083578d440dd625f2628a148",
     "entities": [
       {
         "tableName": "event",
@@ -86,7 +86,7 @@
       },
       {
         "tableName": "shared_event",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`shared_event_id` INTEGER NOT NULL, `event_id` TEXT NOT NULL, `owner_id` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `checkin_time` INTEGER NOT NULL, PRIMARY KEY(`shared_event_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`shared_event_id` INTEGER NOT NULL, `event_id` TEXT NOT NULL, `owner_id` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `checkin_time` INTEGER, PRIMARY KEY(`shared_event_id`))",
         "fields": [
           {
             "fieldPath": "shared_event_id",
@@ -116,7 +116,7 @@
             "fieldPath": "checkin_time",
             "columnName": "checkin_time",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -306,7 +306,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0df8a956a3981231e4eb88d0f68a29ba')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b3ef0e27083578d440dd625f2628a148')"
     ]
   }
 }

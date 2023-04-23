@@ -17,5 +17,5 @@ data class SharedEvent(
     val event_id: UUID,
     val owner_id: UUID,
     val created_at: Date,
-    val checkin_time: Date
+    val checkin_time: Date?
 )

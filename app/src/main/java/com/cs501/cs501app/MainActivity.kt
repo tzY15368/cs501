@@ -32,6 +32,7 @@ import com.cs501.cs501app.buotg.HomeActivity
 import com.cs501.cs501app.buotg.database.AppDatabase
 import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
+import com.cs501.cs501app.buotg.view.homeScreen.SharedEventActivity
 import com.cs501.cs501app.buotg.view.user_setting.SettingActivity
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
 import com.cs501.cs501app.buotg.view.user_group.StudyGroupActivity
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         SetupActivity::class,
         SettingActivity::class,
         StudyGroupActivity::class,
+        SharedEventActivity::class,
         mapActivity::class,
         InviteActivity::class,
 //        Calc1Activity::class,

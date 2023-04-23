@@ -42,6 +42,13 @@ class GroupResponse: StdResponse(){
     lateinit var group: Group
 }
 
+class GroupMemberResponse: StdResponse(){
+    lateinit var groupMembers: List<GroupMember>
+}
+
+class SharedEventListResponse: StdResponse(){
+    lateinit var sharedEvents: List<SharedEvent>
+}
 /**GML Group Member List*/
 class GMLResponse:StdResponse(){
     // TODO: backend returns a list of only the user's id, but the group_member class is made up of two ids
