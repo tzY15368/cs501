@@ -65,3 +65,7 @@ class SyncResponse: StdResponse(){
     lateinit var data: SyncData
     // ignore rm for now...
 }
+
+class InviteResponse: StdResponse(){
+    lateinit var group_invites:List<GroupInvite>
+}

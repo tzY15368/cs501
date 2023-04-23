@@ -13,8 +13,8 @@ import com.cs501.cs501app.buotg.database.entities.User
 fun UserCardView(User: User) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = User.full_name)
-            Text(text = User.email)
+            Text(text = "Name:" + User.full_name)
+            Text(text = "Email:" + User.email)
         }
     }
 }
