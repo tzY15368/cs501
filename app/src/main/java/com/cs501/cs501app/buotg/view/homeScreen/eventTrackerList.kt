@@ -45,21 +45,24 @@ fun EventTrackerList(
             events = past,
             isExpanded = false,
             onDelete = onDelete,
-            onUpdate = onUpdate
+            onUpdate = onUpdate,
+            onShowSharedEvents = onShowSharedEvents
         )
         ScaffoldList(
             text = "Today",
             events = today,
             isExpanded = true,
             onDelete = onDelete,
-            onUpdate = onUpdate
+            onUpdate = onUpdate,
+            onShowSharedEvents = onShowSharedEvents
         )
         ScaffoldList(
             text = "Future",
             events = future,
             isExpanded = false,
             onDelete = onDelete,
-            onUpdate = onUpdate
+            onUpdate = onUpdate,
+            onShowSharedEvents = onShowSharedEvents
         )
     }
 
@@ -72,6 +75,7 @@ fun ScaffoldList(
     isExpanded: Boolean,
     onDelete: (Event) -> Unit,
     onUpdate: (Event) -> Unit,
+    onShowSharedEvents: (Event) -> Unit
 ) {
     var isListExpanded by remember { mutableStateOf(isExpanded) }
     Row(

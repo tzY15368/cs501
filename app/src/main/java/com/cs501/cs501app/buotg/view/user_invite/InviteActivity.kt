@@ -25,9 +25,6 @@ import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.utils.GenericTopAppBar
 import kotlinx.coroutines.launch
 
-//a list to save user names get from server
-val userNames = listOf("user1", "user2")
-
 class InviteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
