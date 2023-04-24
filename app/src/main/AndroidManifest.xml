@@ -33,6 +33,9 @@
             android:name=".buotg.view.user_setting.SettingActivity"
             android:exported="false" />
         <activity
+            android:name=".buotg.view.homeScreen.SharedEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".buotg.view.user_setup.SetupActivity"
             android:exported="false" />
         <activity

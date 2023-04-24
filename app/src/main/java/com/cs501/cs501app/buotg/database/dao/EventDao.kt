@@ -3,6 +3,7 @@ package com.cs501.cs501app.buotg.database.dao
 import androidx.room.*
 import com.cs501.cs501app.buotg.database.entities.Event
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 @Dao
 interface EventDao {
@@ -23,4 +24,7 @@ interface EventDao {
 
     @Upsert
     suspend fun upsertAll(events: List<Event>)
+
+    @Query("SELECT * FROM event WHERE created_by = :userId")
+    suspend fun getAllEventsByUserId(userId : UUID): List<Event>
 }
