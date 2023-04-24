@@ -27,6 +27,9 @@
             android:name=".buotg.view.user_group.StudyGroupActivity"
             android:exported="false" />
         <activity
+            android:name=".buotg.view.thirdParty.chatRoom.ChatRoomActivity"
+            android:exported="false" />
+        <activity
             android:name=".buotg.view.user_setting.SettingActivity"
             android:exported="false" />
         <activity
