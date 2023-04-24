@@ -26,6 +26,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.compose.ui.platform.LocalContext
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -54,7 +55,7 @@ fun EventTracker(
             }
         },
         onSubmit = {
-            eventTrackerViewModel.saveEvent()
+            eventTrackerViewModel.saveEvent(context)
             scope.launch {
                 sheetState.hide()
             }
@@ -78,7 +79,7 @@ fun EventTracker(
             Column(Modifier.padding(contentPadding)) {
                 EventTrackerList(
                     events = trackerState,
-                    onDelete = { event -> eventTrackerViewModel.deleteEvent(event) },
+                    onDelete = { event -> eventTrackerViewModel.deleteEvent(context, event) },
                     onUpdate = { event ->
                         eventTrackerViewModel.updateCurrentEvent(event)
                         scope.launch {
@@ -87,9 +88,10 @@ fun EventTracker(
                     },
                     onShowSharedEvents = { event ->
                         val intent = Intent(context, SharedEventActivity::class.java)
+                        Log.d("EventTracker0", intent.toString())
+                        Log.d("EventTracker", "Event ID: ${event.event_id}")
                         intent.putExtra("eventId", event.event_id.toString())
                         context.startActivity(intent)
-
                     },
                 )
             }

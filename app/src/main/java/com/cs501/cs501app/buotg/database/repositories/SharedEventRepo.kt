@@ -23,7 +23,7 @@ class SharedEventRepo(
         ctx: Context
     ): SharedEventListResponse? {
 
-        val res = apiRequest(ctx, { API.getClient().get_shared_event()})
+        val res = apiRequest(ctx, { API.getClient().get_shared_event(123)}) // TODO: wait for backend
         res?.let { db.sharedEventDao().getAllSharedEventByEventId(eventId)        }
         return res
     }
@@ -32,7 +32,7 @@ class SharedEventRepo(
         sharedEvent: SharedEvent,
         ctx: Context
     ) : SharedEventListResponse? {
-        val res = apiRequest(ctx, { API.getClient().get_shared_event()})
+        val res = apiRequest(ctx, { API.getClient().get_shared_event(123)}) //TODO: wait for backend
         res?.let { db.sharedEventDao().upsertAll(listOf(sharedEvent))   }
 
         return res
