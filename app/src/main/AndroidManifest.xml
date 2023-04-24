@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:name=".buotg.BUOTGApplication"
@@ -15,6 +18,8 @@
         android:theme="@style/Theme.CS501App"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity android:name=".buotg.view.user_map.mapActivity"
+            android:exported="false" />
         <activity
             android:name=".buotg.view.user_invite.InviteActivity"
             android:exported="false" />

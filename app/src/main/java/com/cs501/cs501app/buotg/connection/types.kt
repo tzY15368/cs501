@@ -30,10 +30,25 @@ class SEPsResponse: StdResponse(){
     lateinit var shared_event_participances: List<SharedEventParticipance>
 }
 
+class UserResponse: StdResponse(){
+    lateinit var user: User
+}
+
+class GroupListResponse: StdResponse(){
+    lateinit var groups: List<Group>
+}
+
 class GroupResponse: StdResponse(){
     lateinit var group: Group
 }
 
+class GroupMemberResponse: StdResponse(){
+    lateinit var groupMembers: List<GroupMember>
+}
+
+class SharedEventListResponse: StdResponse(){
+    lateinit var sharedEvents: List<SharedEvent>
+}
 /**GML Group Member List*/
 class GMLResponse:StdResponse(){
     // TODO: backend returns a list of only the user's id, but the group_member class is made up of two ids
@@ -49,4 +64,8 @@ class SyncResponse: StdResponse(){
     // diff
     lateinit var data: SyncData
     // ignore rm for now...
+}
+
+class InviteResponse: StdResponse(){
+    lateinit var group_invites:List<GroupInvite>
 }

@@ -10,6 +10,8 @@ interface GroupMemberDao {
     @Query("SELECT * from group_member")
     suspend fun listGroupMembers(): List<GroupMember>
 
+    @Query("SELECT * from group_member WHERE group_id=(:group_id)")
+    suspend fun getGroupMembersById(group_id: Int): List<GroupMember>
     @Upsert
     suspend fun upsertAll(groupMembers: List<GroupMember>)
 }
