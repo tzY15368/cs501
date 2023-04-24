@@ -37,7 +37,7 @@ import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatRoomActivity
 import com.cs501.cs501app.buotg.view.user_setting.SettingActivity
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
 import com.cs501.cs501app.buotg.view.user_group.StudyGroupActivity
-import com.cs501.cs501app.buotg.view.user_map.mapActivity
+import com.cs501.cs501app.buotg.view.user_map.MapViewActivity
 import com.cs501.cs501app.buotg.view.user_invite.InviteActivity
 import com.cs501.cs501app.example.WebViewDemo
 import com.cs501.cs501app.utils.GenericTopAppBar
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         SettingActivity::class,
         StudyGroupActivity::class,
         SharedEventActivity::class,
-        mapActivity::class,
+        MapViewActivity::class,
         InviteActivity::class,
         ChatRoomActivity::class,
 //        Calc1Activity::class,
