@@ -18,6 +18,7 @@ import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
@@ -26,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.cs501.cs501app.buotg.database.entities.SharedEvent
 
 import androidx.compose.ui.window.Dialog
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.SharedEventParticipance
 import com.cs501.cs501app.buotg.database.entities.Status
 import com.cs501.cs501app.buotg.database.entities.User
@@ -51,7 +53,7 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, callback: suspend () -> 
 
         Icon(
             Icons.Outlined.Add,
-            contentDescription = "Take Attendance",
+            contentDescription = stringResource(id = R.string.take_attendence),
             modifier = Modifier.size(20.dp)
         )
     }
@@ -77,7 +79,7 @@ fun importUsersBtn(sharedEventId: Int, groupId: Int, callback: suspend () -> Uni
         }) {
         Icon(
             Icons.Outlined.Add,
-            contentDescription = "Import Study Group Members",
+            contentDescription = stringResource(id = R.string.import_members),
             modifier = Modifier.size(20.dp)
         )
     }
@@ -168,7 +170,9 @@ class SharedEventActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .padding(10.dp)
             ) {
-                val by = if (createdbyUser != null) " by " + createdbyUser!!.full_name else ""
+                //@TODO Is this expression fluent?
+                val creator = stringResource(id = R.string.creator)
+                val by = if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
                 Text(
                     text = SharedEvent.shared_event_id.toString() + by,
                     fontSize = 30.sp,
@@ -184,9 +188,10 @@ class SharedEventActivity : AppCompatActivity() {
                     Text(text = SharedEvent.shared_event_id.toString(), fontSize = 15.sp)
                     currentUser?.let { takeAttendanceBtn(sharedEventId = SharedEvent.shared_event_id, userId = it.user_id, callback = { reloadSharedEvents() }) }
                     Button(onClick = { importingGroupMembers = true }) {
-                        Text(text = "Import Group Members")
+                        Text(text = stringResource(id = R.string.import_members_2))
                     }
-                    Text(text = "Group id:", fontSize = 20.sp)
+                    val group_id = stringResource(id = R.string.group_id)
+                    Text(text = "$group_id:", fontSize = 20.sp)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Divider()
@@ -205,11 +210,11 @@ class SharedEventActivity : AppCompatActivity() {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
-                        Text(text = "Import Group Members")
+                        Text(text = stringResource(id = R.string.import_members_2))
                         TextField(
                             value = groupId.toString(),
                             onValueChange = { groupId = it.toInt() },
-                            label = { Text(text = "Group Id") },
+                            label = { Text(text = stringResource(id = R.string.group_id)) },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                         )
                         importUsersBtn(sharedEventId =SharedEvent.shared_event_id, groupId = groupId, callback = { reloadSharedEvents() })
@@ -226,7 +231,7 @@ class SharedEventActivity : AppCompatActivity() {
                 reloadSharedEvents()
             }
             if(SharedEvents.isEmpty()) {
-                Text(text = "No SharedEvents found")
+                Text(text = stringResource(id = R.string.no_shared_event_found))
             }
             Column {
                 for (SharedEvent in SharedEvents) {
@@ -237,7 +242,7 @@ class SharedEventActivity : AppCompatActivity() {
 
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = "Shared Events")
+                GenericTopAppBar(title = stringResource(id = R.string.shared_events))
             }
         ) { innerPadding ->
             Column(
@@ -260,7 +265,7 @@ class SharedEventActivity : AppCompatActivity() {
                 ) {
                     Row() {
                         Button(onClick = { creatingSharedEvent = true }) {
-                            Text(text = "Create SharedEvent")
+                            Text(text = stringResource(id = R.string.create_shared_event))
                         }
                     }
                 }
@@ -282,17 +287,17 @@ class SharedEventActivity : AppCompatActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
-                    Text(text = "Create a Shared Event")
+                    Text(text = stringResource(id = R.string.create_a_shared_event))
                     TextField(
                         value = newSharedEventName,
                         onValueChange = { newSharedEventName = it },
-                        label = { Text(text = "Shared Event name") },
+                        label = { Text(text = stringResource(id = R.string.shared_event_name)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                     )
                     TextField(
                         value = newSharedEventDesc,
                         onValueChange = { newSharedEventDesc = it },
-                        label = { Text(text = "Shared Event description") },
+                        label = { Text(text = stringResource(id = R.string.shared_event_desc)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                     )
                     Button(onClick = {
@@ -315,7 +320,7 @@ class SharedEventActivity : AppCompatActivity() {
                         }
                         creatingSharedEvent = false
                     }) {
-                        Text(text = "Create")
+                        Text(text = stringResource(id = R.string.create))
                     }
                 }
             }

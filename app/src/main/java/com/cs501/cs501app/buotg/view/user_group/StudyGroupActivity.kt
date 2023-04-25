@@ -132,7 +132,7 @@ class StudyGroupActivity : AppCompatActivity() {
                     loading.value = false
                 }
             }, enabled = !loading.value) {
-                Text("Send Invite")
+                Text(stringResource(id = R.string.send_invites))
             }
         }
     }
@@ -284,6 +284,7 @@ class StudyGroupActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .padding(10.dp)
             ) {
+                //@TODO Is this expression fluent?
                 val creator = stringResource(id = R.string.creator)
                 val by = if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
                 Text(

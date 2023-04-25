@@ -112,7 +112,7 @@
     <string name="save">SAVE</string>
     <string name="event_start_time">Start time</string>
 
-    <string name="server_client_id">535824934955-4qkrgeoin624iegcc7upt3f88pkcle3f.apps.googleusercontent.com</string>
+    <string name="server_client_id" translatable="false">535824934955-4qkrgeoin624iegcc7upt3f88pkcle3f.apps.googleusercontent.com</string>
 
 
     <string name="sync_data">Sync Data</string>
@@ -138,7 +138,7 @@
     <string name="user_email">User Email</string>
     <string name="enter_user_email">Enter User Email</string>
     <string name="study_group">Study Groups</string>
-    <string name="group_name"></string>
+    <string name="group_name">Group Name</string>
     <string name="group_description">Group Description</string>
     <string name="group_created">Group Created By</string>
     <string name="group_member">Group members</string>
@@ -150,6 +150,33 @@
     <string name="join_group">Join group</string>
     <string name="create_a_group">Create a study group</string>
     <string name="create">Create</string>
+    <string name="send_invites">Send Invites</string>
+
+    <string name="past">Past</string>
+    <string name="today">Today</string>
+    <string name="future">Future</string>
+    <string name="no_such_events">No Such Events</string>
+    <string name="show_shared">Show shared events</string>
+    <string name="event_position">Event Position</string>
+    <string name="time_slot">Time Slot</string>
+    <string name="priority_name">Priority</string>
+    <string name="empty_event">Empty Event</string>
+    <string name="empty_desc">Empty Event Description</string>
+    <string name="take_attendence">Take Attendance</string>
+    <string name="import_members">Import Study Group Members</string>
+    <string name="import_members_2">Import Group Members</string>
+    <string name="group_id">Group Id</string>
+    <string name="no_shared_event_found">No SharedEvents found</string>
+    <string name="shared_events">Shared  Events</string>
+    <string name="create_shared_event">Create SharedEvent</string>
+    <string name="create_a_shared_event">Create a Shared Event</string>
+    <string name="shared_event_name">Shared Event Name</string>
+    <string name="shared_event_desc">Shared Event Description</string>
+
+    <string name="pick_a_start">Please pick a start time</string>
+    <string name="pick_a_end">Please pick an end time</string>
+    <string name="select_start">Select start time</string>
+    <string name="select_end">Select end time</string>
 
 
 

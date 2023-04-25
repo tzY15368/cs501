@@ -33,6 +33,7 @@ fun EventSpinnerRow(
     onPriorityChange: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    /**Will this 低中高 affect the data in database?*/
     val eventPriorityArray =
         EventPriority.values().map { event_priority -> stringResource(event_priority.priority) }
     InputRow(inputLabel = stringResource(R.string.priority), modifier = modifier) {

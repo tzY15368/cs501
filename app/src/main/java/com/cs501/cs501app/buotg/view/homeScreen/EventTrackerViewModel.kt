@@ -1,8 +1,11 @@
 package com.cs501.cs501app.buotg.view.homeScreen
 
+import android.content.res.Resources
 import android.util.Log
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.CURRENT_USER_ID
 import com.cs501.cs501app.buotg.database.repositories.EventRepository
 import com.cs501.cs501app.buotg.database.entities.Event
@@ -16,6 +19,9 @@ import java.util.*
 
 class EventTrackerViewModel(private val eventRepository: EventRepository) : ViewModel() {
     private val CURRENT_UID = AppRepository.get().userRepo().getCurrentUserID()
+    //@Todo: This is the database object or information will be showed up?
+//    val empty_event = Resources.getSystem().getString(R.string.empty_event)
+//    val empty_desc = Resources.getSystem().getString(R.string.empty_desc)
     private var emptyEvent = Event(event_id = UUID.randomUUID(), event_name = "Empty Event", latitude = 1234, longitude = 9876, start_time = Date(), end_time = Date(),
         repeat_mode = 0, priority = 1, desc = "Empty Event description", created_by = CURRENT_UID, notify_time = 0)
     private val _currentEventStream = MutableStateFlow(emptyEvent)
