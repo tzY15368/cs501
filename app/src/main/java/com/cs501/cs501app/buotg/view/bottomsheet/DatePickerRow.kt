@@ -22,7 +22,9 @@ import java.util.*
 @Composable
 fun DatePickerRow(
     inputLabel: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onStartTimeChanged: (Date) -> Unit,
+    onEndTimeChanged: (Date) -> Unit
 ) {
     var context = LocalContext.current
     var calendar = Calendar.getInstance()
@@ -41,6 +43,8 @@ fun DatePickerRow(
         context,
         { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
             selectedStartDateText = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+            calendar.set(selectedYear, selectedMonth, selectedDayOfMonth, hour, minute)
+            onStartTimeChanged(calendar.time)
         }, year, month, dayOfMonth
     )
     datePickerStart.datePicker.minDate = calendar.timeInMillis
@@ -48,6 +52,8 @@ fun DatePickerRow(
         context,
         { _, selectedHour: Int, selectedMinute: Int ->
             selectedStartTimeText = "$selectedHour:$selectedMinute"
+            calendar.set(year, month, dayOfMonth, selectedHour, selectedMinute)
+            onStartTimeChanged(calendar.time)
         }, hour, minute, false
     )
 
@@ -55,6 +61,8 @@ fun DatePickerRow(
         context,
         { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
             selectedEndDateText = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+            calendar.set(selectedYear, selectedMonth, selectedDayOfMonth, hour, minute)
+            onEndTimeChanged(calendar.time)
         }, year, month, dayOfMonth
     )
     datePickerEnd.datePicker.minDate = calendar.timeInMillis
@@ -62,6 +70,8 @@ fun DatePickerRow(
         context,
         { _, selectedHour: Int, selectedMinute: Int ->
             selectedEndTimeText = "$selectedHour:$selectedMinute"
+            calendar.set(year, month, dayOfMonth, selectedHour, selectedMinute)
+            onEndTimeChanged(calendar.time)
         }, hour, minute, false
     )
         Row(

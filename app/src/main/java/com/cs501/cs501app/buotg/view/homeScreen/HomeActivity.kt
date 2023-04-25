@@ -67,8 +67,10 @@ class HomeActivity : AppCompatActivity() {
             val CURRENT_UID: UUID by lazy {
                 runBlocking { setCURRENT_UID() }
             }
+            Log.d("CURRENT_UID", events.toString())
             currentEvent = Event(event_id = UUID.randomUUID(), event_name = "Empty Event", latitude = 1234, longitude = 9876, start_time = Date(), end_time = Date(),
-                repeat_mode = 0, priority = 1, desc = "Empty Event description", created_by = CURRENT_UID, notify_time = 0)
+                repeat_mode = 0, priority = 1, desc = "Empty Event description",
+                notify_time = 0)
         }
 
         LaunchedEffect(true) {
@@ -85,11 +87,11 @@ class HomeActivity : AppCompatActivity() {
                         sheetState.hide()
                     }
                 },
-                onSubmit = {
-//                    eventTrackerViewModel.saveEvent(context)
+                onSubmit = { updatedEvent ->
                     scope.launch {
-                        eventRepo.upsertEvent(context, it)
+                        eventRepo.upsertEvent(context, updatedEvent)
                         sheetState.hide()
+                        Log.d("EventTracker", "Event saved: $updatedEvent")
                         reloadEvents()
                     }
                 },

@@ -153,7 +153,6 @@ suspend fun generateEvents(semester:String, name:String, instructor:String, buil
             repeat_mode = 7,
             priority = 1,
             desc = instructor,
-            created_by = created_by,
             notify_time = 15,
         )
         events.add(event)

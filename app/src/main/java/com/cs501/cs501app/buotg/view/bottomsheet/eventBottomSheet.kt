@@ -26,7 +26,7 @@ fun EventBottomSheet(
     event: Event,
     sheetState: ModalBottomSheetState,
     onCancel: () -> Unit,
-    onSubmit: () -> Unit,
+    onSubmit: (Event) -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
@@ -66,12 +66,14 @@ fun SheetHeader(modifier: Modifier = Modifier) {
 fun SheetForm(
     event: Event,
     onCancel: () -> Unit,
-    onSubmit: () -> Unit,
+    onSubmit: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val eventName = remember { mutableStateOf(event.event_name) }
     val eventDesc = remember { mutableStateOf(event.desc) }
     val eventPriority = remember { mutableStateOf(event.priority) }
+    var startDateTime by remember { mutableStateOf(event.start_time) }
+    var endDateTime by remember { mutableStateOf(event.end_time) }
     Column(modifier.padding(horizontal = 16.dp)) {
         TextInputRow(
             inputLabel = stringResource(R.string.event_name),
@@ -90,13 +92,26 @@ fun SheetForm(
             }
         )
         DatePickerRow(
-            inputLabel = stringResource(R.string.event_start_time)
+            inputLabel = stringResource(R.string.event_start_time),
+            onStartTimeChanged = { newStartTime ->
+                startDateTime = newStartTime
+            },
+            onEndTimeChanged = { newEndTime ->
+                endDateTime = newEndTime
+            }
         )
 
         ButtonRow(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             onCancel = onCancel,
-            onSubmit = onSubmit,
+            onSubmit = {
+                val updatedEvent = event.copy(
+                    event_name = eventName.value,
+                    desc = eventDesc.value,
+                    priority = eventPriority.value
+                )
+                onSubmit(updatedEvent)
+            },
             submitButtonEnabled = event.event_name.isNotEmpty()
         )
     }

@@ -7,6 +7,7 @@ import com.cs501.cs501app.buotg.database.AppDatabase
 import com.cs501.cs501app.buotg.database.DateTimeConverter
 import com.cs501.cs501app.buotg.database.UUIDConverter
 import com.cs501.cs501app.buotg.database.entities.Event
+import com.cs501.cs501app.buotg.database.entities.apiEventToEvent
 import java.util.*
 
 class EventRepository (db: AppDatabase) : SafeAPIRequest() {
@@ -36,19 +37,22 @@ class EventRepository (db: AppDatabase) : SafeAPIRequest() {
         dao.upsertAll(events)
     }
 
-    suspend fun getAllEventsByUserId(ctx : Context, userId : UUID): List<Event> {
-        Log.d("EventRepository", "getAllEventsByUserId: $userId")
-        return dao.getAllEventsByUserId(userId)
-    }
+//    suspend fun getAllEventsByUserId(ctx : Context, userId : UUID): List<Event> {
+//        Log.d("EventRepository", "getAllEventsByUserId: $userId")
+//        return dao.getAllEventsByUserId(userId)
+//    }
 
     suspend fun listEvents(ctx:Context): EventsResponse? {
         val res = apiRequest(ctx, {API.getClient().event_list()})
         Log.d("EventRepository", "listEvents: $res")
         if (res != null) {
             if (res.events != null) {
+                Log.d("EventRepository", "listEvents: ${res.events}")
+//                res.events.map { apiEventToEvent(it) } ?: emptyList()
                 dao.upsertAll(res.events)
             }
         }
+        Log.d("EventRepository", "listEvents")
 //        res?.let { dao.upsertAll(it.Events) }
         return res
     }

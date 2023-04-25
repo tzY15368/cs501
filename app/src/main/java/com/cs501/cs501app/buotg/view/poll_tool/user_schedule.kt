@@ -12,11 +12,11 @@ fun calculateUserSchedule(users : List<User>) {
     val eventRepo = AppRepository.get().eventRepo()
     val ctx = LocalContext.current
     val allEventsSchedule = mutableMapOf<User, List<Event>>()
-    LaunchedEffect(true) {
-        for (user in users) {
-            var events_schedule = eventRepo.getAllEventsByUserId(ctx, user.user_id)
-            allEventsSchedule[user] = events_schedule
-        }
-    }
+//    LaunchedEffect(true) {
+//        for (user in users) {
+//            var events_schedule = eventRepo.getAllEventsByUserId(ctx, user.user_id)
+//            allEventsSchedule[user] = events_schedule
+//        }
+//    }
 
 }
