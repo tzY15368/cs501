@@ -1,11 +1,10 @@
 package com.cs501.cs501app.buotg.database.repositories
 
 import android.content.Context
-import com.cs501.cs501app.buotg.connection.API
-import com.cs501.cs501app.buotg.connection.SafeAPIRequest
-import com.cs501.cs501app.buotg.connection.SharedEventListResponse
-import com.cs501.cs501app.buotg.connection.SharedEventResponse
+import android.util.Log
+import com.cs501.cs501app.buotg.connection.*
 import com.cs501.cs501app.buotg.database.AppDatabase
+import com.cs501.cs501app.buotg.database.UUIDConverter
 import com.cs501.cs501app.buotg.database.entities.SharedEvent
 import java.sql.Timestamp
 import java.util.*
@@ -23,22 +22,27 @@ class SharedEventRepo(
         ctx: Context
     ): SharedEventListResponse? {
 
-        val res = apiRequest(ctx, { API.getClient().get_shared_event(123)}) // TODO: wait for backend
-        res?.let { db.sharedEventDao().getAllSharedEventByEventId(eventId)        }
+        val res = apiRequest(ctx, { API.getClient().get_shared_event(UUIDConverter.fromUUID(eventId))}) // TODO: wait for backend
+        Log.d("SharedEventRepo", "getAllSharedEventByEventId: $res")
+        res?.let { db.sharedEventDao().upsertAll(it.sharedEvents) }
         return res
     }
 
     suspend fun updateSharedEvent(
         sharedEvent: SharedEvent,
         ctx: Context
-    ) : SharedEventListResponse? {
-        val res = apiRequest(ctx, { API.getClient().get_shared_event(123)}) //TODO: wait for backend
-        res?.let { db.sharedEventDao().upsertAll(listOf(sharedEvent))   }
-
+    ) : StdResponse? {
+        Log.d("SharedEventRepo", "updateSharedEvent: $sharedEvent")
+        val res = apiRequest(ctx, { API.getClient().create_shared_event(UUIDConverter.fromUUID(sharedEvent.event_id))}) //TODO: wait for backend
+        Log.d("SharedEventRepo", "updateSharedEvent: $res")
+        res?.let { db.sharedEventDao().upsertAll(listOf(sharedEvent)) }
         return res
     }
 
 
-    suspend fun deleteSharedEvent(sharedEventId: Int) = db.sharedEventDao().deleteSharedEvent(sharedEventId)
+    suspend fun deleteSharedEvent(ctx : Context, sharedEventId: Int) {
+        val res = apiRequest(ctx, { API.getClient().delete_shared_event(sharedEventId) })
+        db.sharedEventDao().deleteSharedEvent(sharedEventId)
+    }
     suspend fun getMySharedEvents():List<SharedEvent> = db.sharedEventDao().getMySharedEvents()
 }

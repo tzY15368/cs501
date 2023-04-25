@@ -1,38 +1,37 @@
 package com.cs501.cs501app.buotg.view.bottomsheet
 
-import android.util.Log
-import android.widget.DatePicker
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.cs501.cs501app.buotg.view.homeScreen.EventTrackerViewModel
 import java.util.*
 import androidx.compose.material.*
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.Event
 import com.cs501.cs501app.buotg.database.entities.EventPriority
+import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.google.android.material.datepicker.*
-import java.time.LocalDate
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun EventBottomSheet(
-    eventTrackerViewModel: EventTrackerViewModel,
+    event: Event,
     sheetState: ModalBottomSheetState,
     onCancel: () -> Unit,
     onSubmit: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    val event by eventTrackerViewModel.currentEventStream.collectAsState()
+    val ctx = LocalContext.current
+    val scope = rememberCoroutineScope()
     ModalBottomSheetLayout(
         modifier = modifier,
         sheetState = sheetState,
@@ -41,7 +40,6 @@ fun EventBottomSheet(
                 SheetHeader()
                 SheetForm(
                     event = event,
-                    onUpdateEvent = eventTrackerViewModel::updateCurrentEvent,
                     onCancel = onCancel,
                     onSubmit = onSubmit
                 )
@@ -67,26 +65,28 @@ fun SheetHeader(modifier: Modifier = Modifier) {
 @Composable
 fun SheetForm(
     event: Event,
-    onUpdateEvent: (Event) -> Unit,
     onCancel: () -> Unit,
     onSubmit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val eventName = remember { mutableStateOf(event.event_name) }
+    val eventDesc = remember { mutableStateOf(event.desc) }
+    val eventPriority = remember { mutableStateOf(event.priority) }
     Column(modifier.padding(horizontal = 16.dp)) {
         TextInputRow(
             inputLabel = stringResource(R.string.event_name),
-            fieldValue = event.event_name,
-            onValueChange = { name -> onUpdateEvent(event.copy(event_name = name)) }
+            fieldValue = eventName.value,
+            onValueChange = { name -> eventName.value = name }
         )
         TextInputRow(
             inputLabel = stringResource(R.string.event_description),
-            fieldValue = event.desc,
-            onValueChange = { description -> onUpdateEvent(event.copy(desc = description)) }
+            fieldValue = eventDesc.value,
+            onValueChange = { desc -> eventDesc.value = desc }
         )
         EventSpinnerRow(
             prioritySpinnerPosition = EventPriority.values()[event.priority - 1].ordinal,
             onPriorityChange = { priority ->
-                onUpdateEvent(event.copy(priority = priority + 1))
+                eventPriority.value = priority + 1
             }
         )
         DatePickerRow(

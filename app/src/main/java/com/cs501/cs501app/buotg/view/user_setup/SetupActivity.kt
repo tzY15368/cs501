@@ -18,8 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.buotg.CustomButton
-import com.cs501.cs501app.buotg.HomeActivity
-
+import com.cs501.cs501app.buotg.view.homeScreen.HomeActivity
 import com.cs501.cs501app.utils.GenericTopAppBar
 import kotlinx.coroutines.launch
 

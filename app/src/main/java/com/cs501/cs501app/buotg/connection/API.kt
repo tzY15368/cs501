@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit
 interface API {
 
     @GET("/")
-    @FormUrlEncoded
     suspend fun getIndex(): Response<StdResponse>
 
     @POST("login")
@@ -46,43 +45,40 @@ interface API {
     @GET("/user")
     suspend fun getUser(@Query("user_id") id: UUID): Response<UserResponse>
 
-    @GET("/event/{int:event_id}")
-    @FormUrlEncoded
-    suspend fun event_details():Response<EventResponse>
+    @GET("/event/{event_id}")
+    suspend fun event_detail(@Path("event_id") event_id: String):Response<EventResponse>
 
     @GET("/event/list")
-    @FormUrlEncoded
     suspend fun event_list(): Response<EventsResponse>
 
     @POST("/event")
     @FormUrlEncoded
     suspend fun create_event(
+        @Field("event_id") event_id: String,
         @Field("event_name") event_name: String,
         /** Should latitude and longtitude be in float?*/
         @Field("latitude") latitude: Long,
-        @Field("longtitude") longtitude: Long,
-        @Field("start_time") start_time: SimpleDateFormat,
-        @Field("end_time") end_time: SimpleDateFormat,
+        @Field("longitude") longitude: Long,
+        @Field("start_time") start_time: String,
+        @Field("end_time") end_time: String,
         @Field("repeat_mode") repeat_mode: Int,
-        @Field("Priority") priority: EventPriority,
+        @Field("priority") priority: Int,
         @Field("desc") desc: String
     ):Response<StdResponse>
 
+    @DELETE("/event/{event_id}")
+    suspend fun delete_event(@Path("event_id") event_id: String):Response<StdResponse>
 
-    @DELETE("/event/{int:event_id}")
-    @FormUrlEncoded
-    suspend fun delete_event():Response<StdResponse>
+    @GET("/shared_event/{event_id}")
+    suspend fun get_shared_event(@Path("event_id") event_id: String):Response<SharedEventListResponse>
 
-    @GET("/shared_event/{int:event_id}")
-    suspend fun get_shared_event(@Path("event_id") event_id: Int):Response<SharedEventListResponse>
-
-    @POST("/shared_event/{int:event_id}")
-    suspend fun create_shared_event():Response<StdResponse>
+    @POST("/shared_event/{event_id}")
+    suspend fun create_shared_event(@Path("event_id") event_id: String):Response<StdResponse>
 
     @DELETE("/shared_event")
     @FormUrlEncoded
     suspend fun delete_shared_event(
-        @Field("shared_event_id") shared_event_id: UUID
+        @Field("shared_event_id") shared_event_id: Int
     ):Response<StdResponse>
 
 

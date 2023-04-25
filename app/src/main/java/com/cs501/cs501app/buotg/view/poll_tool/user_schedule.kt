@@ -6,8 +6,6 @@ import androidx.compose.ui.platform.LocalContext
 import com.cs501.cs501app.buotg.database.entities.Event
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
-import com.cs501.cs501app.buotg.database.repositories.EventRepository
-import com.cs501.cs501app.buotg.database.repositories.EventRepositoryImpl
 
 @Composable
 fun calculateUserSchedule(users : List<User>) {

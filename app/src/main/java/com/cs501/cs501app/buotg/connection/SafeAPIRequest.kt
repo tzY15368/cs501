@@ -43,6 +43,7 @@ open class SafeAPIRequest {
         } catch (e: Exception) {
             val msg = "Error: ${e.message}"
             println("Exception: $e")
+            e.printStackTrace()
             TAlert.fail(ctx, msg)
             // throw e
             return null

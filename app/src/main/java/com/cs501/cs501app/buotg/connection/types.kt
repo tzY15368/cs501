@@ -14,11 +14,11 @@ class LoginResponse: StdResponse(){
 }
 
 class EventResponse: StdResponse(){
-    lateinit var Event: Event
+    lateinit var event: Event
 }
 
 class EventsResponse: StdResponse(){
-    lateinit var Events: List<Event>
+    lateinit var events: List<Event>
 }
 
 class SharedEventResponse: StdResponse(){
