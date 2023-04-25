@@ -21,7 +21,7 @@ class AppRepository private constructor(context:Context) :SafeAPIRequest(){
     private val sharedEventRepo = SharedEventRepo(database)
     private val sharedEventParticipanceRepo = SharedEventParticipanceRepo(database)
     private val groupRepo = GroupRepository(database)
-    private val eventRepository: EventRepository = EventRepositoryImpl(database.eventDao())
+    private val eventRepository: EventRepository = EventRepository(database)
     suspend fun ping(ctx:Context):StdResponse? = apiRequest(ctx, { API.getClient().ping() })
     fun eventRepo(): EventRepository = eventRepository
 

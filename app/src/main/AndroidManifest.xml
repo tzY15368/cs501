@@ -84,7 +84,7 @@
             android:name=".assignment2.Calc1Activity"
             android:exported="false" />
         <activity
-            android:name=".buotg.HomeActivity"
+            android:name=".buotg.view.homeScreen.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

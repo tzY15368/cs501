@@ -15,7 +15,7 @@ import com.cs501.cs501app.buotg.database.entities.*
         KVEntry::class,
         Group::class,
         GroupMember::class,
-    ], version = 11
+    ], version = 14
 )
 @TypeConverters(DateTimeConverter::class,UUIDConverter::class)
 abstract class AppDatabase : RoomDatabase() {

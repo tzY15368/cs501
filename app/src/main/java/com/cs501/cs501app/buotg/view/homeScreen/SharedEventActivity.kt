@@ -151,7 +151,7 @@ class SharedEventActivity : AppCompatActivity() {
         var currentUser by remember { mutableStateOf<User?>(null) }
 
         suspend fun reloadSharedEvents() {
-
+            currentUser = userRepo.getCurrentUser()
             val resp = eventId?.let { sharedEventRepo.getAllSharedEventByEventId(it,ctx) }
             if (resp != null) {
                 SharedEvents = resp.sharedEvents
@@ -285,9 +285,9 @@ class SharedEventActivity : AppCompatActivity() {
             }
         }
 
-
         //create SharedEvent
         if (creatingSharedEvent) {
+            Log.d("SharedEventActivity_create?", "BEGIN")
             Dialog(onDismissRequest = { creatingSharedEvent = false }) {
                 Column(
                     modifier = Modifier
@@ -312,6 +312,8 @@ class SharedEventActivity : AppCompatActivity() {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                     )
                     Button(onClick = {
+                        Log.d("CLICKED", eventId.toString())
+                        Log.d("CLICKED", currentUser.toString())
                         coroutineScope.launch {
                             val sharedEvent = eventId?.let {
                                 currentUser?.let { it1 ->
@@ -324,7 +326,9 @@ class SharedEventActivity : AppCompatActivity() {
                                     )
                                 }
                             }
+                            Log.d("CLICKED", sharedEvent.toString())
                             if (sharedEvent != null) {
+                                Log.d("createSharedEvent", sharedEvent.toString())
                                 sharedEventRepo.updateSharedEvent(sharedEvent, ctx)
                             }
                             reloadSharedEvents()
