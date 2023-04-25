@@ -9,8 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.entities.UserType
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
@@ -47,8 +49,9 @@ fun UserInfoEdit(done: () -> Unit = {}, context: Context) {
         verticalArrangement = Arrangement.Top,
     ) {
         if (currentUser.value == null) {
-            Text("Please log in first")
+            Text(stringResource(id = R.string.please_login))
         } else {
+            val text = stringResource(id = R.string.user_update)
             currentUser.value?.let { user ->
                 // Show the user's info in a form
                 UserInfoForm(user = user) { updatedUser ->
@@ -57,7 +60,7 @@ fun UserInfoEdit(done: () -> Unit = {}, context: Context) {
                         withContext(Dispatchers.IO) {
                             userRepo.updateUser(updatedUser)
                         }
-                        Toast.makeText(context, "User info updated", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
                         done()
                     }
                 }
@@ -80,14 +83,14 @@ fun UserInfoForm(user: User, onUserInfoUpdated: (User) -> Unit) {
         OutlinedTextField(
             value = full_name.value,
             onValueChange = { full_name.value = it },
-            label = { Text("Name") },
+            label = { Text(stringResource(id = R.string.name)) },
             singleLine = true
         )
 
         OutlinedTextField(
             value = email.value,
             onValueChange = { email.value = it },
-            label = { Text("Email") },
+            label = { Text(stringResource(id = R.string.email)) },
             singleLine = true
         )
 
@@ -107,7 +110,7 @@ fun UserInfoForm(user: User, onUserInfoUpdated: (User) -> Unit) {
                 onUserInfoUpdated(updatedUser)
             }
         ) {
-            Text("Save")
+            Text(stringResource(id = R.string.save_2))
         }
     }
 }

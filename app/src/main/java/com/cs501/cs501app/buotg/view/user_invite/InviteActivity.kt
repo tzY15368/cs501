@@ -15,8 +15,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.connection.API
 import com.cs501.cs501app.buotg.database.entities.Group
 import com.cs501.cs501app.buotg.database.entities.GroupInvite
@@ -57,7 +59,7 @@ class InviteActivity : AppCompatActivity() {
 
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = "My Group Invites")
+                GenericTopAppBar(title = stringResource(id = R.string.mygroup_invites))
             }) { paddingValues ->
             Column(
                 modifier = Modifier

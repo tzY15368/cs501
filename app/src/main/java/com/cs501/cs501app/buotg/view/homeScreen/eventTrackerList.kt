@@ -43,7 +43,7 @@ fun EventTrackerList(
     val (today, past, future) = divide_events(events)
     Column(modifier = modifier) {
         ScaffoldList(
-            text = "Past",
+            text = stringResource(id = R.string.past),
             events = past,
             isExpanded = false,
             onDelete = onDelete,
@@ -51,7 +51,7 @@ fun EventTrackerList(
             onShowSharedEvents = onShowSharedEvents
         )
         ScaffoldList(
-            text = "Today",
+            text = stringResource(id = R.string.today),
             events = today,
             isExpanded = true,
             onDelete = onDelete,
@@ -59,7 +59,7 @@ fun EventTrackerList(
             onShowSharedEvents = onShowSharedEvents
         )
         ScaffoldList(
-            text = "Future",
+            text = stringResource(id = R.string.future),
             events = future,
             isExpanded = false,
             onDelete = onDelete,
@@ -99,8 +99,10 @@ fun ScaffoldList(
     if (isListExpanded) {
         if (events.isEmpty()) {
             // center text
+            //@Todo:What is the $text here?
+            val temp = stringResource(id = R.string.no_such_events) +": "+ text
             Text(
-                text = "No $text events yet.",
+                text = temp,
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
@@ -140,7 +142,7 @@ fun EventTrackerListItem(
         EventIcon(event.priority - 1)
         EventDetails(event, modifier.weight(1f))
         IconButton(onClick = { onShowSharedEvents(event) }) {
-            Icon(Icons.Default.Share, contentDescription = "Show shared events")
+            Icon(Icons.Default.Share, contentDescription = stringResource(id = R.string.show_shared))
         }
         DeleteButton(
             onDelete = {
@@ -183,10 +185,14 @@ fun EventDetails(event: Event, modifier: Modifier = Modifier) {
             text = event.event_name,
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
         )
-        Text("event_position: " + event.latitude.toString() + ", " + event.longitude.toString())
-        Text(text = "time_slot: " + event.start_time.toString() + " - " + event.end_time.toString() + " (" + event.repeat_mode.toString() + ")")
+        //@Todo: DO we need the time localized as 年月日?
+        val event_position = stringResource(id = R.string.event_position)
+        val time_slot = stringResource(id = R.string.time_slot)
+        val priority_name = stringResource(id = R.string.priority_name)
+        Text("$event_position: " + event.latitude.toString() + ", " + event.longitude.toString())
+        Text(text = "$time_slot: " + event.start_time.toString() + " - " + event.end_time.toString() + " (" + event.repeat_mode.toString() + ")")
         Text(
-            text = "priority: " + stringResource(EventPriority.values()[event.priority - 1].priority),
+            text = "$priority_name: " + stringResource(EventPriority.values()[event.priority - 1].priority),
             color = EventPriority.values()[event.priority - 1].color
         )
     }

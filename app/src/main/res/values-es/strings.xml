@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CS501App</string>
     <string name="btn_doCalc">do calc</string>
@@ -97,92 +97,82 @@
     <string name="boggle_submit">SUBMIT</string>
     <string name="boggle_new_game">NEW GAME</string>
 
-    <string name="delete">Delete</string>
-    <string name="event_priority">event_priority</string>
-    <string name="high_priority">HIGH</string>
-    <string name="medium_priority">MID</string>
-    <string name="low_priority">LOW</string>
-    <string name="event_app_name">Event_Tracker</string>
-    <string name="add_event">Add event</string>
-    <string name="bottom_sheet_headline">Edit your event</string>
-    <string name="event_name">Event Name</string>
-    <string name="event_description">Event Description</string>
-    <string name="priority">Event Priority</string>
-    <string name="cancel">CANCEL</string>
-    <string name="save">SAVE</string>
-    <string name="event_start_time">Start time</string>
+    <string name="delete">Eliminar</string>
+    <string name="event_priority">Prioridad del evento</string>
+    <string name="high_priority">ALTA</string>
+    <string name="medium_priority">MEDIA</string>
+    <string name="low_priority">BAJA</string>
+    <string name="event_app_name">Seguidor de Eventos</string>
+    <string name="add_event">Agregar evento</string>
+    <string name="bottom_sheet_headline">Editar su evento</string>
+    <string name="event_name">Nombre del evento</string>
+    <string name="event_description">Descripción del evento</string>
+    <string name="priority">Prioridad del evento</string>
+    <string name="cancel">CANCELAR</string>
+    <string name="save">GUARDAR</string>
+    <string name="event_start_time">Hora de inicio</string>
 
-    <string name="server_client_id" translatable="false">535824934955-4qkrgeoin624iegcc7upt3f88pkcle3f.apps.googleusercontent.com</string>
+    <string name="sync_data">Sincronizar datos</string>
+    <string name="language">Idioma</string>
+    <string name="sync">Sincronizar</string>
+    <string name="nologon">Sin inicio de sesión</string>
+    <string name="settings">Ajustes:</string>
+    <string name="importfrom">Importar desde Student Link</string>
+    <string name="edit_user_info">Editar información de usuario</string>
+    <string name="register_login">Iniciar sesión/Registrarse</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="please_login">Por favor, inicie sesión primero</string>
+    <string name="user_update">Información de usuario actualizada</string>
 
+    <string name="name">Nombre</string>
+    <string name="email">Correo electrónico</string>
+    <string name="save_2">Guardar</string>
+    <string name="mygroup_invites">Mis invitaciones de grupo</string>
+    <string name="group">Grupo</string>
+    <string name="invited_by">Invitado por</string>
+    <string name="accept">Aceptar</string>
+    <string name="reject">Rechazar</string>
+    <string name="user_email">Correo electrónico del usuario</string>
+    <string name="enter_user_email">Introducir el correo electrónico del usuario</string>
+    <string name="study_group">Grupos de estudio</string>
+    <string name="group_name">Nombre del grupo</string>
+    <string name="group_description">Descripción del grupo</string>
+    <string name="group_created">Grupo creado por</string>
+    <string name="group_member">Miembros del grupo</string>
+    <string name="group_invites">Invitaciones del grupo</string>
+    <string name="group_info">Información del grupo</string>
+    <string name="creator">Creador</string>
+    <string name="no_group_found">No se encontraron grupos</string>
+    <string name="create_group">Crear grupo</string>
+    <string name="join_group">Unirse a grupo</string>
+    <string name="create_a_group">Crear un grupo de estudio</string>
+    <string name="create">Crear</string>
+    <string name="send_invites">Enviar invitaciones</string>
 
-    <string name="sync_data">Sync Data</string>
-    <string name="language">Language</string>
-    <string name="sync">Sync</string>
-    <string name="nologon">No Logon</string>
-    <string name="settings">Settings</string>
-    <string name="importfrom">Import from Student Link</string>
-    <string name="edit_user_info">Edit user info</string>
-    <string name="register_login">Login/register</string>
-    <string name="logout">logout</string>
-    <string name="please_login">Please log in first</string>
-    <string name="user_update">User info updated</string>
+    <string name="past">Pasado</string>
+    <string name="today">Hoy</string>
+    <string name="future">Futuro</string>
+    <string name="no_such_events">No hay eventos</string>
+    <string name="show_shared">Mostrar eventos compartidos</string>
+    <string name="event_position">Posición del evento</string>
+    <string name="time_slot">Intervalo de tiempo</string>
+    <string name="priority_name">Prioridad</string>
+    <string name="empty_event">Evento vacío</string>
+    <string name="empty_desc">Descripción del evento vacía</string>
+    <string name="take_attendence">Tomar asistencia</string>
+    <string name="import_members">Importar miembros del grupo de estudio</string>
+    <string name="import_members_2">Importar miembros del grupo</string>
+    <string name="group_id">ID del grupo</string>
+    <string name="no_shared_event_found">No se encontraron eventos compartidos</string>
+    <string name="shared_events">Eventos compartidos</string>
+    <string name="create_shared_event">Crear evento compartido</string>
+    <string name="create_a_shared_event">Crear un evento compartido</string>
+    <string name="shared_event_name">Nombre del evento compartido</string>
+    <string name="shared_event_desc">Descripción del evento compartido</string>
 
-    <string name="name">Name</string>
-    <string name="email">Email</string>
-    <string name="save_2">Save</string>
-    <string name="mygroup_invites">My Group Invites</string>
-    <string name="group">Group</string>
-    <string name="invited_by">Invited by</string>
-    <string name="accept">Accept</string>
-    <string name="reject">Reject</string>
-    <string name="user_email">User Email</string>
-    <string name="enter_user_email">Enter User Email</string>
-    <string name="study_group">Study Groups</string>
-    <string name="group_name">Group Name</string>
-    <string name="group_description">Group Description</string>
-    <string name="group_created">Group Created By</string>
-    <string name="group_member">Group members</string>
-    <string name="group_invites">Group Invites</string>
-    <string name="group_info">Group Info</string>
-    <string name="creator">Creator</string>
-    <string name="no_group_found">No groups found</string>
-    <string name="create_group">Create group</string>
-    <string name="join_group">Join group</string>
-    <string name="create_a_group">Create a study group</string>
-    <string name="create">Create</string>
-    <string name="send_invites">Send Invites</string>
+    <string name="pick_a_start">Por favor elige una hora de inicio</string>
+    <string name="pick_a_end">Por favor elige una hora de finalización</string>
+    <string name="select_start">Seleccionar hora de inicio</string>
+    <string name="select_end">Seleccionar hora de finalización</string>
 
-    <string name="past">Past</string>
-    <string name="today">Today</string>
-    <string name="future">Future</string>
-    <string name="no_such_events">No Such Events</string>
-    <string name="show_shared">Show shared events</string>
-    <string name="event_position">Event Position</string>
-    <string name="time_slot">Time Slot</string>
-    <string name="priority_name">Priority</string>
-    <string name="empty_event">Empty Event</string>
-    <string name="empty_desc">Empty Event Description</string>
-    <string name="take_attendence">Take Attendance</string>
-    <string name="import_members">Import Study Group Members</string>
-    <string name="import_members_2">Import Group Members</string>
-    <string name="group_id">Group Id</string>
-    <string name="no_shared_event_found">No SharedEvents found</string>
-    <string name="shared_events">Shared  Events</string>
-    <string name="create_shared_event">Create SharedEvent</string>
-    <string name="create_a_shared_event">Create a Shared Event</string>
-    <string name="shared_event_name">Shared Event Name</string>
-    <string name="shared_event_desc">Shared Event Description</string>
-
-    <string name="pick_a_start">Please pick a start time</string>
-    <string name="pick_a_end">Please pick an end time</string>
-    <string name="select_start">Select start time</string>
-    <string name="select_end">Select end time</string>
-
-
-
-
-
-
-
-    <string name="cd_button_send">Send</string>
 </resources>

@@ -42,6 +42,7 @@ interface API {
         @Field("user_type") user_type: String
     ): Response<SignupResponse>
 
+
     @GET("/user")
     suspend fun getUser(@Query("user_id") id: UUID): Response<UserResponse>
 
@@ -67,6 +68,7 @@ interface API {
         @Field("desc") desc: String
     ):Response<StdResponse>
 
+
     @DELETE("/event/{int:event_id}")
     @FormUrlEncoded
     suspend fun delete_event():Response<StdResponse>
@@ -82,6 +84,7 @@ interface API {
     suspend fun delete_shared_event(
         @Field("shared_event_id") shared_event_id: UUID
     ):Response<StdResponse>
+
 
     @GET("/shared_event_participance/{int:shared_event_id}/list")
     suspend fun shared_event_participance_list():Response<SEPsResponse>
@@ -122,6 +125,7 @@ interface API {
         @Field("user_id") user_id: UUID
     ): Response<StdResponse>
 
+
     @DELETE("/group/{group_id}/list")
     suspend fun remove_group_member(
         @Path("group_id") group_id: Int,
@@ -134,6 +138,7 @@ interface API {
         @Field("group_name") group_name:String,
         @Field("desc") desc: String
     ):Response<StdResponse>
+
 
     @DELETE("/group/{group_id}'")
     suspend fun delete_group(

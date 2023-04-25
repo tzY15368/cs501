@@ -1,10 +1,14 @@
 package com.cs501.cs501app.buotg.view.homeScreen
 
+import android.content.res.Resources
+import android.util.Log
+import androidx.compose.ui.res.stringResource
 import android.content.Context
 import android.util.Log
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.CURRENT_USER_ID
 import com.cs501.cs501app.buotg.database.repositories.EventRepository
 import com.cs501.cs501app.buotg.database.entities.Event

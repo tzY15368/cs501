@@ -21,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +31,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.connection.API
 import com.cs501.cs501app.buotg.database.entities.Group
 import com.cs501.cs501app.buotg.database.entities.GroupInvite
@@ -64,7 +66,7 @@ fun LeaveGroupBtn(groupID: Int, userId: UUID, callback: suspend () -> Unit) {
         // use the Icons.Outlined.Delete
         Icon(
             Icons.Outlined.ExitToApp,
-            contentDescription = "Delete",
+            contentDescription = stringResource(id = R.string.delete),
             modifier = Modifier.size(20.dp)
         )
     }
@@ -117,8 +119,8 @@ class StudyGroupActivity : AppCompatActivity() {
                 onValueChange = {
                     userEmail = it
                 },
-                label = { Text("User Email") },
-                placeholder = { Text("Enter User Email") },
+                label = { Text(stringResource(id = R.string.user_email)) },
+                placeholder = { Text(stringResource(id = R.string.enter_user_email)) },
                 leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) },
                 //add function for trailing icon
                 singleLine = true,
@@ -130,7 +132,7 @@ class StudyGroupActivity : AppCompatActivity() {
                     loading.value = false
                 }
             }, enabled = !loading.value) {
-                Text("Send Invite")
+                Text(stringResource(id = R.string.send_invites))
             }
         }
     }
@@ -181,7 +183,8 @@ class StudyGroupActivity : AppCompatActivity() {
         }
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = "Study Groups: ${group?.group_name}")
+                val study_group = stringResource(id = R.string.study_group)
+                GenericTopAppBar(title = "$study_group: ${group?.group_name}")
             }
         ) { paddingValues ->
             Column(
@@ -190,16 +193,21 @@ class StudyGroupActivity : AppCompatActivity() {
                     .padding(paddingValues)
                     .padding(16.dp)
             ) {
-                Text("Group Info:", fontSize = 25.sp)
+                val group_info = stringResource(id = R.string.group_info)
+                Text("$group_info:", fontSize = 25.sp)
                 group?.let {
-                    Text(text = "Group Name: ${it.group_name}", fontSize = 20.sp)
-                    Text(text = "Group Description: ${it.desc}", fontSize = 20.sp)
-                    Text(text = "Group Created By: ${groupOwner?.full_name}", fontSize = 20.sp)
+                    val group_name = stringResource(id = R.string.group_name)
+                    val group_des = stringResource(id = R.string.group_description)
+                    val group_created = stringResource(id = R.string.group_created)
+                    Text(text = "$group_name: ${it.group_name}", fontSize = 20.sp)
+                    Text(text = "$group_des: ${it.desc}", fontSize = 20.sp)
+                    Text(text = "$group_created: ${groupOwner?.full_name}", fontSize = 20.sp)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Divider()
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Group Members:", fontSize = 20.sp)
+                val members = stringResource(id = R.string.group_member)
+                Text(text = "$members:", fontSize = 20.sp)
                 LazyColumn(content = {
                     items(groupMmebers.size) { index ->
                         Row {
@@ -219,7 +227,8 @@ class StudyGroupActivity : AppCompatActivity() {
                 Spacer(modifier = Modifier.height(16.dp))
                 Divider()
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Group Invites:", fontSize = 20.sp)
+                val group_invites = stringResource(id = R.string.group_invites)
+                Text(text = "$group_invites:", fontSize = 20.sp)
                 LazyColumn(content = {
                     items(invites.size) { index ->
                         InviteRow(
@@ -275,7 +284,9 @@ class StudyGroupActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .padding(10.dp)
             ) {
-                val by = if (createdbyUser != null) " by " + createdbyUser!!.full_name else ""
+                //@TODO Is this expression fluent?
+                val creator = stringResource(id = R.string.creator)
+                val by = if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
                 Text(
                     text = group.group_name + by,
                     fontSize = 30.sp,
@@ -311,7 +322,7 @@ class StudyGroupActivity : AppCompatActivity() {
                 reloadGroups()
             }
             if (groups.isEmpty()) {
-                Text(text = "No groups found")
+                Text(text = stringResource(id = R.string.no_group_found))
             }
             Column {
                 for (group in groups) {
@@ -322,7 +333,7 @@ class StudyGroupActivity : AppCompatActivity() {
 
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = "Study Groups")
+                GenericTopAppBar(title = stringResource(id = R.string.study_group))
             }
         ) { innerPadding ->
             Column(
@@ -345,10 +356,10 @@ class StudyGroupActivity : AppCompatActivity() {
                 ) {
                     Row() {
                         Button(onClick = { creatingGroup = true }) {
-                            Text(text = "Create group")
+                            Text(text = stringResource(id = R.string.create_group))
                         }
                         Button(onClick = { joiningGroup = true }) {
-                            Text(text = "Join group")
+                            Text(text = stringResource(id = R.string.join_group))
                         }
                     }
                 }
@@ -370,17 +381,17 @@ class StudyGroupActivity : AppCompatActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
-                    Text(text = "Create a study group")
+                    Text(text = stringResource(id = R.string.create_a_group))
                     TextField(
                         value = newGroupName,
                         onValueChange = { newGroupName = it },
-                        label = { Text(text = "Group name") },
+                        label = { Text(text = stringResource(id = R.string.group_name)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                     )
                     TextField(
                         value = newGroupDesc,
                         onValueChange = { newGroupDesc = it },
-                        label = { Text(text = "Group description") },
+                        label = { Text(text = stringResource(id = R.string.group_description)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                     )
                     Button(onClick = {
@@ -390,7 +401,7 @@ class StudyGroupActivity : AppCompatActivity() {
                         }
                         creatingGroup = false
                     }) {
-                        Text(text = "Create")
+                        Text(text = stringResource(id = R.string.create))
                     }
                 }
             }

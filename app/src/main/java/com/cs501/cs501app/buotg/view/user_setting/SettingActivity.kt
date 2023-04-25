@@ -1,30 +1,30 @@
 package com.cs501.cs501app.buotg.view.user_setting
 
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.SyncRepo
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
@@ -33,6 +33,8 @@ import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
 import com.cs501.cs501app.buotg.view.user_setup.StuLinkImport
 import com.cs501.cs501app.utils.GenericTopAppBar
 import kotlinx.coroutines.*
+import java.util.*
+
 
 class SettingActivity() : AppCompatActivity() {
 
@@ -59,12 +61,13 @@ class SettingActivity() : AppCompatActivity() {
         // ViewModel to track fold state
         val foldViewModel: FoldViewModel = viewModel(factory = viewModelFactory {
             initializer {
-                FoldViewModel(listOf(false, false, false, false))
+                FoldViewModel(listOf(false, false, false, false, false))
             }
         })
         val foldStateList = foldViewModel.showListFlow
         // Collect StateFlow outside of composable
         val foldStates = foldStateList.map { it.collectAsState() }
+        val languages = listOf("English","简体中文","Español")
 
         fun updateData(){
             coroutineScope.launch {
@@ -86,9 +89,11 @@ class SettingActivity() : AppCompatActivity() {
             updateData()
         }
 
-        val userName = if (currentUser.value == null) "No logon" else currentUser.value!!.full_name
+        val userName = if (currentUser.value == null) stringResource(id = R.string.nologon)
+        else currentUser.value!!.full_name
+        val name = stringResource(id = R.string.settings)+": "+userName
         Scaffold(
-            topBar = { GenericTopAppBar(title = "Settings: $userName") }
+            topBar = { GenericTopAppBar(title = name) }
         ) { innerPadding ->
             Column(
                 modifier = Modifier
@@ -105,7 +110,7 @@ class SettingActivity() : AppCompatActivity() {
                         0,
                         foldViewModel,
                         foldStates[0],
-                        headlineText = { Text(text = "Sync data") },
+                        headlineText = { Text(text = stringResource(R.string.sync_data)) },
                         leadingContent = { Icon(Icons.Filled.Refresh, contentDescription = null) },
                         foldedContent = { SyncBtn(loading = syncInProgress, user = currentUser) },
                     )
@@ -115,7 +120,7 @@ class SettingActivity() : AppCompatActivity() {
                         1,
                         foldViewModel,
                         foldStates[1],
-                        headlineText = { Text(text = "Import from Student Link") },
+                        headlineText = { Text(text = stringResource(id = R.string.importfrom)) },
                         leadingContent = { Icon(Icons.Filled.AddCircle, contentDescription = null) },
                         foldedContent = { StuLinkImport(stepDone) },
                     )
@@ -125,17 +130,30 @@ class SettingActivity() : AppCompatActivity() {
                         2,
                         foldViewModel,
                         foldStates[2],
-                        headlineText = { Text(text = "Edit user info") },
+                        headlineText = { Text(text = stringResource(id = R.string.edit_user_info)) },
                         leadingContent = { Icon(Icons.Filled.Edit, contentDescription = null) },
                         foldedContent = { UserInfoEdit(context = ctx, done = stepDone) },
                     )
                 }
-                val headText = if (currentUser.value == null) "Login/register" else "Logout"
                 Row {
                     FoldableListItem(
                         3,
                         foldViewModel,
                         foldStates[3],
+                        headlineText = { Text(text = stringResource(R.string.language)) },
+                        leadingContent = {Icon(Icons.Filled.Settings, contentDescription = null) },
+                        foldedContent = { changes(languages, LocalConfiguration.current
+                            ,LocalContext.current)
+                        }
+                    )
+                }
+                val headText = if (currentUser.value == null) stringResource(id = R.string.register_login)
+                else stringResource(id = R.string.logout)
+                Row {
+                    FoldableListItem(
+                        4,
+                        foldViewModel,
+                        foldStates[4],
                         headlineText = { Text(text = headText) },
                         leadingContent = { Icon(Icons.Filled.Person, contentDescription = null) },
                         foldedContent = {
@@ -173,9 +191,52 @@ fun LogoutButton(loading: MutableState<Boolean>, user: MutableState<User?>) {
         // Disable button if sync is in progress
         enabled = !loading.value && user.value != null
     ) {
-        Text(text = "Logout")
+        Text(text = stringResource(id = R.string.logout))
     }
 }
+
+@Composable
+fun changes(languages:List<String>,LocalConfiguration:Configuration,LocalContext: Context){
+    var selectedLanguage by remember { mutableStateOf(LocalContext.resources.configuration.locales[0].displayName) }
+    languages.forEach { language ->
+        // Radio button for each language option
+        Row{
+            RadioButton(
+                selected = language.equals(selectedLanguage),
+                onClick = {
+                    selectedLanguage = language
+                    val lan = when(language){
+                        "English" -> "en"
+                        "简体中文" -> "zh"
+                        "Español" -> "es"
+                        else -> "en"
+                    }
+                    // Get the current configuration
+                    val configuration = LocalConfiguration
+
+                    // Create a new Locale object with the user-selected language
+                    val newLocale = Locale(lan)
+
+                    // Set the new locale in the configuration object
+                    configuration.setLocale(newLocale)
+
+                    // Update the configuration with the new locale
+                    LocalConfiguration.setTo(configuration)
+
+                    // Get the current context
+                    val context = LocalContext
+
+                    // Update the context with the new configuration
+                    context.resources.updateConfiguration(configuration, context.resources.displayMetrics)
+
+                }
+            )
+            Text(text = language)
+        }
+
+    }
+}
+
 
 @Composable
 fun SyncBtn(loading: MutableState<Boolean>, user: MutableState<User?>) {
@@ -201,7 +262,7 @@ fun SyncBtn(loading: MutableState<Boolean>, user: MutableState<User?>) {
             // Show a loading indicator if sync is in progress
             CircularProgressIndicator()
         } else {
-            Text(text = "Sync")
+            Text(text = stringResource(id = R.string.sync))
         }
     }
 }

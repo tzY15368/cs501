@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.buotg.connection.API
 import com.cs501.cs501app.buotg.database.entities.Group
@@ -19,6 +20,7 @@ import com.cs501.cs501app.buotg.database.entities.GroupInvite
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import kotlinx.coroutines.launch
+import com.cs501.cs501app.R
 
 @Composable
 fun InviteRow(groupInvite: GroupInvite, reload: suspend () -> Unit, allowModify:Boolean) {
@@ -44,8 +46,10 @@ fun InviteRow(groupInvite: GroupInvite, reload: suspend () -> Unit, allowModify:
                 .padding(8.dp)
                 .size(32.dp)
         )
-        Text(text = "Group : ${group?.group_name}")
-        Text(text = "Invited by : ${invitedBy?.full_name}")
+        val Group = stringResource(id = R.string.group)
+        val Invited_by = stringResource(id = R.string.invited_by)
+        Text(text = "$Group : ${group?.group_name}")
+        Text(text = "$Invited_by : ${invitedBy?.full_name}")
         if(allowModify){
             if (groupInvite.status != API.InviteStatus.SUCCESS) {
                 Button(onClick = {
@@ -60,7 +64,7 @@ fun InviteRow(groupInvite: GroupInvite, reload: suspend () -> Unit, allowModify:
                         reload()
                     }
                 }) {
-                    Text(text = "Accept")
+                    Text(text = stringResource(id = R.string.accept))
                 }
             }
             if (groupInvite.status != API.InviteStatus.FAIL) {
@@ -76,7 +80,7 @@ fun InviteRow(groupInvite: GroupInvite, reload: suspend () -> Unit, allowModify:
                         reload()
                     }
                 }) {
-                    Text(text = "Reject")
+                    Text(text = stringResource(id = R.string.reject))
                 }
             }
         }

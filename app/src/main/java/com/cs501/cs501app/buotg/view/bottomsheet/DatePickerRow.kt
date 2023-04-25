@@ -12,8 +12,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.unit.dp
+import com.cs501.cs501app.R
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.*
 
@@ -72,7 +74,7 @@ fun DatePickerRow(
                     text = if (selectedStartDateText.isNotEmpty()) {
                         "$selectedStartDateText - $selectedStartTimeText"
                     } else {
-                        "Please pick a start time"
+                        stringResource(id = R.string.pick_a_start)
                     }
                 )
                 Log.d("DatePickerRow", "Selected start time is $selectedStartDateText")
@@ -82,7 +84,7 @@ fun DatePickerRow(
                         datePickerStart.show()
                     }
                 ) {
-                    Text(text = "Select start time")
+                    Text(text = stringResource(id = R.string.select_start))
                 }
             }
             Column() {
@@ -90,7 +92,7 @@ fun DatePickerRow(
                     text = if (selectedEndDateText.isNotEmpty()) {
                         "$selectedEndDateText - $selectedEndTimeText"
                     } else {
-                        "Please pick an end time"
+                        stringResource(id = R.string.pick_a_end)
                     }
                 )
                 Log.d("DatePickerRow", "Selected end time is $selectedEndDateText")
@@ -100,7 +102,7 @@ fun DatePickerRow(
                         datePickerEnd.show()
                     }
                 ) {
-                    Text(text = "Select end time")
+                    Text(text = stringResource(id = R.string.select_end))
                 }
             }
         }
