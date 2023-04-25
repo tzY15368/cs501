@@ -74,11 +74,9 @@ interface API {
     suspend fun delete_event():Response<StdResponse>
 
     @GET("/shared_event/{int:event_id}")
-    @FormUrlEncoded
-    suspend fun get_shared_event():Response<SharedEventListResponse>
+    suspend fun get_shared_event(@Path("event_id") event_id: Int):Response<SharedEventListResponse>
 
     @POST("/shared_event/{int:event_id}")
-    @FormUrlEncoded
     suspend fun create_shared_event():Response<StdResponse>
 
     @DELETE("/shared_event")
@@ -89,7 +87,6 @@ interface API {
 
 
     @GET("/shared_event_participance/{int:shared_event_id}/list")
-    @FormUrlEncoded
     suspend fun shared_event_participance_list():Response<SEPsResponse>
 
 

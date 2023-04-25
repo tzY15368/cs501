@@ -206,7 +206,7 @@ fun StuLinkImport(done: () -> Unit = {}) {
             Button(onClick = {
                 coroutineScope.launch {
                     Log.d("StudentlinkImport", "ok")
-                    AppRepository.get().eventRepo().upsertAll(eventsState)
+                    AppRepository.get().eventRepo().upsertAll(ctx, eventsState)
                     TAlert.success(ctx, "ok")
                     done()
                 }

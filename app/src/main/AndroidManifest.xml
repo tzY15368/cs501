@@ -18,7 +18,7 @@
         android:theme="@style/Theme.CS501App"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity android:name=".buotg.view.user_map.mapActivity"
+        <activity android:name=".buotg.view.user_map.MapViewActivity"
             android:exported="false" />
         <activity
             android:name=".buotg.view.user_invite.InviteActivity"
@@ -27,7 +27,13 @@
             android:name=".buotg.view.user_group.StudyGroupActivity"
             android:exported="false" />
         <activity
+            android:name=".buotg.view.thirdParty.chatRoom.ChatRoomActivity"
+            android:exported="false" />
+        <activity
             android:name=".buotg.view.user_setting.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".buotg.view.homeScreen.SharedEventActivity"
             android:exported="false" />
         <activity
             android:name=".buotg.view.user_setup.SetupActivity"

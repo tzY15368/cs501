@@ -1,6 +1,7 @@
 package com.cs501.cs501app.buotg.view.homeScreen
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.clickable
@@ -90,10 +91,12 @@ class SharedEventActivity : AppCompatActivity() {
     val userRepo = AppRepository.get().userRepo()
     val sharedEventRepo = AppRepository.get().sharedEventRepo()
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
-    val eventId = intent.getStringExtra("eventId")?.let { UUID.fromString(it) }
+    var eventId : UUID? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        eventId = intent.getStringExtra("eventId")?.let { UUID.fromString(it) }
+        Log.d("SharedEventActivity", "eventId: $eventId")
         setContent {
             MaterialTheme {
                 SharedEventNavHost()
@@ -106,16 +109,17 @@ class SharedEventActivity : AppCompatActivity() {
 
     ) {
         val navController = rememberNavController()
-        val startDestination = "event/{eventId}"
+        val startDestination = "event/sharedEvents"
+        Log.d("SharedEventActivity", "destination: $startDestination")
         NavHost(navController = navController, startDestination = startDestination) {
-            composable("event/{eventId}/sharedEvents") { backStackEntry ->
-                println(backStackEntry.arguments)
+            composable("event/sharedEvents") { backStackEntry ->
+                Log.d("SharedEventActivityback1", "arguments: ${backStackEntry.arguments}")
                 ShowView(onNavigateToSharedEventDetails = {
-                    navController.navigate("event/{eventId}/sharedEvent/$it")
+                    navController.navigate("event/sharedEvent/$it")
                 })
             }
-            composable("sharedEvents/{sharedEventId}") { backStackEntry ->
-                println(backStackEntry.arguments)
+            composable("event/sharedEvent/{sharedEventId}") { backStackEntry ->
+                Log.d("SharedEventActivityback2", "arguments: ${backStackEntry.arguments}")
                 SharedEventDetail(Integer.parseInt(backStackEntry.arguments?.getString("sharedEventId")))
             }
         }
