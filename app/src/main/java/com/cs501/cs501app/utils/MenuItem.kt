@@ -6,5 +6,6 @@ data class MenuItem(
     val id: Int,
     val title: String,
     val contentDescription: String,
-    val icon: ImageVector
+    val icon: ImageVector,
+    val bindClass: Class<*>
 )

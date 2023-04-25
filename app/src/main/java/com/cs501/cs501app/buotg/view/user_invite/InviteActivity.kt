@@ -65,7 +65,7 @@ class InviteActivity : AppCompatActivity() {
                     scope.launch {
                         scaffoldState.drawerState.open()
                     }
-                })
+                }, finished = {finish()})
             }) { paddingValues ->
             Column(
                 modifier = Modifier

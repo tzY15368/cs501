@@ -37,7 +37,6 @@ class HomeActivity : AppCompatActivity() {
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter",
         "UnusedMaterial3ScaffoldPaddingParameter"
     )
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent{
@@ -53,7 +52,8 @@ class HomeActivity : AppCompatActivity() {
                                 scope.launch {
                                     scaffoldState.drawerState.open()
                                 }
-                            }
+                            },
+                            hasNavMenu = true
                         )
                     },
                     drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
@@ -69,24 +69,6 @@ class HomeActivity : AppCompatActivity() {
     }
 }
 
-
-
-fun onClickActivity(ctx: Context, activityIdx: Int){
-    val activity = activities[activityIdx]
-    val intent = Intent(ctx, activity.java)
-    startActivity(ctx, intent, null)
-}
-val activities = listOf(
-    HomeActivity::class,
-    SetupActivity::class,
-    SettingActivity::class,
-    StudyGroupActivity::class,
-    SharedEventActivity::class,
-    MapViewActivity::class,
-    InviteActivity::class,
-    ChatRoomActivity::class,
-    MainActivity::class
-)
 @Composable
 fun NavDrawer(){
     val ctx = LocalContext.current
@@ -97,54 +79,56 @@ fun NavDrawer(){
                 id = 0,
                 title = "Home",
                 contentDescription = "Goto home",
-                icon = Icons.Default.Home
+                icon = Icons.Default.Home,
+                bindClass = HomeActivity::class.java
             ),
             MenuItem(
                 id = 1,
                 title = "Setting",
                 contentDescription = "Goto setting",
-                icon = Icons.Default.Settings
+                icon = Icons.Default.Settings,
+                bindClass = SettingActivity::class.java
             ),
             MenuItem(
                 id = 2,
                 title = "Setup",
                 contentDescription = "Goto setup",
-                icon = Icons.Default.Info
+                icon = Icons.Default.Info,
+                bindClass = SetupActivity::class.java
             ),
             MenuItem(
                 id = 3,
                 title = "Study Group",
                 contentDescription = "Goto Study Group",
-                icon = Icons.Default.Info
+                icon = Icons.Default.Info,
+                bindClass = StudyGroupActivity::class.java
             ),
             MenuItem(
                 id = 4,
-                title = "SharedEvent",
-                contentDescription = "Goto Shared Event",
-                icon = Icons.Default.Info
+                title = "Map View",
+                contentDescription = "Goto Map View",
+                icon = Icons.Default.Info,
+                bindClass = MapViewActivity::class.java
             ),
             MenuItem(
                 id = 5,
-                title = "Map View",
-                contentDescription = "Goto Map View",
-                icon = Icons.Default.Info
+                title = "Invite",
+                contentDescription = "Goto My Invite",
+                icon = Icons.Default.Info,
+                bindClass = InviteActivity::class.java
             ),
             MenuItem(
                 id = 6,
-                title = "Invite",
-                contentDescription = "Goto Invite",
-                icon = Icons.Default.Info
-            ),
-            MenuItem(
-                id = 7,
                 title = "Chat Room",
-                contentDescription = "Goto Chat Room",
-                icon = Icons.Default.Info
+                contentDescription = "Goto Chat Room (Groups)",
+                icon = Icons.Default.Info,
+                bindClass = ChatRoomActivity::class.java
             ),
         ),
         onItemClick = {
             println("Clicked on ${it.title}")
-            onClickActivity(ctx, activityIdx = it.id)
+            val intent = Intent(ctx, it.bindClass)
+            startActivity(ctx, intent, null)
         }
     )
 }

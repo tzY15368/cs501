@@ -252,7 +252,8 @@ class SharedEventActivity : AppCompatActivity() {
                     scope.launch {
                         scaffoldState.drawerState.open()
                     }
-                })
+                },
+                finished = {finish()})
             }
         ) { innerPadding ->
             Column(

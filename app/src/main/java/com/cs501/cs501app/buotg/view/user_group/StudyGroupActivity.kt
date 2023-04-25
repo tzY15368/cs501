@@ -118,9 +118,14 @@ class StudyGroupActivity : AppCompatActivity() {
         val ctx = LocalContext.current
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            CustomTextField(value = userEmail, onValueChange = {
-                userEmail = it
-            }, label = stringResource(id = R.string.user_email),placeholder = { Text(stringResource(id = R.string.enter_user_email)) }, leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) })
+            CustomTextField(
+                value = userEmail,
+                onValueChange = {
+                    userEmail = it
+                },
+                label = stringResource(id = R.string.user_email),
+                placeholder = { Text(stringResource(id = R.string.enter_user_email)) },
+                leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) })
             CustomButton(onClick = {
                 coroutineScope.launch {
                     loading.value = true
@@ -147,7 +152,7 @@ class StudyGroupActivity : AppCompatActivity() {
                 group = it.group
                 groupOwner = userRepo.fetchUser(ctx, it.group.owner_id)
                 currentUser = userRepo.getCurrentUser()
-                if(group==null){
+                if (group == null) {
                     return
                 }
 
@@ -181,11 +186,14 @@ class StudyGroupActivity : AppCompatActivity() {
         Scaffold(
             topBar = {
                 val study_group = stringResource(id = R.string.study_group)
-                GenericTopAppBar(title = "$study_group: ${group?.group_name}",                            onNavigationIconClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                })
+                GenericTopAppBar(
+                    title = "$study_group: ${group?.group_name}",
+                    onNavigationIconClick = {
+                        scope.launch {
+                            scaffoldState.drawerState.open()
+                        }
+                    },
+                    finished = { finish() })
             }
         ) { paddingValues ->
             Column(
@@ -249,7 +257,7 @@ class StudyGroupActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun nothing(){}
+    suspend fun nothing() {}
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -287,7 +295,8 @@ class StudyGroupActivity : AppCompatActivity() {
             ) {
                 //@TODO Is this expression fluent?
                 val creator = stringResource(id = R.string.creator)
-                val by = if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
+                val by =
+                    if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
                 Text(
                     text = group.group_name + by,
                     fontSize = 30.sp,
@@ -336,11 +345,14 @@ class StudyGroupActivity : AppCompatActivity() {
         val scope = rememberCoroutineScope()
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = stringResource(id = R.string.study_group),                            onNavigationIconClick = {
-                    scope.launch {
-                        scaffoldState.drawerState.open()
-                    }
-                })
+                GenericTopAppBar(
+                    title = stringResource(id = R.string.study_group),
+                    onNavigationIconClick = {
+                        scope.launch {
+                            scaffoldState.drawerState.open()
+                        }
+                    },
+                    finished = { finish() })
             }
         ) { innerPadding ->
             Column(
@@ -362,8 +374,14 @@ class StudyGroupActivity : AppCompatActivity() {
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Row() {
-                        CustomButton(onClick = { creatingGroup = true }, text = stringResource(id = R.string.create_group))
-                        CustomButton(onClick = { joiningGroup = true }, text = stringResource(id = R.string.join_group))
+                        CustomButton(
+                            onClick = { creatingGroup = true },
+                            text = stringResource(id = R.string.create_group)
+                        )
+                        CustomButton(
+                            onClick = { joiningGroup = true },
+                            text = stringResource(id = R.string.join_group)
+                        )
                     }
                 }
 
@@ -385,8 +403,18 @@ class StudyGroupActivity : AppCompatActivity() {
                     verticalArrangement = Arrangement.Center,
                 ) {
                     CustomText(text = stringResource(id = R.string.create_a_group))
-                    CustomTextField(value = newGroupName, onValueChange = { newGroupName = it }, label = stringResource(id = R.string.group_name),keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text))
-                    CustomTextField(value = newGroupDesc, onValueChange = { newGroupDesc = it }, label = stringResource(id = R.string.group_description),keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text))
+                    CustomTextField(
+                        value = newGroupName,
+                        onValueChange = { newGroupName = it },
+                        label = stringResource(id = R.string.group_name),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                    )
+                    CustomTextField(
+                        value = newGroupDesc,
+                        onValueChange = { newGroupDesc = it },
+                        label = stringResource(id = R.string.group_description),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                    )
                     CustomButton(onClick = {
                         coroutineScope.launch {
                             groupRepo.createGroup(ctx, newGroupName, newGroupDesc)

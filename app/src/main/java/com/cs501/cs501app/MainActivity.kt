@@ -57,33 +57,28 @@ class MainActivity : AppCompatActivity() {
                                 scope.launch {
                                     scaffoldState.drawerState.open()
                                 }
-                            }
+                            },
+                            hasNavMenu = true
                         )
                     },
                     drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
                     drawerContent = {
-                        Row(){
+                        Row() {
 
                             Ping()
                         }
 
-                        Row(){
+                        Row() {
                             ActivityEntry(activityIdx = 0)
                         }
                     }
-                ){
+                ) {
 
                     KVInterface()
                 }
             }
         }
     }
-
-
-
-
-
-
 
 
     @Composable
@@ -100,7 +95,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    fun Ping(){
+    fun Ping() {
         val coroutineScope = rememberCoroutineScope()
         val ctx = LocalContext.current
         Button(onClick = {
