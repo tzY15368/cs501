@@ -42,61 +42,6 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private val activities = listOf(
-        HomeActivity::class,
-        SetupActivity::class,
-        SettingActivity::class,
-        StudyGroupActivity::class,
-        SharedEventActivity::class,
-        MapViewActivity::class,
-        InviteActivity::class,
-        ChatRoomActivity::class,
-//        Calc1Activity::class,
-//        Calc2Activity::class,
-//        GeoQuizActivity::class,
-//        TempConvActivity::class,
-//        FCLoginActivity::class,
-//        CriminalIntentActivity::class,
-//        HangManActivity::class,
-//        BoggleActivity::class,
-    )
-
-
-//    fun onCreate1(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContent {
-//            MaterialTheme {
-//                Scaffold(
-//                    topBar = {
-//                        GenericTopAppBar()
-//                    },
-//                    content = { innerPadding ->
-//                        // center the column
-//                        Column(
-//                            modifier = Modifier
-//                                .padding(innerPadding)
-//                                .padding(16.dp)
-//                                .fillMaxWidth()
-//                                .fillMaxHeight()
-//                                .verticalScroll(rememberScrollState()),
-//                            horizontalAlignment = Alignment.CenterHorizontally,
-//                            verticalArrangement = Arrangement.Center,
-//                        ) {
-//                            activities.forEachIndexed { idx, _ ->
-//                                ActivityEntry(idx)
-//                            }
-//                            Divider()
-//                            Ping()
-//                            Divider()
-//                            KVInterface()
-//                        }
-//                    }
-//                )
-//            }
-//        }
-//    }
-
-
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,89 +62,39 @@ class MainActivity : AppCompatActivity() {
                     },
                     drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
                     drawerContent = {
-                        DrawerHeader()
-                        DrawerBody(
-                            items = listOf(
-                                MenuItem(
-                                    id = 0,
-                                    title = "Home",
-                                    contentDescription = "Goto home",
-                                    icon = Icons.Default.Home
-                                ),
-                                MenuItem(
-                                    id = 1,
-                                    title = "Setting",
-                                    contentDescription = "Goto setting",
-                                    icon = Icons.Default.Settings
-                                ),
-                                MenuItem(
-                                    id = 2,
-                                    title = "Setup",
-                                    contentDescription = "Goto setup",
-                                    icon = Icons.Default.Info
-                                ),
-                                MenuItem(
-                                    id = 3,
-                                    title = "Study Group",
-                                    contentDescription = "Goto Study Group",
-                                    icon = Icons.Default.Info
-                                ),
-                                MenuItem(
-                                    id = 4,
-                                    title = "SharedEvent",
-                                    contentDescription = "Goto Shared Event",
-                                    icon = Icons.Default.Info
-                                ),
-                                MenuItem(
-                                    id = 5,
-                                    title = "Map View",
-                                    contentDescription = "Goto Map View",
-                                    icon = Icons.Default.Info
-                                ),
-                                MenuItem(
-                                    id = 6,
-                                    title = "Invite",
-                                    contentDescription = "Goto Invite",
-                                    icon = Icons.Default.Info
-                                ),
-                                MenuItem(
-                                    id = 7,
-                                    title = "Chat Room",
-                                    contentDescription = "Goto Chat Room",
-                                    icon = Icons.Default.Info
-                                ),
-                            ),
-                            onItemClick = {
-                                println("Clicked on ${it.title}")
-                                onClickActivity(activityIdx = it.id)
-                            }
-                        )
+                        Row(){
+
+                            Ping()
+                        }
+
+                        Row(){
+                            ActivityEntry(activityIdx = 0)
+                        }
                     }
-                ){}
+                ){
+
+                    KVInterface()
+                }
             }
         }
     }
 
 
-    fun onClickActivity(activityIdx: Int){
-        val activity = activities[activityIdx]
-        val intent = Intent(this, activity.java)
-        startActivity(intent)
-    }
+
+
+
 
 
 
     @Composable
     fun ActivityEntry(activityIdx: Int) {
-        val activity = activities[activityIdx]
-        val simpleName = activity.java.simpleName.replace("Activity", "")
         Button(
             onClick = {
-                val intent = Intent(this, activity.java)
+                val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
             }
         ) {
-            Text(text = "Goto $simpleName")
+            Text(text = "Goto home")
         }
         Spacer(modifier = Modifier.padding(8.dp))
     }
