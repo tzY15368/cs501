@@ -197,12 +197,12 @@ fun LogoutButton(loading: MutableState<Boolean>, user: MutableState<User?>) {
 
 @Composable
 fun changes(languages:List<String>,LocalConfiguration:Configuration,LocalContext: Context){
-    var selectedLanguage by remember { mutableStateOf(languages.first()) }
+    var selectedLanguage by remember { mutableStateOf(LocalContext.resources.configuration.locales[0].displayName) }
     languages.forEach { language ->
         // Radio button for each language option
         Row{
             RadioButton(
-                selected = language == selectedLanguage,
+                selected = language.equals(selectedLanguage),
                 onClick = {
                     selectedLanguage = language
                     val lan = when(language){
