@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.cs501.cs501app.buotg.CustomButton
 import com.cs501.cs501app.buotg.database.entities.Event
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.utils.TAlert
@@ -203,23 +204,19 @@ fun StuLinkImport(done: () -> Unit = {}) {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(onClick = {
+            CustomButton(onClick = {
                 coroutineScope.launch {
                     Log.d("StudentlinkImport", "ok")
                     AppRepository.get().eventRepo().upsertAll(ctx, eventsState)
                     TAlert.success(ctx, "ok")
                     done()
                 }
-            }) {
-                Text(text = "ok")
-            }
-            Button(onClick = {
+            }, text = "ok")
+            CustomButton(onClick = {
                 Log.d("StudentlinkImport", "cancel")
                 TAlert.fail(ctx, "canceled, you may retry at any time")
                 done()
-            }) {
-                Text(text = "cancel")
-            }
+            }, text ="cancel" )
         }
         return
     }
@@ -265,15 +262,13 @@ fun StuLinkImport(done: () -> Unit = {}) {
         Text(text = "Current URL: $url")
         // 10dp padding
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = {
+        CustomButton({
             coroutineScope.launch {
                 Log.d("StuLinkImport", "html: ${html.length}")
                 parseHTML(html, eventsState)
                 setShowConfirm(true)
             }
-        }, enabled = ("?ModuleName=allsched.pl" in url || "CURRENT SCHEDULE" in html)) {
-            Text(text = "Import")
-        }
+        }, text = "Import",enabled = ("?ModuleName=allsched.pl" in url || "CURRENT SCHEDULE" in html))
     }
 }
 

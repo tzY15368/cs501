@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.util.Log
 import androidx.compose.ui.res.stringResource
 import android.content.Context
-import android.util.Log
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.ExitToApp
+import androidx.compose.material.rememberScaffoldState
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -32,6 +33,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.CustomButton
+import com.cs501.cs501app.buotg.CustomText
+import com.cs501.cs501app.buotg.CustomTextField
 import com.cs501.cs501app.buotg.connection.API
 import com.cs501.cs501app.buotg.database.entities.Group
 import com.cs501.cs501app.buotg.database.entities.GroupInvite
@@ -114,26 +118,16 @@ class StudyGroupActivity : AppCompatActivity() {
         val ctx = LocalContext.current
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            TextField(
-                value = userEmail,
-                onValueChange = {
-                    userEmail = it
-                },
-                label = { Text(stringResource(id = R.string.user_email)) },
-                placeholder = { Text(stringResource(id = R.string.enter_user_email)) },
-                leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) },
-                //add function for trailing icon
-                singleLine = true,
-            )
-            Button(onClick = {
+            CustomTextField(value = userEmail, onValueChange = {
+                userEmail = it
+            }, label = stringResource(id = R.string.user_email),placeholder = { Text(stringResource(id = R.string.enter_user_email)) }, leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) })
+            CustomButton(onClick = {
                 coroutineScope.launch {
                     loading.value = true
                     inviteRepo.upsertInvite(ctx, groupID, userEmail, API.InviteStatus.PENDING)
                     loading.value = false
                 }
-            }, enabled = !loading.value) {
-                Text(stringResource(id = R.string.send_invites))
-            }
+            }, enabled = !loading.value, text = stringResource(id = R.string.send_invites))
         }
     }
 
@@ -181,10 +175,17 @@ class StudyGroupActivity : AppCompatActivity() {
         LaunchedEffect(true) {
             loadGroup()
         }
+        val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
+
         Scaffold(
             topBar = {
                 val study_group = stringResource(id = R.string.study_group)
-                GenericTopAppBar(title = "$study_group: ${group?.group_name}")
+                GenericTopAppBar(title = "$study_group: ${group?.group_name}",                            onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                })
             }
         ) { paddingValues ->
             Column(
@@ -331,9 +332,15 @@ class StudyGroupActivity : AppCompatActivity() {
             }
         }
 
+        val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = stringResource(id = R.string.study_group))
+                GenericTopAppBar(title = stringResource(id = R.string.study_group),                            onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                })
             }
         ) { innerPadding ->
             Column(
@@ -355,12 +362,8 @@ class StudyGroupActivity : AppCompatActivity() {
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Row() {
-                        Button(onClick = { creatingGroup = true }) {
-                            Text(text = stringResource(id = R.string.create_group))
-                        }
-                        Button(onClick = { joiningGroup = true }) {
-                            Text(text = stringResource(id = R.string.join_group))
-                        }
+                        CustomButton(onClick = { creatingGroup = true }, text = stringResource(id = R.string.create_group))
+                        CustomButton(onClick = { joiningGroup = true }, text = stringResource(id = R.string.join_group))
                     }
                 }
 
@@ -381,28 +384,16 @@ class StudyGroupActivity : AppCompatActivity() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
-                    Text(text = stringResource(id = R.string.create_a_group))
-                    TextField(
-                        value = newGroupName,
-                        onValueChange = { newGroupName = it },
-                        label = { Text(text = stringResource(id = R.string.group_name)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-                    )
-                    TextField(
-                        value = newGroupDesc,
-                        onValueChange = { newGroupDesc = it },
-                        label = { Text(text = stringResource(id = R.string.group_description)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-                    )
-                    Button(onClick = {
+                    CustomText(text = stringResource(id = R.string.create_a_group))
+                    CustomTextField(value = newGroupName, onValueChange = { newGroupName = it }, label = stringResource(id = R.string.group_name),keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text))
+                    CustomTextField(value = newGroupDesc, onValueChange = { newGroupDesc = it }, label = stringResource(id = R.string.group_description),keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text))
+                    CustomButton(onClick = {
                         coroutineScope.launch {
                             groupRepo.createGroup(ctx, newGroupName, newGroupDesc)
                             reloadGroups()
                         }
                         creatingGroup = false
-                    }) {
-                        Text(text = stringResource(id = R.string.create))
-                    }
+                    }, text = stringResource(id = R.string.create))
                 }
             }
         }

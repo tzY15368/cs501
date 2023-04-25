@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -23,6 +24,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.cs501.cs501app.buotg.CustomButton
+import com.cs501.cs501app.buotg.CustomText
+import com.cs501.cs501app.buotg.CustomTextField
 import com.cs501.cs501app.buotg.connection.LoginResponse
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.connection.StdResponse
@@ -61,21 +65,21 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
                 return@launch
             }
             val res: StdResponse? =
-            if (isLogin.value) {
-                userRepo.userLogin(
-                    ctx,
-                    email.value,
-                    password.value
-                )
-            } else {
-                userRepo.userSignup(
-                    ctx,
-                    fullName.value,
-                    email.value,
-                    password.value,
-                    UserType.student.name
-                )
-            }
+                if (isLogin.value) {
+                    userRepo.userLogin(
+                        ctx,
+                        email.value,
+                        password.value
+                    )
+                } else {
+                    userRepo.userSignup(
+                        ctx,
+                        fullName.value,
+                        email.value,
+                        password.value,
+                        UserType.student.name
+                    )
+                }
             if (res == null) {
                 return@launch
             }
@@ -96,15 +100,9 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
         verticalArrangement = Arrangement.Top,
     ) {
 
-        Text(
-            text = "Welcome",
-            modifier = Modifier
-                .padding(top = 50.dp),
-            style = TextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 26.sp
-            )
-        )
+        CustomText("Welcome",Modifier
+            .padding(top = 50.dp),26.sp,FontWeight.Bold)
+
         if (!isLogin.value) {
             TextField(
                 modifier = Modifier
@@ -115,41 +113,22 @@ fun LoginRegister(done: () -> Unit = {}, msg: String = "") {
                 label = { Text("Full Name") },
                 placeholder = { Text("Full Name") })
         }
-        TextField(
-            modifier = Modifier
-                .padding(top = 50.dp)
-                .width(250.dp),
-            value = email.value,
-            onValueChange = { email.value = it },
-            label = { Text("Email") },
-            placeholder = { Text("Email") })
-        TextField(
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier
-                .padding(top = 50.dp)
-                .width(250.dp),
-            value = password.value,
-            onValueChange = { password.value = it },
-            label = { Text("Password") })
-        Button(
-            modifier = Modifier
-                .padding(top = 50.dp)
-                .width(250.dp),
-            shape = RoundedCornerShape(10),
-            onClick = handleSubmit
-        ) {
-            Text(text = if (isLogin.value) "Login" else "Register")
-        }
+        CustomTextField(email.value,{ email.value = it },"Email",Modifier
+            .padding(top = 50.dp)
+            .width(250.dp),{ Text("") })
+        CustomTextField(password.value, {password.value = it },"Password",modifier = Modifier
+            .padding(top = 50.dp)
+            .width(250.dp),{ Text("") },PasswordVisualTransformation())
+
+        CustomButton(handleSubmit,text = if (isLogin.value) "Login" else "Register",modifier = Modifier.padding(top = 50.dp).width(250.dp),true,10.dp)
         // text color should be grey
-        Text(
-            text = if (isLogin.value) "Don't have an account?" else "Already have an account?",
-            modifier = Modifier
-                .padding(top = 20.dp)
-                .clickable {
-                    isLogin.value = !isLogin.value
-                },
-            color = Color.Gray
-        )
+        CustomText(if (isLogin.value) "Don't have an account?" else "Already have an account?",Modifier
+            .padding(top = 20.dp)
+            .clickable {
+                isLogin.value = !isLogin.value
+            },
+            MaterialTheme.typography.body1.fontSize,null,Color.Gray)
+
         GoogleSignInButton(onSignInSuccess = {
             Log.d(
                 "email",

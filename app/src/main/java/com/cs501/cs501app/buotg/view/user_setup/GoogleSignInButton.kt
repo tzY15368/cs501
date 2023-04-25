@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -12,10 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.CustomButtonWithIcon
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -46,14 +50,9 @@ fun GoogleSignInButton(onSignInSuccess: (GoogleSignInAccount) -> Unit) {
             Log.w(TAG, "signInResult:failed code=${e.localizedMessage}")
         }
     }
-    Button(
-        modifier = Modifier
-            .width(250.dp),
-        shape = RoundedCornerShape(10),
-        onClick = { signInLauncher.launch(signInClient.signInIntent) }
-    ) {
-        Text("Sign in with Google")
-    }
+    CustomButtonWithIcon({ signInLauncher.launch(signInClient.signInIntent) },"Sign in with Google",modifier = Modifier
+        .width(250.dp),true,10.dp,icon = ImageBitmap.imageResource(
+        R.drawable.googleicon))
 }
 
 

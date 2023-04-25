@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,6 +26,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.CustomButton
+import com.cs501.cs501app.buotg.CustomText
 import com.cs501.cs501app.buotg.database.SyncRepo
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
@@ -91,9 +94,15 @@ class SettingActivity() : AppCompatActivity() {
 
         val userName = if (currentUser.value == null) stringResource(id = R.string.nologon)
         else currentUser.value!!.full_name
+        val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
         val name = stringResource(id = R.string.settings)+": "+userName
         Scaffold(
-            topBar = { GenericTopAppBar(title = name) }
+            topBar = { GenericTopAppBar(title = name,onNavigationIconClick = {
+                scope.launch {
+                    scaffoldState.drawerState.open()
+                }
+            }) }
         ) { innerPadding ->
             Column(
                 modifier = Modifier
@@ -176,23 +185,17 @@ fun LogoutButton(loading: MutableState<Boolean>, user: MutableState<User?>) {
     val userRepo = AppRepository.get().userRepo()
     val coroutineScope = rememberCoroutineScope()
     val ctx = LocalContext.current
-    Button(
-        onClick = {
-            //clear current user session
-            coroutineScope.launch {
-                Log.d("SettingActivity", "User Logout")
-                userRepo.logout()
-                user.value = null
-                // Navigate back to the setup activity
-                val intent = Intent(ctx, SetupActivity::class.java)
-                ctx.startActivity(intent)
-            }
-        },
-        // Disable button if sync is in progress
-        enabled = !loading.value && user.value != null
-    ) {
-        Text(text = stringResource(id = R.string.logout))
-    }
+    CustomButton(onClick = {
+        //clear current user session
+        coroutineScope.launch {
+            Log.d("SettingActivity", "User Logout")
+            userRepo.logout()
+            user.value = null
+            // Navigate back to the setup activity
+            val intent = Intent(ctx, SetupActivity::class.java)
+            ctx.startActivity(intent)
+        }
+    }, text = stringResource(id = R.string.logout),enabled = !loading.value && user.value != null)
 }
 
 @Composable
@@ -231,7 +234,7 @@ fun changes(languages:List<String>,LocalConfiguration:Configuration,LocalContext
 
                 }
             )
-            Text(text = language)
+            CustomText(text = language)
         }
 
     }
@@ -242,27 +245,16 @@ fun changes(languages:List<String>,LocalConfiguration:Configuration,LocalContext
 fun SyncBtn(loading: MutableState<Boolean>, user: MutableState<User?>) {
     val coroutineScope = rememberCoroutineScope()
     val ctx = LocalContext.current
-    Button(
-        onClick = {
-            // Launch a coroutine to perform sync
-            coroutineScope.launch {
-                // Set sync in progress to true
-                loading.value = true
-                // Add a delay of 1 second to simulate sync
-                delay(1000)
-                SyncRepo().sync(ctx)
-                // Set sync in progress to false
-                loading.value = false
-            }
-        },
-        // Disable button if sync is in progress
-        enabled = !loading.value && user.value != null
-    ) {
-        if (loading.value) {
-            // Show a loading indicator if sync is in progress
-            CircularProgressIndicator()
-        } else {
-            Text(text = stringResource(id = R.string.sync))
+    CustomButton(        onClick = {
+        // Launch a coroutine to perform sync
+        coroutineScope.launch {
+            // Set sync in progress to true
+            loading.value = true
+            // Add a delay of 1 second to simulate sync
+            delay(1000)
+            SyncRepo().sync(ctx)
+            // Set sync in progress to false
+            loading.value = false
         }
-    }
+    }, text = stringResource(id = R.string.sync),enabled = !loading.value && user.value != null)
 }
