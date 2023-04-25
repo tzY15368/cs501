@@ -8,15 +8,20 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.cs501.cs501app.buotg.CustomButton
 import com.cs501.cs501app.buotg.HomeActivity
+
 import com.cs501.cs501app.utils.GenericTopAppBar
+import kotlinx.coroutines.launch
 
 
 class SetupActivity : AppCompatActivity() {
@@ -47,9 +52,15 @@ class SetupActivity : AppCompatActivity() {
                 setStep(step + 1)
             }
         }
+        val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = title)
+                GenericTopAppBar(title = title,onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                }, finished = {finish()})
             }
         ) { innerPadding ->
             Column(
@@ -66,13 +77,11 @@ class SetupActivity : AppCompatActivity() {
                 when (step) {
                     0 -> LoginRegister(stepDone,"1")
                     1 -> StuLinkImport(stepDone)
-                    2 -> Button(onClick = {
+                    2 -> CustomButton(onClick = {
                         // start a new intent that goes to HomeActivity
                         val intent = Intent(this@SetupActivity, HomeActivity::class.java)
                         startActivity(intent)
-                    }) {
-                        Text(text = "Go to Home Screen")
-                    }
+                    }, "Go to Home Screen",Modifier,true,8.dp)
                 }
                 // spacer to keep things to the bottom
                 // https://stackoverflow.com/questions/70904979/how-align-to-bottom-a-row-in-jetpack-compose
@@ -84,19 +93,9 @@ class SetupActivity : AppCompatActivity() {
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     // back button, disabled if on first step
-                    Button(
-                        onClick = { setStep((step - 1) % steps2.size) },
-                        enabled = step > 0
-                    ) {
-                        Text(text = "<")
-                    }
+                    CustomButton( onClick = { setStep((step - 1) % steps2.size) }, "<",Modifier,enabled = step > 0,8.dp)
                     // next button, disabled if on last step
-                    Button(
-                        onClick = { setStep((step + 1) % steps2.size) },
-                        enabled = step < steps2.size - 1
-                    ) {
-                        Text(text = ">")
-                    }
+                    CustomButton(onClick = { setStep((step + 1) % steps2.size) }, ">",Modifier,enabled = step < steps2.size - 1,8.dp)
                 }
             }
         }

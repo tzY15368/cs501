@@ -21,6 +21,7 @@ import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import kotlinx.coroutines.launch
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.CustomButton
 
 @Composable
 fun InviteRow(groupInvite: GroupInvite, reload: suspend () -> Unit, allowModify:Boolean) {
@@ -52,7 +53,7 @@ fun InviteRow(groupInvite: GroupInvite, reload: suspend () -> Unit, allowModify:
         Text(text = "$Invited_by : ${invitedBy?.full_name}")
         if(allowModify){
             if (groupInvite.status != API.InviteStatus.SUCCESS) {
-                Button(onClick = {
+                CustomButton(onClick = {
                     coroutineScope.launch {
                         val currentUser = AppRepository.get().userRepo().getCurrentUser()
                         AppRepository.get().inviteRepository().upsertInvite(
@@ -63,12 +64,10 @@ fun InviteRow(groupInvite: GroupInvite, reload: suspend () -> Unit, allowModify:
                         )
                         reload()
                     }
-                }) {
-                    Text(text = stringResource(id = R.string.accept))
-                }
+                }, text = stringResource(id = R.string.accept))
             }
             if (groupInvite.status != API.InviteStatus.FAIL) {
-                Button(onClick = {
+                CustomButton(onClick = {
                     coroutineScope.launch {
                         val currentUser = AppRepository.get().userRepo().getCurrentUser()
                         AppRepository.get().inviteRepository().upsertInvite(
@@ -79,9 +78,7 @@ fun InviteRow(groupInvite: GroupInvite, reload: suspend () -> Unit, allowModify:
                         )
                         reload()
                     }
-                }) {
-                    Text(text = stringResource(id = R.string.reject))
-                }
+                }, text = stringResource(id = R.string.reject))
             }
         }
     }

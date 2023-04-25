@@ -10,6 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.rememberScaffoldState
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -56,10 +57,15 @@ class InviteActivity : AppCompatActivity() {
         }
 
 
-
+        val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = stringResource(id = R.string.mygroup_invites))
+                GenericTopAppBar(title = stringResource(id = R.string.mygroup_invites),                            onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                }, finished = {finish()})
             }) { paddingValues ->
             Column(
                 modifier = Modifier

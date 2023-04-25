@@ -13,6 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.CustomButton
+import com.cs501.cs501app.buotg.CustomTextField
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.entities.UserType
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
@@ -80,37 +82,19 @@ fun UserInfoForm(user: User, onUserInfoUpdated: (User) -> Unit) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.fillMaxWidth()
     ) {
-        OutlinedTextField(
-            value = full_name.value,
-            onValueChange = { full_name.value = it },
-            label = { Text(stringResource(id = R.string.name)) },
-            singleLine = true
-        )
-
-        OutlinedTextField(
-            value = email.value,
-            onValueChange = { email.value = it },
-            label = { Text(stringResource(id = R.string.email)) },
-            singleLine = true
-        )
-
-
-        Button(
-            onClick = {
-                // Create a new user object with the updated info
-                val updatedUser = User(
-                    created_at = user.created_at,
-                    full_name = full_name.value,
-                    email = email.value,
-                    user_type = user.user_type,
-                    user_id = user.user_id
-                )
-
-                // Call the onUserInfoUpdated callback to notify the caller of the updated user info
-                onUserInfoUpdated(updatedUser)
-            }
-        ) {
-            Text(stringResource(id = R.string.save_2))
-        }
+        CustomTextField(value = full_name.value, onValueChange = { full_name.value = it }, stringResource(id = R.string.name) )
+        CustomTextField(value = email.value, onValueChange = { email.value = it }, stringResource(id = R.string.email) )
+        CustomButton(onClick = {
+            // Create a new user object with the updated info
+            val updatedUser = User(
+                created_at = user.created_at,
+                full_name = full_name.value,
+                email = email.value,
+                user_type = user.user_type,
+                user_id = user.user_id
+            )
+            // Call the onUserInfoUpdated callback to notify the caller of the updated user info
+            onUserInfoUpdated(updatedUser)
+        }, text = stringResource(id = R.string.save_2))
     }
 }

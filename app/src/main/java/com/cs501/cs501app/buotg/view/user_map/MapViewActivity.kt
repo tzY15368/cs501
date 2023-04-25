@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -25,6 +27,7 @@ import com.cs501.cs501app.utils.GenericTopAppBar
 import com.cs501.cs501app.utils.TAlert
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.launch
 
 fun launchMap(ctx: Context, from: Location, to: Location) {
     val mapUrl =
@@ -99,9 +102,15 @@ class MapViewActivity : AppCompatActivity() {
     @Composable
     fun RenderScaffold() {
         val ctx = LocalContext.current
+        val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = "Map View")
+                GenericTopAppBar(title = "Map View",                            onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                }, finished = {finish()})
             }
         ) { innerPadding ->
             Column(
