@@ -24,7 +24,7 @@ class SharedEventRepo(
 
         val res = apiRequest(ctx, { API.getClient().get_shared_event(UUIDConverter.fromUUID(eventId))}) // TODO: wait for backend
         Log.d("SharedEventRepo", "getAllSharedEventByEventId: $res")
-        res?.let { db.sharedEventDao().upsertAll(it.sharedEvents) }
+        res?.let { db.sharedEventDao().upsertAll(it.shared_event) }
         return res
     }
 

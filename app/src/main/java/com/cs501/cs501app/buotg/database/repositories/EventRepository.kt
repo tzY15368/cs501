@@ -7,7 +7,6 @@ import com.cs501.cs501app.buotg.database.AppDatabase
 import com.cs501.cs501app.buotg.database.DateTimeConverter
 import com.cs501.cs501app.buotg.database.UUIDConverter
 import com.cs501.cs501app.buotg.database.entities.Event
-import com.cs501.cs501app.buotg.database.entities.apiEventToEvent
 import java.util.*
 
 class EventRepository (db: AppDatabase) : SafeAPIRequest() {

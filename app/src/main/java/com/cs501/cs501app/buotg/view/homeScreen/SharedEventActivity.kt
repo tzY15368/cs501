@@ -15,7 +15,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +33,6 @@ import com.cs501.cs501app.buotg.database.entities.SharedEventParticipance
 import com.cs501.cs501app.buotg.database.entities.Status
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
-import com.cs501.cs501app.buotg.database.repositories.SharedEventRepo
 import com.cs501.cs501app.utils.GenericTopAppBar
 import kotlinx.coroutines.launch
 import java.util.*
@@ -110,10 +108,10 @@ class SharedEventActivity : AppCompatActivity() {
 
     ) {
         val navController = rememberNavController()
-        val startDestination = "event/sharedEvents"
+        val startDestination = "event/shared_event"
         Log.d("SharedEventActivity", "destination: $startDestination")
         NavHost(navController = navController, startDestination = startDestination) {
-            composable("event/sharedEvents") { backStackEntry ->
+            composable("event/shared_event") { backStackEntry ->
                 Log.d("SharedEventActivityback1", "arguments: ${backStackEntry.arguments}")
                 ShowView(onNavigateToSharedEventDetails = {
                     navController.navigate("event/sharedEvent/$it")
@@ -154,7 +152,7 @@ class SharedEventActivity : AppCompatActivity() {
             currentUser = userRepo.getCurrentUser()
             val resp = eventId?.let { sharedEventRepo.getAllSharedEventByEventId(it,ctx) }
             if (resp != null) {
-                SharedEvents = resp.sharedEvents
+                SharedEvents = resp.shared_event
             }
         }
 

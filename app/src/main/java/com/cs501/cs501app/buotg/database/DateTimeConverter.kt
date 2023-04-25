@@ -9,8 +9,8 @@ import java.util.*
 
 class DateTimeConverter {
     @TypeConverter
-    fun fromDate(date: Date): Long {
-        return date.time
+    fun fromDate(date: Date?): Long? {
+        return date?.time
     }
     @TypeConverter
     fun toDate(millisSinceEpoch: Long): Date {
