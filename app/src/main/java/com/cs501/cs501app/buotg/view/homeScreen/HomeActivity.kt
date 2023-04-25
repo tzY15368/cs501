@@ -119,6 +119,7 @@ class HomeActivity : AppCompatActivity() {
                             onDelete = { event ->
                                 scope.launch {
                                     eventRepo.deleteEvent(context, event)
+                                    reloadEvents()
                                 }
                             },
                             onUpdate = { event ->
