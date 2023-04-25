@@ -1,6 +1,7 @@
 package com.cs501.cs501app.buotg.view.homeScreen
 
 import android.content.Intent
+import android.location.Location
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -26,9 +28,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.R
-import com.cs501.cs501app.buotg.database.entities.Event
-import com.cs501.cs501app.buotg.database.entities.EventPriority
-import com.cs501.cs501app.buotg.database.entities.SharedEvent
+import com.cs501.cs501app.buotg.database.entities.*
+import com.cs501.cs501app.buotg.view.user_map.MapViewActivity
+import com.cs501.cs501app.buotg.view.user_map.launchMap
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -143,6 +145,20 @@ fun EventTrackerListItem(
         EventDetails(event, modifier.weight(1f))
         IconButton(onClick = { onShowSharedEvents(event) }) {
             Icon(Icons.Default.Share, contentDescription = stringResource(id = R.string.show_shared))
+        }
+
+        val customLatitude = 37.4219983
+        val customLongitude = -122.084
+
+        val customLocation1 = Location("CustomProvider1")
+        customLocation1.latitude = USER_LATITUDE_VAL_FROM
+        customLocation1.longitude = USER_LONGITUDE_VAL_FROM
+        val customLocation2 = Location("CustomProvider1")
+        customLocation2.latitude = USER_LATITUDE_VAL_TO
+        customLocation2.longitude = USER_LONGITUDE_VAL_TO
+        val ctx = LocalContext.current
+        IconButton(onClick = { launchMap(ctx, customLocation1, customLocation2) }) {
+            Icon(Icons.Default.LocationOn, contentDescription = "Map")
         }
         DeleteButton(
             onDelete = {

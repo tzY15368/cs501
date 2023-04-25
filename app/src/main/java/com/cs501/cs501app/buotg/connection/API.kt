@@ -57,8 +57,8 @@ interface API {
         @Field("event_id") event_id: String,
         @Field("event_name") event_name: String,
         /** Should latitude and longtitude be in float?*/
-        @Field("latitude") latitude: Long,
-        @Field("longitude") longitude: Long,
+        @Field("latitude") latitude: Float,
+        @Field("longitude") longitude: Float,
         @Field("start_time") start_time: String,
         @Field("end_time") end_time: String,
         @Field("repeat_mode") repeat_mode: Int,

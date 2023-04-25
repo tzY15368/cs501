@@ -7,6 +7,10 @@ import java.util.UUID
 
 const val CURRENT_USER_KEY = "current_user_id"
 const val USER_TOKEN_KEY = "user_token"
+const val USER_LATITUDE_VAL_FROM= 42.3398
+const val USER_LONGITUDE_VAL_FROM = -71.0892
+const val USER_LATITUDE_VAL_TO= 42.3496
+const val USER_LONGITUDE_VAL_TO = -71.0997
 var CURRENT_USER_ID: UUID? = null
 enum class UserType{
     student,
