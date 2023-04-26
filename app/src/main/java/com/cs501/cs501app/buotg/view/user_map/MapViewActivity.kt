@@ -106,7 +106,7 @@ class MapViewActivity : AppCompatActivity() {
         val scope = rememberCoroutineScope()
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = "Map View",                            onNavigationIconClick = {
+                GenericTopAppBar(title = "Map View",  onNavigationIconClick = {
                     scope.launch {
                         scaffoldState.drawerState.open()
                     }

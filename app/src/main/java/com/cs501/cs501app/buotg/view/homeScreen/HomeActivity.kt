@@ -9,10 +9,6 @@ import com.cs501.cs501app.buotg.view.dayNightTheme.EventTrackerTheme
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Scaffold
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -21,9 +17,27 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import com.cs501.cs501app.buotg.view.bottomsheet.EventBottomSheet
 import android.util.Log
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
 import com.cs501.cs501app.buotg.database.entities.Event
+import com.cs501.cs501app.buotg.database.entities.USER_LATITUDE_VAL_TO
+import com.cs501.cs501app.buotg.database.entities.USER_LONGITUDE_VAL_TO
 import com.cs501.cs501app.buotg.database.entities.User
+import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatRoomActivity
+import com.cs501.cs501app.buotg.view.user_group.StudyGroupActivity
+import com.cs501.cs501app.buotg.view.user_invite.InviteActivity
+import com.cs501.cs501app.buotg.view.user_map.MapViewActivity
+import com.cs501.cs501app.buotg.view.user_setting.SettingActivity
+import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
+import com.cs501.cs501app.utils.DrawerBody
+import com.cs501.cs501app.utils.DrawerHeader
+import com.cs501.cs501app.utils.GenericTopAppBar
+import com.cs501.cs501app.utils.MenuItem
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -35,6 +49,29 @@ class HomeActivity : AppCompatActivity() {
         setContent{
             EventTrackerTheme {
                 EventTracker()
+                val scaffoldState = rememberScaffoldState()
+                val scope = rememberCoroutineScope()
+                androidx.compose.material.Scaffold(
+                    scaffoldState = scaffoldState,
+                    topBar = {
+                        GenericTopAppBar(
+                            title = "Event Tracker",
+                            onNavigationIconClick = {
+                                scope.launch {
+                                    scaffoldState.drawerState.open()
+                                }
+                            },
+                            hasNavMenu = true
+                        )
+                    },
+                    drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+                    drawerContent = {
+                        NavDrawer()
+                    }
+                ) {
+                        paddingVal->
+                    EventTracker()
+                }
             }
         }
     }
@@ -68,7 +105,7 @@ class HomeActivity : AppCompatActivity() {
                 runBlocking { setCURRENT_UID() }
             }
             Log.d("CURRENT_UID", events.toString())
-            currentEvent = Event(event_id = UUID.randomUUID(), event_name = "Empty Event", latitude = 1234, longitude = 9876, start_time = Date(), end_time = Date(),
+            currentEvent = Event(event_id = UUID.randomUUID(), event_name = "Empty Event", latitude = USER_LATITUDE_VAL_TO.toFloat(), longitude = USER_LONGITUDE_VAL_TO.toFloat(), start_time = Date(), end_time = Date(),
                 repeat_mode = 0, priority = 1, desc = "Empty Event description",
                 notify_time = 0)
         }
@@ -142,4 +179,68 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
+}
+
+@Composable
+fun NavDrawer(){
+    val ctx = LocalContext.current
+    DrawerHeader()
+    DrawerBody(
+        items = listOf(
+            MenuItem(
+                id = 0,
+                title = "Home",
+                contentDescription = "Goto home",
+                icon = Icons.Default.Home,
+                bindClass = HomeActivity::class.java
+            ),
+            MenuItem(
+                id = 1,
+                title = "Setting",
+                contentDescription = "Goto setting",
+                icon = Icons.Default.Settings,
+                bindClass = SettingActivity::class.java
+            ),
+            MenuItem(
+                id = 2,
+                title = "Setup",
+                contentDescription = "Goto setup",
+                icon = Icons.Default.Info,
+                bindClass = SetupActivity::class.java
+            ),
+            MenuItem(
+                id = 3,
+                title = "Study Group",
+                contentDescription = "Goto Study Group",
+                icon = Icons.Default.Info,
+                bindClass = StudyGroupActivity::class.java
+            ),
+            MenuItem(
+                id = 4,
+                title = "Map View",
+                contentDescription = "Goto Map View",
+                icon = Icons.Default.Info,
+                bindClass = MapViewActivity::class.java
+            ),
+            MenuItem(
+                id = 5,
+                title = "Invite",
+                contentDescription = "Goto My Invite",
+                icon = Icons.Default.Info,
+                bindClass = InviteActivity::class.java
+            ),
+            MenuItem(
+                id = 6,
+                title = "Chat Room",
+                contentDescription = "Goto Chat Room (Groups)",
+                icon = Icons.Default.Info,
+                bindClass = ChatRoomActivity::class.java
+            ),
+        ),
+        onItemClick = {
+            println("Clicked on ${it.title}")
+            val intent = Intent(ctx, it.bindClass)
+            startActivity(ctx, intent, null)
+        }
+    )
 }

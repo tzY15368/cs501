@@ -5,7 +5,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -146,8 +145,8 @@ suspend fun generateEvents(semester:String, name:String, instructor:String, buil
         val event = Event(
             event_id = UUID.randomUUID(),
             event_name = name,
-            latitude = 0,
-            longitude = 0,
+            latitude = 0F,
+            longitude = 0F,
             start_time = time,
             end_time = time,
             repeat_mode = 7,
