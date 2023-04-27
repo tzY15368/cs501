@@ -41,7 +41,6 @@ interface API {
         @Field("user_type") user_type: String
     ): Response<SignupResponse>
 
-
     @GET("/user")
     suspend fun getUser(@Query("user_id") id: UUID): Response<UserResponse>
 
@@ -51,6 +50,7 @@ interface API {
     @GET("/event/list")
     suspend fun event_list(): Response<EventsResponse>
 
+    //FIXME: Maybe we should Event.kt
     @POST("/event")
     @FormUrlEncoded
     suspend fun create_event(
@@ -64,7 +64,7 @@ interface API {
         @Field("repeat_mode") repeat_mode: Int,
         @Field("priority") priority: Int,
         @Field("desc") desc: String
-    ):Response<StdResponse>
+    ) : Response<StdResponse>
 
     @DELETE("/event/{event_id}")
     suspend fun delete_event(@Path("event_id") event_id: String):Response<StdResponse>
