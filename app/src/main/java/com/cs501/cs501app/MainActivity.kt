@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.cs501.cs501app.buotg.BUOTGApplication
 import com.cs501.cs501app.buotg.view.homeScreen.HomeActivity
 import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
             MaterialTheme {
                 val scaffoldState = rememberScaffoldState()
                 val scope = rememberCoroutineScope()
+                (application as BUOTGApplication).ConnectAndShowChatApp()
                 Scaffold(
                     scaffoldState = scaffoldState,
                     topBar = {

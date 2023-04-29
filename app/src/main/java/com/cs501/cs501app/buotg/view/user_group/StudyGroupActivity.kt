@@ -12,8 +12,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.rememberScaffoldState
 
@@ -42,12 +40,9 @@ import com.cs501.cs501app.buotg.database.entities.GroupInvite
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.common.UserCardView
+import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
 import com.cs501.cs501app.buotg.view.user_invite.InviteRow
 import com.cs501.cs501app.utils.GenericTopAppBar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -80,26 +75,28 @@ class StudyGroupActivity : AppCompatActivity() {
 
     val groupRepo = AppRepository.get().groupRepo()
     val userRepo = AppRepository.get().userRepo()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val targetApp = (application as ChatApplication)
+        val chatClient = (application as ChatApplication).client
+        val name = (application as ChatApplication).userName
         setContent {
             MaterialTheme {
-                GroupNavHost()
+                GroupNavHost(targetApp)
             }
         }
     }
 
     @Composable
-    fun GroupNavHost(
-
-    ) {
+    fun GroupNavHost(targetApp: ChatApplication) {
         val navController = rememberNavController()
         val startDestination = "listView"
         NavHost(navController = navController, startDestination = startDestination) {
             composable("listView") {
                 ShowView(onNavigateToGroupDetails = {
                     navController.navigate("groupDetails/$it")
-                })
+                }, targetApp)
             }
             composable("groupDetails/{groupID}") { backStackEntry ->
                 println(backStackEntry.arguments)
@@ -261,7 +258,7 @@ class StudyGroupActivity : AppCompatActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun ShowView(onNavigateToGroupDetails: (Int) -> Unit) {
+    fun ShowView(onNavigateToGroupDetails: (Int) -> Unit, targetApp: ChatApplication) {
         val coroutineScope = rememberCoroutineScope()
         val ctx = LocalContext.current
         var newGroupName by remember { mutableStateOf("") }
@@ -418,6 +415,7 @@ class StudyGroupActivity : AppCompatActivity() {
                     CustomButton(onClick = {
                         coroutineScope.launch {
                             groupRepo.createGroup(ctx, newGroupName, newGroupDesc)
+                            targetApp.create_channel("$newGroupName" + "_study_group")
                             reloadGroups()
                         }
                         creatingGroup = false
