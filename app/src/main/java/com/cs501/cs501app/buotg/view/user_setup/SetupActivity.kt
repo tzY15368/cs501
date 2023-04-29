@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.buotg.CustomButton
 import com.cs501.cs501app.buotg.view.homeScreen.HomeActivity
+import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
 import com.cs501.cs501app.utils.GenericTopAppBar
 import kotlinx.coroutines.launch
 
@@ -28,9 +29,12 @@ class SetupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val targetApp = (application as ChatApplication)
+        val chatClient = (application as ChatApplication).client
+        val name = (application as ChatApplication).userName
         setContent {
             MaterialTheme {
-                RenderScaffold()
+                RenderScaffold(targetApp)
             }
         }
     }
@@ -38,7 +42,7 @@ class SetupActivity : AppCompatActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun RenderScaffold() {
+    fun RenderScaffold(targetApp: ChatApplication) {
         val steps2 = listOf("Login/Register", "Import from studentlink","Whatelse?")
         val (step, setStep) = remember { mutableStateOf(0) }
 
@@ -74,7 +78,7 @@ class SetupActivity : AppCompatActivity() {
             ) {
                 // render the current step
                 when (step) {
-                    0 -> LoginRegister(stepDone,"1")
+                    0 -> LoginRegister(stepDone, "1", targetApp)
                     1 -> StuLinkImport(stepDone)
                     2 -> CustomButton(onClick = {
                         // start a new intent that goes to HomeActivity

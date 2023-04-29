@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +30,7 @@ import com.cs501.cs501app.buotg.CustomText
 import com.cs501.cs501app.buotg.database.SyncRepo
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
+import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
 import com.cs501.cs501app.buotg.view.user_setup.LoginRegister
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
 import com.cs501.cs501app.buotg.view.user_setup.StuLinkImport
@@ -43,16 +43,19 @@ class SettingActivity() : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val targetApp = (application as ChatApplication)
+        val chatClient = (application as ChatApplication).client
+        val name = (application as ChatApplication).userName
         setContent {
             MaterialTheme {
-                RenderScaffold()
+                RenderScaffold(targetApp)
             }
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun RenderScaffold() {
+    fun RenderScaffold(targetApp: ChatApplication) {
         val ctx = LocalContext.current
         val userRepo = AppRepository.get().userRepo()
         val coroutineScope = rememberCoroutineScope()
@@ -167,9 +170,9 @@ class SettingActivity() : AppCompatActivity() {
                         leadingContent = { Icon(Icons.Filled.Person, contentDescription = null) },
                         foldedContent = {
                             if (currentUser.value == null) {
-                                LoginRegister(stepDone)
+                                LoginRegister(stepDone, "", targetApp)
                             } else {
-                                LogoutButton(user = currentUser, loading = syncInProgress)
+                                LogoutButton(user = currentUser, loading = syncInProgress, appParam = targetApp)
                             }
                         },
                     )
@@ -181,7 +184,7 @@ class SettingActivity() : AppCompatActivity() {
 }
 
 @Composable
-fun LogoutButton(loading: MutableState<Boolean>, user: MutableState<User?>) {
+fun LogoutButton(loading: MutableState<Boolean>, user: MutableState<User?>, appParam: ChatApplication) {
     val userRepo = AppRepository.get().userRepo()
     val coroutineScope = rememberCoroutineScope()
     val ctx = LocalContext.current
@@ -191,6 +194,7 @@ fun LogoutButton(loading: MutableState<Boolean>, user: MutableState<User?>) {
             Log.d("SettingActivity", "User Logout")
             userRepo.logout()
             user.value = null
+//            appParam.clearCache.value = !appParam.clearCache.value
             // Navigate back to the setup activity
             val intent = Intent(ctx, SetupActivity::class.java)
             ctx.startActivity(intent)

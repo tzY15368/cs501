@@ -33,6 +33,7 @@ import com.cs501.cs501app.buotg.database.entities.SharedEventParticipance
 import com.cs501.cs501app.buotg.database.entities.Status
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
+import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
 import com.cs501.cs501app.utils.GenericTopAppBar
 import kotlinx.coroutines.launch
 import java.util.*
@@ -94,19 +95,20 @@ class SharedEventActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val targetApp = (application as ChatApplication)
+        val chatClient = (application as ChatApplication).client
+        val name = (application as ChatApplication).userName
         eventId = intent.getStringExtra("eventId")?.let { UUID.fromString(it) }
         Log.d("SharedEventActivity", "eventId: $eventId")
         setContent {
             MaterialTheme {
-                SharedEventNavHost()
+                SharedEventNavHost(targetApp)
             }
         }
     }
 
     @Composable
-    fun SharedEventNavHost(
-
-    ) {
+    fun SharedEventNavHost(targetApp: ChatApplication) {
         val navController = rememberNavController()
         val startDestination = "event/shared_event"
         Log.d("SharedEventActivity", "destination: $startDestination")
@@ -115,7 +117,7 @@ class SharedEventActivity : AppCompatActivity() {
                 Log.d("SharedEventActivityback1", "arguments: ${backStackEntry.arguments}")
                 ShowView(onNavigateToSharedEventDetails = {
                     navController.navigate("event/sharedEvent/$it")
-                })
+                }, targetApp)
             }
             composable("event/sharedEvent/{sharedEventId}") { backStackEntry ->
                 Log.d("SharedEventActivityback2", "arguments: ${backStackEntry.arguments}")
@@ -138,7 +140,7 @@ class SharedEventActivity : AppCompatActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun ShowView(onNavigateToSharedEventDetails: (Int) -> Unit) {
+    fun ShowView(onNavigateToSharedEventDetails: (Int) -> Unit, targetApp: ChatApplication) {
 
         val coroutineScope = rememberCoroutineScope()
         val ctx = LocalContext.current
@@ -329,6 +331,7 @@ class SharedEventActivity : AppCompatActivity() {
                                 Log.d("createSharedEvent", sharedEvent.toString())
                                 sharedEventRepo.updateSharedEvent(sharedEvent, ctx)
                             }
+                            targetApp.create_channel("$newSharedEventName" + "_shared_events")
                             reloadSharedEvents()
                         }
                         creatingSharedEvent = false
