@@ -28,7 +28,7 @@ interface EventDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(event : Event)
-
+//
 //    @Query("SELECT * FROM event WHERE created_by = :userId")
-//    suspend fun getAllEventsByUserId(userId : UUID): List<Event>
+//    suspend fun getLocation(eve : UUID): List<Event>
 }

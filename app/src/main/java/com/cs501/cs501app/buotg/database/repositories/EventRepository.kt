@@ -1,6 +1,7 @@
 package com.cs501.cs501app.buotg.database.repositories
 
 import android.content.Context
+import android.location.Location
 import android.util.Log
 import com.cs501.cs501app.buotg.connection.*
 import com.cs501.cs501app.buotg.database.AppDatabase
@@ -55,4 +56,6 @@ class EventRepository (db: AppDatabase) : SafeAPIRequest() {
 //        res?.let { dao.upsertAll(it.Events) }
         return res
     }
+
+
 }
