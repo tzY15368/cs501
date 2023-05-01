@@ -1,20 +1,19 @@
 package com.cs501.cs501app.buotg
 
-import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.LifecycleCoroutineScope
-import com.cs501.cs501app.buotg.database.entities.USER_TOKEN_KEY
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
-import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApp
+import com.cs501.cs501app.utils.CHANNEL_DESCRIPTION
+import com.cs501.cs501app.utils.CHANNEL_NAME
+import com.cs501.cs501app.utils.DEFAULT_CHANNEL_ID
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
 import io.getstream.chat.android.client.ChatClient
-import io.getstream.chat.android.client.api.models.QueryUsersRequest
 import io.getstream.chat.android.client.logger.ChatLogLevel
 import io.getstream.chat.android.client.models.*
 import io.getstream.chat.android.livedata.ChatDomain
@@ -39,6 +38,7 @@ open class BUOTGApplication: ChatApplication(), ClientProvider {
 
     override fun onCreate() {
         super.onCreate()
+        createNotificationChannel()
         client = ChatClient.Builder(appContext = this, apiKey = "s2mqsdmwr6b8")
             .logLevel(ChatLogLevel.ALL)
             .build()
@@ -50,6 +50,19 @@ open class BUOTGApplication: ChatApplication(), ClientProvider {
             connectUser()
         }
         clientInitialized.value = true
+    }
+
+    fun createNotificationChannel(){
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(DEFAULT_CHANNEL_ID, CHANNEL_NAME, importance).apply {
+            description = CHANNEL_DESCRIPTION
+        }
+        // Register the channel with the system
+        val notificationManager: NotificationManager =
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
     override suspend fun connectUser() {
