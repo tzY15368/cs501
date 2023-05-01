@@ -13,7 +13,7 @@ interface UserNotificationDao {
         notification.status = 'READ'
      */
     @Query("SELECT * from user_notification where user_id=(SELECT value FROM kv_entry WHERE key = (:userKey)) and status='UNREAD'")
-    suspend fun getUserNotifications(USER_ID_KEY:String= CURRENT_USER_KEY): List<UserNotification>
+    suspend fun getUserNotifications(userKey:String= CURRENT_USER_KEY): List<UserNotification>
 
     @Query("UPDATE user_notification SET status='READ' where notification_id in (:notificationIds)")
     suspend fun markNotificationsAsRead(notificationIds:List<UUID>)

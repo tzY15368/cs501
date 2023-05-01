@@ -1,5 +1,6 @@
 package com.cs501.cs501app.buotg.database.entities
 
+import androidx.room.Entity
 import java.util.Date
 import java.util.UUID
 
@@ -17,6 +18,7 @@ enum class NOTI_Status {
     READ
 }
 
+@Entity(tableName = "user_notification", primaryKeys = ["notification_id"])
 data class UserNotification(
     val notification_id: UUID,
     val user_id: UUID,

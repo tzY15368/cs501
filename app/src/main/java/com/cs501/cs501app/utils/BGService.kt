@@ -8,22 +8,22 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
 
 val LOCATION_NOTIFICATION_ID = 3
-
+val USER_NOTIFICATION_ID = 4
 class BGService: Service() {
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private lateinit var locationClient: DefaultLocationClient
-
+    private val taskScheduler: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
@@ -46,16 +46,8 @@ class BGService: Service() {
     }
 
     private fun start() {
-//        val notification = NotificationCompat.Builder(this, DEFAULT_CHANNEL_ID)
-//            .setContentTitle("Tracking location...")
-//            .setContentText("Location: null")
-//            .setSmallIcon(R.drawable.ic_launcher_background)
-//            .setOngoing(true)
 
         sendNotification(this, "Tracking location...", "Location: null", LOCATION_NOTIFICATION_ID,true)
-
-//        val notificationManager =
-//            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         locationClient
             .getLocationUpdates(10000L)
@@ -63,21 +55,32 @@ class BGService: Service() {
             .onEach { location ->
                 val lat = location.latitude.toString().takeLast(3)
                 val long = location.longitude.toString().takeLast(3)
-//                val updatedNotification = notification.setContentText(
-//                    "Location: ($lat, $long)"
-//                )
+
                 val updatedText = "Location: ($lat, $long)"
-                //notificationManager.notify(1, updatedNotification.build())
+
                 sendNotification(this, "Tracking location...", updatedText, LOCATION_NOTIFICATION_ID,true)
             }
             .launchIn(serviceScope)
-
-        //startForeground(1, notification.build())
+        taskScheduler.scheduleAtFixedRate({
+            Log.d("BGService", "taskScheduler every 10 seconds")
+            val notiRepo = AppRepository.get().notificationRepo()
+            val coroutineScope = CoroutineScope(Dispatchers.IO)
+            val that = this;
+            coroutineScope.launch {
+                val notis = notiRepo.pullNotifications(that)
+                for(noti in notis) {
+                    Log.d("BGService", "noti: ${noti}")
+                    sendNotification(that, noti.title, noti.notification_text, USER_NOTIFICATION_ID,false)
+                }
+            }
+        }, 0, 2, java.util.concurrent.TimeUnit.SECONDS)
     }
 
     private fun stop() {
         stopForeground(true)
+        taskScheduler.shutdown()
         stopSelf()
+
     }
 
     override fun onDestroy() {

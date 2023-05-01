@@ -32,9 +32,6 @@ class DefaultLocationClient(
                 throw Exception("GPS is disabled")
             }
 
-//            val request = LocationRequest.create()
-//                .setInterval(interval)
-//                .setFastestInterval(interval)
             val req = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, intervalMillis).build()
 
             val locationCallback = object : LocationCallback() {
