@@ -1,19 +1,15 @@
-package com.cs501.cs501app.buotg.view.common
+package com.cs501.cs501app.utils
 
 import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.view.homeScreen.HomeActivity
-import com.cs501.cs501app.utils.TAlert
 
 val DEFAULT_CHANNEL_ID = "default_channel_id"
 
@@ -23,7 +19,7 @@ val CHANNEL_DESCRIPTION = "buotg's notification channel'"
 
 
 
-fun testNoti(ctx:Context, title:String, content:String){
+fun sendNotification(ctx:Context, title:String, content:String, id:Int=0, onGoing:Boolean=false){
 
     val tapIntent = Intent(ctx, HomeActivity::class.java).apply{
         flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -32,12 +28,13 @@ fun testNoti(ctx:Context, title:String, content:String){
     val pendingIntent = PendingIntent.getActivity(ctx, 0, tapIntent, PendingIntent.FLAG_IMMUTABLE)
 
     var builder = NotificationCompat.Builder(ctx, DEFAULT_CHANNEL_ID)
-        .setSmallIcon(androidx.core.R.drawable.notification_icon_background)
+        .setSmallIcon(R.drawable.ic_launcher_background)
         .setContentTitle(title)
         .setContentText(content)
         .setContentIntent(pendingIntent)
         .setDefaults(NotificationCompat.DEFAULT_ALL)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setOngoing(onGoing)
     with(NotificationManagerCompat.from(ctx)){
         if (ActivityCompat.checkSelfPermission(
                 ctx,
@@ -54,6 +51,6 @@ fun testNoti(ctx:Context, title:String, content:String){
             TAlert.fail(ctx, "No permission to post notification")
             return
         }
-        notify(0, builder.build())
+        notify(id, builder.build())
     }
 }

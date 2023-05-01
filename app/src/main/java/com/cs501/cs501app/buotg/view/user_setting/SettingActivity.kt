@@ -68,15 +68,15 @@ class SettingActivity() : AppCompatActivity() {
         // ViewModel to track fold state
         val foldViewModel: FoldViewModel = viewModel(factory = viewModelFactory {
             initializer {
-                FoldViewModel(listOf(false, false, false, false, false))
+                FoldViewModel(listOf(false, false, false, false, false, false))
             }
         })
         val foldStateList = foldViewModel.showListFlow
         // Collect StateFlow outside of composable
         val foldStates = foldStateList.map { it.collectAsState() }
-        val languages = listOf("English","简体中文","Español")
+        val languages = listOf("English", "简体中文", "Español")
 
-        fun updateData(){
+        fun updateData() {
             coroutineScope.launch {
                 currentUser.value = withContext(Dispatchers.IO) {
                     userRepo.getCurrentUser()
@@ -100,13 +100,15 @@ class SettingActivity() : AppCompatActivity() {
         else currentUser.value!!.full_name
         val scaffoldState = rememberScaffoldState()
         val scope = rememberCoroutineScope()
-        val name = stringResource(id = R.string.settings)+": "+userName
+        val name = stringResource(id = R.string.settings) + ": " + userName
         Scaffold(
-            topBar = { GenericTopAppBar(title = name,onNavigationIconClick = {
-                scope.launch {
-                    scaffoldState.drawerState.open()
-                }
-            }, finished = {finish()}) }
+            topBar = {
+                GenericTopAppBar(title = name, onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
+                    }
+                }, finished = { finish() })
+            }
         ) { innerPadding ->
             Column(
                 modifier = Modifier
@@ -134,7 +136,12 @@ class SettingActivity() : AppCompatActivity() {
                         foldViewModel,
                         foldStates[1],
                         headlineText = { Text(text = stringResource(id = R.string.importfrom)) },
-                        leadingContent = { Icon(Icons.Filled.AddCircle, contentDescription = null) },
+                        leadingContent = {
+                            Icon(
+                                Icons.Filled.AddCircle,
+                                contentDescription = null
+                            )
+                        },
                         foldedContent = { StuLinkImport(stepDone) },
                     )
                 }
@@ -154,14 +161,17 @@ class SettingActivity() : AppCompatActivity() {
                         foldViewModel,
                         foldStates[3],
                         headlineText = { Text(text = stringResource(R.string.language)) },
-                        leadingContent = {Icon(Icons.Filled.Settings, contentDescription = null) },
-                        foldedContent = { changes(languages, LocalConfiguration.current
-                            ,LocalContext.current)
+                        leadingContent = { Icon(Icons.Filled.Face, contentDescription = null) },
+                        foldedContent = {
+                            changes(
+                                languages, LocalConfiguration.current, LocalContext.current
+                            )
                         }
                     )
                 }
-                val headText = if (currentUser.value == null) stringResource(id = R.string.register_login)
-                else stringResource(id = R.string.logout)
+                val headText =
+                    if (currentUser.value == null) stringResource(id = R.string.register_login)
+                    else stringResource(id = R.string.logout)
                 Row {
                     FoldableListItem(
                         4,
@@ -173,8 +183,24 @@ class SettingActivity() : AppCompatActivity() {
                             if (currentUser.value == null) {
                                 LoginRegister(stepDone, "", targetApp)
                             } else {
-                                LogoutButton(user = currentUser, loading = syncInProgress, appParam = targetApp)
+                                LogoutButton(
+                                    user = currentUser,
+                                    loading = syncInProgress,
+                                    appParam = targetApp
+                                )
                             }
+                        },
+                    )
+                }
+                Row {
+                    FoldableListItem(
+                        5,
+                        foldViewModel,
+                        foldStates[5],
+                        headlineText = { Text(text = stringResource(id = R.string.settings_misc)) },
+                        leadingContent = { Icon(Icons.Filled.MoreVert, contentDescription = null) },
+                        foldedContent = {
+                            ComposedMiscBtns()
                         },
                     )
                 }
@@ -185,7 +211,11 @@ class SettingActivity() : AppCompatActivity() {
 }
 
 @Composable
-fun LogoutButton(loading: MutableState<Boolean>, user: MutableState<User?>, appParam: ChatApplication) {
+fun LogoutButton(
+    loading: MutableState<Boolean>,
+    user: MutableState<User?>,
+    appParam: ChatApplication
+) {
     val userRepo = AppRepository.get().userRepo()
     val coroutineScope = rememberCoroutineScope()
     val ctx = LocalContext.current
@@ -200,21 +230,21 @@ fun LogoutButton(loading: MutableState<Boolean>, user: MutableState<User?>, appP
             val intent = Intent(ctx, SetupActivity::class.java)
             ctx.startActivity(intent)
         }
-    }, text = stringResource(id = R.string.logout),enabled = !loading.value && user.value != null)
+    }, text = stringResource(id = R.string.logout), enabled = !loading.value && user.value != null)
 }
 
 @Composable
-fun changes(languages:List<String>,LocalConfiguration:Configuration,LocalContext: Context){
+fun changes(languages: List<String>, LocalConfiguration: Configuration, LocalContext: Context) {
     var selectedLanguage by remember { mutableStateOf(LocalContext.resources.configuration.locales[0].displayName) }
     val msg = stringResource(id = R.string.language_change_success)
     languages.forEach { language ->
         // Radio button for each language option
-        Row{
+        Row {
             RadioButton(
                 selected = language.equals(selectedLanguage),
                 onClick = {
                     selectedLanguage = language
-                    val lan = when(language){
+                    val lan = when (language) {
                         "English" -> "en"
                         "简体中文" -> "zh"
                         "Español" -> "es"
@@ -236,7 +266,10 @@ fun changes(languages:List<String>,LocalConfiguration:Configuration,LocalContext
                     val context = LocalContext
 
                     // Update the context with the new configuration
-                    context.resources.updateConfiguration(configuration, context.resources.displayMetrics)
+                    context.resources.updateConfiguration(
+                        configuration,
+                        context.resources.displayMetrics
+                    )
                     TAlert.success(context, msg)
                 }
             )
@@ -251,7 +284,7 @@ fun changes(languages:List<String>,LocalConfiguration:Configuration,LocalContext
 fun SyncBtn(loading: MutableState<Boolean>, user: MutableState<User?>) {
     val coroutineScope = rememberCoroutineScope()
     val ctx = LocalContext.current
-    CustomButton(        onClick = {
+    CustomButton(onClick = {
         // Launch a coroutine to perform sync
         coroutineScope.launch {
             // Set sync in progress to true
@@ -262,5 +295,5 @@ fun SyncBtn(loading: MutableState<Boolean>, user: MutableState<User?>) {
             // Set sync in progress to false
             loading.value = false
         }
-    }, text = stringResource(id = R.string.sync),enabled = !loading.value && user.value != null)
+    }, text = stringResource(id = R.string.sync), enabled = !loading.value && user.value != null)
 }

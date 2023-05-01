@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.view.homeScreen
+package com.cs501.cs501app.buotg.view.navDrawer
 
 import android.content.Intent
 import androidx.compose.material.icons.Icons
@@ -6,18 +6,16 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
-import com.cs501.cs501app.buotg.view.navDrawer.DrawerBody
-import com.cs501.cs501app.buotg.view.navDrawer.DrawerHeader
+import com.cs501.cs501app.buotg.view.homeScreen.HomeActivity
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatRoomActivity
 import com.cs501.cs501app.buotg.view.user_group.StudyGroupActivity
 import com.cs501.cs501app.buotg.view.user_invite.InviteActivity
 import com.cs501.cs501app.buotg.view.user_map.MapViewActivity
 import com.cs501.cs501app.buotg.view.user_setting.SettingActivity
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
-import com.cs501.cs501app.buotg.view.navDrawer.MenuItem
 
 @Composable
-fun NavDrawer(reload:suspend ()->Unit={}){
+fun NavDrawer(){
     val ctx = LocalContext.current
     DrawerHeader()
     DrawerBody(
@@ -70,6 +68,5 @@ fun NavDrawer(reload:suspend ()->Unit={}){
             val intent = Intent(ctx, it.bindClass)
             ContextCompat.startActivity(ctx, intent, null)
         },
-        reload=reload
     )
 }

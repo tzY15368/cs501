@@ -165,6 +165,9 @@ interface API {
         @Field("status") status: InviteStatus
     ):Response<StdResponse>
 
+    @GET("/notification")
+    suspend fun fetch_notification():Response<NotificationResponse>
+
     @POST("ping")
     suspend fun ping(): Response<StdResponse>
 

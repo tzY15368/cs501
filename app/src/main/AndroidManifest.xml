@@ -20,6 +20,7 @@
         android:theme="@style/Theme.CS501App"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service android:name=".utils.BGService" android:foregroundServiceType="location"/>
         <activity android:name=".buotg.view.user_map.MapViewActivity"
             android:exported="false" />
         <activity
