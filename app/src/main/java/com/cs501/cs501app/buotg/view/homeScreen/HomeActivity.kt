@@ -19,11 +19,11 @@ import com.cs501.cs501app.buotg.view.bottomsheet.EventBottomSheet
 import android.util.Log
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat.startActivity
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.Event
 import com.cs501.cs501app.buotg.database.entities.USER_LATITUDE_VAL_TO
 import com.cs501.cs501app.buotg.database.entities.USER_LONGITUDE_VAL_TO
@@ -48,14 +48,15 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent{
             EventTrackerTheme {
-                EventTracker()
                 val scaffoldState = rememberScaffoldState()
                 val scope = rememberCoroutineScope()
+                val appBarName = stringResource(R.string.event_app_name)
+                EventTracker()
                 androidx.compose.material.Scaffold(
                     scaffoldState = scaffoldState,
                     topBar = {
                         GenericTopAppBar(
-                            title = "Event Tracker",
+                            title = appBarName,
                             onNavigationIconClick = {
                                 scope.launch {
                                     scaffoldState.drawerState.open()
@@ -74,6 +75,10 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     @OptIn(ExperimentalMaterialApi::class)
@@ -136,9 +141,6 @@ class HomeActivity : AppCompatActivity() {
             )
             {
                 Scaffold(
-                    topBar = {
-                        EventTrackerTopAppBar()
-                    },
                     floatingActionButton = {
                         EventTrackerFAB(
                             onClick = {
@@ -188,53 +190,46 @@ fun NavDrawer(){
     DrawerBody(
         items = listOf(
             MenuItem(
-                id = 0,
                 title = "Home",
                 contentDescription = "Goto home",
                 icon = Icons.Default.Home,
                 bindClass = HomeActivity::class.java
             ),
             MenuItem(
-                id = 1,
-                title = "Setting",
-                contentDescription = "Goto setting",
-                icon = Icons.Default.Settings,
-                bindClass = SettingActivity::class.java
-            ),
-            MenuItem(
-                id = 2,
                 title = "Setup",
                 contentDescription = "Goto setup",
-                icon = Icons.Default.Info,
+                icon = Icons.Default.AccountBox,
                 bindClass = SetupActivity::class.java
             ),
             MenuItem(
-                id = 3,
                 title = "Study Group",
                 contentDescription = "Goto Study Group",
-                icon = Icons.Default.Info,
+                icon = Icons.Default.Person,
                 bindClass = StudyGroupActivity::class.java
             ),
             MenuItem(
-                id = 4,
                 title = "Map View",
                 contentDescription = "Goto Map View",
-                icon = Icons.Default.Info,
+                icon = Icons.Default.LocationOn,
                 bindClass = MapViewActivity::class.java
             ),
             MenuItem(
-                id = 5,
                 title = "Invite",
                 contentDescription = "Goto My Invite",
                 icon = Icons.Default.Info,
                 bindClass = InviteActivity::class.java
             ),
             MenuItem(
-                id = 6,
                 title = "Chat Room",
                 contentDescription = "Goto Chat Room (Groups)",
-                icon = Icons.Default.Info,
+                icon = Icons.Default.Email,
                 bindClass = ChatRoomActivity::class.java
+            ),
+            MenuItem(
+                title = "Setting",
+                contentDescription = "Goto setting",
+                icon = Icons.Default.Settings,
+                bindClass = SettingActivity::class.java
             ),
         ),
         onItemClick = {

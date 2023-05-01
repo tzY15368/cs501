@@ -1,6 +1,7 @@
 package com.cs501.cs501app.buotg.view.user_map
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -48,6 +49,25 @@ fun launchMap(ctx: Context, from: Location, to: String) {
 private fun launchURIView(ctx: Context, uri: String) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
     startActivity(ctx, intent, null)
+}
+
+fun getCurrentLocation(activity: Activity, callback: (Location?)->Unit) {
+    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+    if (ActivityCompat.checkSelfPermission(
+            activity,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            activity,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
+    ) {
+        TAlert.fail(activity, "Permission Denied" + " Please allow location permission")
+    }
+    fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+        if (location != null) {
+            callback(location)
+        }
+    }
 }
 
 const val MAPVIEW_KEY = "MAPVIEW_KEY"
