@@ -65,7 +65,6 @@ class MainActivity : AppCompatActivity() {
                     drawerContent = {
                         Row() {
 
-                            Ping()
                         }
 
                         Row() {
@@ -74,7 +73,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 ) {
 
-                    KVInterface()
                 }
             }
         }
@@ -94,66 +92,4 @@ class MainActivity : AppCompatActivity() {
         Spacer(modifier = Modifier.padding(8.dp))
     }
 
-    @Composable
-    fun Ping() {
-        val coroutineScope = rememberCoroutineScope()
-        val ctx = LocalContext.current
-        Button(onClick = {
-            coroutineScope.launch {
-                val response = AppRepository.get().ping(ctx)
-                Log.d("Ping", "response: $response")
-                //response?.let { TAlert.success(this@MainActivity, "Ping:${response.message}") }
-            }
-        }) {
-            Text("Ping")
-        }
-    }
-
-    @Composable
-    fun KVInterface() {
-        val (key, setKey) = remember { mutableStateOf("") }
-        val (value, setValue) = remember { mutableStateOf("") }
-        val kvDao = AppRepository.get().kvDao()
-        val coroutineScope = rememberCoroutineScope()
-        Column {
-            TextField(
-                value = key,
-                onValueChange = { setKey(it) },
-                label = { Text("Key") }
-            )
-            TextField(
-                value = value,
-                onValueChange = { setValue(it) },
-                label = { Text("Value") }
-            )
-            // row of button: put, get ,delete
-            Row {
-                Button(onClick = {
-                    coroutineScope.launch {
-                        val kve = KVEntry(key, value)
-                        kvDao.put(kve)
-                        Log.d("KVInterface", "put:$kve")
-                    }
-                }) {
-                    Text("Put")
-                }
-                Button(onClick = {
-                    coroutineScope.launch {
-                        val kve = kvDao.get(key)
-                        Log.d("KVInterface", "get: $kve")
-                    }
-                }) {
-                    Text("Get")
-                }
-                Button(onClick = {
-                    coroutineScope.launch {
-                        kvDao.delete(key)
-                        Log.d("KVInterface", "delete: $key")
-                    }
-                }) {
-                    Text("Delete")
-                }
-            }
-        }
-    }
 }

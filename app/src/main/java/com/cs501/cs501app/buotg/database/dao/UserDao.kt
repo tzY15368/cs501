@@ -2,6 +2,7 @@ package com.cs501.cs501app.buotg.database.dao
 
 import androidx.room.*
 import com.cs501.cs501app.buotg.database.entities.CURRENT_USER_KEY
+import com.cs501.cs501app.buotg.database.entities.USER_TOKEN_KEY
 import com.cs501.cs501app.buotg.database.entities.User
 import java.util.UUID
 
@@ -18,8 +19,8 @@ interface UserDao{
     suspend fun getCurrentUser(userKey: String = CURRENT_USER_KEY) : User?
     // param: userKey = CURRENT_USER_KEY
 
-    @Query("DELETE FROM kv_entry WHERE key = (:userKey)")
-    suspend fun logout(userKey:String= CURRENT_USER_KEY)
+    @Query("DELETE FROM kv_entry WHERE key = (:userKey) or key = (:tokenKey)")
+    suspend fun logout(userKey:String= CURRENT_USER_KEY, tokenKey:String=USER_TOKEN_KEY)
 
     @Query("SELECT * FROM user")
     suspend fun listUsers(): List<User>

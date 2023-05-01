@@ -5,6 +5,7 @@ import com.cs501.cs501app.utils.TAlert
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
+import retrofit2.http.HTTP
 import java.io.IOException
 
 open class SafeAPIRequest {
@@ -29,7 +30,7 @@ open class SafeAPIRequest {
             } else {// otherwise decode the response body from json and look for the message field
                 val error = response.errorBody()?.string()
                 println("Error: $error")
-                val message = StringBuilder()
+                var message = StringBuilder()
                 error.let {
                     try {
                         message.append(it?.let { it1 -> JSONObject(it1).getString("message") })
@@ -38,13 +39,16 @@ open class SafeAPIRequest {
                     message.append("\n")
                 }
                 message.append("Error Code: ${response.code()}")
+                if(response.code() == 401){
+                    message.clear()
+                    message.append("Authentication failed, did you log in?")
+                }
                 throw IOException(message.toString())
             }
         } catch (e: Exception) {
-            val msg = "Error: ${e.message}"
             println("Exception: $e")
             e.printStackTrace()
-            TAlert.fail(ctx, msg)
+            e.message?.let { TAlert.fail(ctx, it) }
             // throw e
             return null
         }
