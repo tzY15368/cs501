@@ -12,7 +12,7 @@ open class SafeAPIRequest {
     // returning nullable T so that we handle errors only once here.
     // to use the value of T, do T?.let{ ... }, see the ping example
     suspend fun <T : StdResponse> apiRequest(
-        ctx: Context,
+        ctx: Context?,
         call: suspend () -> Response<T>,
         successPrompt: Boolean = true
     ): T? {
@@ -24,7 +24,9 @@ open class SafeAPIRequest {
                 // T is the type of the response body
                 println("Success: ${response.body()}")
                 if (successPrompt) {
-                    TAlert.success(ctx, response.body()!!.message)
+                    ctx?.let {
+                        TAlert.success(it, response.body()!!.message)
+                    }
                 }
                 return response.body()
             } else {// otherwise decode the response body from json and look for the message field
@@ -39,7 +41,7 @@ open class SafeAPIRequest {
                     message.append("\n")
                 }
                 message.append("Error Code: ${response.code()}")
-                if(response.code() == 401){
+                if (response.code() == 401) {
                     message.clear()
                     message.append("Authentication failed, did you log in?")
                 }
@@ -48,7 +50,9 @@ open class SafeAPIRequest {
         } catch (e: Exception) {
             println("Exception: $e")
             e.printStackTrace()
-            e.message?.let { TAlert.fail(ctx, it) }
+            e.message?.let {
+                ctx?.let { it1 -> TAlert.fail(it1, it) }
+            }
             // throw e
             return null
         }

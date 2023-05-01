@@ -175,4 +175,5 @@
     <string name="select_start">Seleccionar hora de inicio</string>
     <string name="select_end">Seleccionar hora de finalización</string>
 
+    <string name="settings_misc">Misceláneo</string>
 </resources>
