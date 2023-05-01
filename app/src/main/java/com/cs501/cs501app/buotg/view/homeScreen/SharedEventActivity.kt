@@ -45,6 +45,7 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, callback: suspend () -> 
     val ctx = LocalContext.current
     OutlinedButton(modifier = Modifier.size(30.dp),
         onClick = {
+            Log.d("CLICKED_ATTENDANCE", sharedEventId.toString())
             val prev_participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = userId, status = Status.FAIL)
             coroutineScope.launch {
                 sharedEventParticipanceRepo.deleteParticipance(prev_participance)
@@ -78,6 +79,7 @@ fun importUsersBtn(sharedEventId: Int, groupId: Int, callback: suspend () -> Uni
     val ctx = LocalContext.current
     OutlinedButton(modifier = Modifier.size(30.dp),
         onClick = {
+            Log.d("CLICKED_IMPORT", sharedEventId.toString())
             coroutineScope.launch {
                 var groupMembers = groupMemberRepo.getGroupMembersById(groupId)
                 for(gm in groupMembers) {
@@ -187,7 +189,6 @@ class SharedEventActivity : AppCompatActivity() {
                     .fillMaxWidth()
                     .padding(10.dp)
             ) {
-                //@TODO Is this expression fluent?
                 val creator = stringResource(id = R.string.creator)
                 val by = if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
                 Text(
@@ -202,8 +203,7 @@ class SharedEventActivity : AppCompatActivity() {
                         .padding(10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-//                    Text(text = SharedEvent.shared_event_id.toString(), fontSize = 15.sp)
-//                    currentUser?.let { takeAttendanceBtn(sharedEventId = SharedEvent.shared_event_id, userId = it.user_id, callback = { reloadSharedEvents() }) }
+
                     Button(onClick = { takingAttendance = true }) {
                         Text(text = stringResource(id = R.string.take_attendence))
                     }
@@ -362,6 +362,13 @@ class SharedEventActivity : AppCompatActivity() {
                             if (sharedEvent != null) {
                                 Log.d("createSharedEvent", sharedEvent.toString())
                                 sharedEventRepo.updateSharedEvent(sharedEvent, ctx)
+                            }
+                            val participance = currentUser?.let { sharedEvent?.let { it1 -> SharedEventParticipance(shared_event_id = it1.shared_event_id, user_id = it.user_id, status = Status.FAIL) } }
+                            if (participance != null) {
+                                sharedEventParticipanceRepo.updateParticipance(participance)
+                            }
+                            if (sharedEvent != null) {
+                                Log.d("ADD_PARTI", sharedEvent.event_id.toString())
                             }
                             targetApp.create_channel("$newSharedEventName" + "_shared_events")
                             reloadSharedEvents()
