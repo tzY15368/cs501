@@ -1,5 +1,9 @@
 package com.cs501.cs501app.buotg.view.homeScreen
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -7,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import com.cs501.cs501app.buotg.view.dayNightTheme.EventTrackerTheme
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -21,32 +26,52 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.coroutineScope
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.Event
 import com.cs501.cs501app.buotg.database.entities.USER_LATITUDE_VAL_TO
 import com.cs501.cs501app.buotg.database.entities.USER_LONGITUDE_VAL_TO
 import com.cs501.cs501app.buotg.database.entities.User
+import com.cs501.cs501app.buotg.view.common.CHANNEL_DESCRIPTION
+import com.cs501.cs501app.buotg.view.common.CHANNEL_NAME
+import com.cs501.cs501app.buotg.view.common.DEFAULT_CHANNEL_ID
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatRoomActivity
 import com.cs501.cs501app.buotg.view.user_group.StudyGroupActivity
 import com.cs501.cs501app.buotg.view.user_invite.InviteActivity
 import com.cs501.cs501app.buotg.view.user_map.MapViewActivity
 import com.cs501.cs501app.buotg.view.user_setting.SettingActivity
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
-import com.cs501.cs501app.utils.DrawerBody
-import com.cs501.cs501app.utils.DrawerHeader
-import com.cs501.cs501app.utils.GenericTopAppBar
-import com.cs501.cs501app.utils.MenuItem
+import com.cs501.cs501app.utils.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import java.util.*
+import java.util.concurrent.TimeUnit
+
+val POLL_STATE_KEY = "POLL_STATE_KEY"
+val WORK_NAME = "BUOTG-POLLWORKER"
 
 class HomeActivity : AppCompatActivity() {
-    val eventRepo = AppRepository.get().eventRepo()
-    val userRepo = AppRepository.get().userRepo()
+    private val coroutineScope = CoroutineScope(this.lifecycle.coroutineScope.coroutineContext)
+    override fun onStart() {
+        super.onStart()
+        createNotificationChannel()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent{
+        coroutineScope.launch {
+            setupBackgroundWork()
+        }
+        setContent {
             EventTrackerTheme {
                 val scaffoldState = rememberScaffoldState()
                 val scope = rememberCoroutineScope()
@@ -67,175 +92,67 @@ class HomeActivity : AppCompatActivity() {
                     },
                     drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
                     drawerContent = {
-                        NavDrawer()
+                        NavDrawer(reload={setupBackgroundWork()})
                     }
-                ) {
-                        paddingVal->
+                ) { paddingVal ->
                     EventTracker()
                 }
             }
         }
-    }
 
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            requestPermissions(
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                1
+            )
+            TAlert.fail(this, "No permission to post notification")
+            return
+        }
+    }
     override fun onResume() {
         super.onResume()
     }
 
-    @OptIn(ExperimentalMaterialApi::class)
-    @Composable
-    fun EventTracker(
-        modifier: Modifier = Modifier
-    ) {
-
-        val sheetState = rememberModalBottomSheetState(
-            ModalBottomSheetValue.Hidden
-        )
-        val scope = rememberCoroutineScope()
-        var currentUser by remember { mutableStateOf<User?>(null) }
-        var events by remember { mutableStateOf(listOf<Event>()) }
-        var currentEvent by remember { mutableStateOf<Event?>(null) }
-        val context = LocalContext.current
-
-        suspend fun setCURRENT_UID(): UUID {
-            return AppRepository.get().userRepo().getCurrentUser()!!.user_id
-        }
-
-        suspend fun reloadEvents() {
-            currentUser = userRepo.getCurrentUser()
-            val resp = eventRepo.listEvents(context)
-            if (resp != null) {
-                events = resp.events
-            }
-            val CURRENT_UID: UUID by lazy {
-                runBlocking { setCURRENT_UID() }
-            }
-            Log.d("CURRENT_UID", events.toString())
-            currentEvent = Event(event_id = UUID.randomUUID(), event_name = "Empty Event", latitude = USER_LATITUDE_VAL_TO.toFloat(), longitude = USER_LONGITUDE_VAL_TO.toFloat(), start_time = Date(), end_time = Date(),
-                repeat_mode = 0, priority = 1, desc = "Empty Event description",
-                notify_time = 0)
-        }
-
-        LaunchedEffect(true) {
-            reloadEvents()
-        }
-
-
-        currentEvent?.let {
-            EventBottomSheet(
-                event = it,
-                modifier = modifier,
-                onCancel = {
-                    scope.launch {
-                        sheetState.hide()
-                    }
-                },
-                onSubmit = { updatedEvent ->
-                    scope.launch {
-                        eventRepo.upsertEvent(context, updatedEvent)
-                        sheetState.hide()
-                        Log.d("EventTracker", "Event saved: $updatedEvent")
-                        reloadEvents()
-                    }
-                },
-                sheetState = sheetState
-            )
-            {
-                Scaffold(
-                    floatingActionButton = {
-                        EventTrackerFAB(
-                            onClick = {
-                                scope.launch {
-                                    reloadEvents()
-                                    sheetState.show()
-                                }
-                            }
-                        )
-                    }
-                ) { contentPadding ->
-                    Column(Modifier.padding(contentPadding)) {
-                        EventTrackerList(
-                            events = events,
-                            onDelete = { event ->
-                                scope.launch {
-                                    eventRepo.deleteEvent(context, event)
-                                    reloadEvents()
-                                }
-                            },
-                            onUpdate = { event ->
-                                scope.launch {
-                                    eventRepo.upsertEvent(context, event)
-                                    sheetState.show()
-                                    reloadEvents()
-                                }
-                            },
-                            onShowSharedEvents = { event ->
-                                val intent = Intent(context, SharedEventActivity::class.java)
-                                Log.d("EventTracker0", intent.toString())
-                                Log.d("EventTracker", "Event ID: ${event.event_id}")
-                                intent.putExtra("eventId", event.event_id.toString())
-                                context.startActivity(intent)
-                            },
-                        )
-                    }
-                }
+    suspend fun setupBackgroundWork(){
+        val kvDao = AppRepository.get().kvDao()
+        kvDao.get(POLL_STATE_KEY)?.let {
+            if(it.value == "true"){
+                val periodicRequest = PeriodicWorkRequestBuilder<PollWorker>(15, TimeUnit.MINUTES)
+                    .build()
+                WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                    WORK_NAME,
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    periodicRequest
+                )
+                Log.d("HomeActivity", "Polling is enabled")
+            }else{
+                WorkManager.getInstance(this).cancelUniqueWork(WORK_NAME)
+                Log.d("HomeActivity", "Polling is disabled")
             }
         }
     }
-}
 
-@Composable
-fun NavDrawer(){
-    val ctx = LocalContext.current
-    DrawerHeader()
-    DrawerBody(
-        items = listOf(
-            MenuItem(
-                title = "Home",
-                contentDescription = "Goto home",
-                icon = Icons.Default.Home,
-                bindClass = HomeActivity::class.java
-            ),
-            MenuItem(
-                title = "Setup",
-                contentDescription = "Goto setup",
-                icon = Icons.Default.AccountBox,
-                bindClass = SetupActivity::class.java
-            ),
-            MenuItem(
-                title = "Study Group",
-                contentDescription = "Goto Study Group",
-                icon = Icons.Default.Person,
-                bindClass = StudyGroupActivity::class.java
-            ),
-            MenuItem(
-                title = "Map View",
-                contentDescription = "Goto Map View",
-                icon = Icons.Default.LocationOn,
-                bindClass = MapViewActivity::class.java
-            ),
-            MenuItem(
-                title = "Invite",
-                contentDescription = "Goto My Invite",
-                icon = Icons.Default.Info,
-                bindClass = InviteActivity::class.java
-            ),
-            MenuItem(
-                title = "Chat Room",
-                contentDescription = "Goto Chat Room (Groups)",
-                icon = Icons.Default.Email,
-                bindClass = ChatRoomActivity::class.java
-            ),
-            MenuItem(
-                title = "Setting",
-                contentDescription = "Goto setting",
-                icon = Icons.Default.Settings,
-                bindClass = SettingActivity::class.java
-            ),
-        ),
-        onItemClick = {
-            println("Clicked on ${it.title}")
-            val intent = Intent(ctx, it.bindClass)
-            startActivity(ctx, intent, null)
+    fun createNotificationChannel(){
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(DEFAULT_CHANNEL_ID, CHANNEL_NAME, importance).apply {
+            description = CHANNEL_DESCRIPTION
         }
-    )
+        // Register the channel with the system
+        val notificationManager: NotificationManager =
+            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
 }
