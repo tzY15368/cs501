@@ -15,7 +15,8 @@ import com.cs501.cs501app.buotg.database.entities.*
         KVEntry::class,
         Group::class,
         GroupMember::class,
-    ], version = 15
+        UserNotification::class
+    ], version = 16
 )
 @TypeConverters(DateTimeConverter::class,UUIDConverter::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -30,4 +31,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun sharedEventDao(): SharedEventDao
 
     abstract fun sharedEventParticipanceDao(): SharedEventParticipanceDao
+
+    abstract fun userNotificationDao(): UserNotificationDao
 }

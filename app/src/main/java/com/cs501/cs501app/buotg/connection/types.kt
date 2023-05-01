@@ -69,3 +69,7 @@ class SyncResponse: StdResponse(){
 class InviteResponse: StdResponse(){
     lateinit var group_invites:List<GroupInvite>
 }
+
+class NotificationResponse: StdResponse(){
+    lateinit var notifications: List<UserNotification>
+}
