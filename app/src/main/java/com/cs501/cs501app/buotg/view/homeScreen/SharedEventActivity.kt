@@ -21,6 +21,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -38,7 +39,20 @@ import com.cs501.cs501app.buotg.view.user_map.getCurrentLocation
 import com.cs501.cs501app.utils.GenericTopAppBar
 import kotlinx.coroutines.launch
 import java.util.*
-
+@Composable
+fun TranslucentDialog(
+    onDismissRequest: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Surface(
+            color = Color.Black.copy(alpha = 0.5F), // Set the alpha value for translucency
+            contentColor = contentColorFor(Color.Black)
+        ) {
+            content()
+        }
+    }
+}
 @Composable
 fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location, callback: suspend () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
@@ -254,7 +268,7 @@ class SharedEventActivity : AppCompatActivity() {
                 }
             }
             if (takingAttendance) {
-                Dialog(onDismissRequest = { takingAttendance = false }) {
+                TranslucentDialog(onDismissRequest = { takingAttendance = false }) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
