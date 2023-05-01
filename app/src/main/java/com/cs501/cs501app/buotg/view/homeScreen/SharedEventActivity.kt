@@ -45,17 +45,27 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, callback: suspend () -> 
     val ctx = LocalContext.current
     OutlinedButton(modifier = Modifier.size(30.dp),
         onClick = {
+            val prev_participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = userId, status = Status.FAIL)
+            coroutineScope.launch {
+                sharedEventParticipanceRepo.deleteParticipance(prev_participance)
+                callback()
+            }
             val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = userId, status = Status.SUCCESS)
             coroutineScope.launch {
                 sharedEventParticipanceRepo.updateParticipance(participance)
                 callback()
             }
+
         }) {
 
         Icon(
             Icons.Outlined.Add,
             contentDescription = stringResource(id = R.string.take_attendence),
             modifier = Modifier.size(20.dp)
+        )
+        Text(
+            text = "Take Attendance",
+            modifier = Modifier.padding(start = 8.dp)
         )
     }
 }
@@ -74,7 +84,7 @@ fun importUsersBtn(sharedEventId: Int, groupId: Int, callback: suspend () -> Uni
                     val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = gm.user_id, status = Status.FAIL)
                     sharedEventParticipanceRepo.updateParticipance(participance)
                 }
-                sharedEventParticipanceRepo
+
             }
 
         }) {
@@ -83,6 +93,7 @@ fun importUsersBtn(sharedEventId: Int, groupId: Int, callback: suspend () -> Uni
             contentDescription = stringResource(id = R.string.import_members),
             modifier = Modifier.size(20.dp)
         )
+
     }
 }
 
@@ -161,6 +172,7 @@ class SharedEventActivity : AppCompatActivity() {
         @Composable
         fun SharedEventView(SharedEvent: SharedEvent) {
             var createdbyUser by remember { mutableStateOf<User?>(null) }
+            var takingAttendance by remember { mutableStateOf(false) }
             var importingGroupMembers by remember { mutableStateOf(false) }
             var groupId by remember { mutableStateOf(0) }
             LaunchedEffect(true) {
@@ -190,13 +202,17 @@ class SharedEventActivity : AppCompatActivity() {
                         .padding(10.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = SharedEvent.shared_event_id.toString(), fontSize = 15.sp)
-                    currentUser?.let { takeAttendanceBtn(sharedEventId = SharedEvent.shared_event_id, userId = it.user_id, callback = { reloadSharedEvents() }) }
+//                    Text(text = SharedEvent.shared_event_id.toString(), fontSize = 15.sp)
+//                    currentUser?.let { takeAttendanceBtn(sharedEventId = SharedEvent.shared_event_id, userId = it.user_id, callback = { reloadSharedEvents() }) }
+                    Button(onClick = { takingAttendance = true }) {
+                        Text(text = stringResource(id = R.string.take_attendence))
+                    }
+
                     Button(onClick = { importingGroupMembers = true }) {
                         Text(text = stringResource(id = R.string.import_members_2))
                     }
-                    val group_id = stringResource(id = R.string.group_id)
-                    Text(text = "$group_id:", fontSize = 20.sp)
+//                    val group_id = stringResource(id = R.string.group_id)
+//                    Text(text = "$group_id:", fontSize = 20.sp)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Divider()
@@ -223,6 +239,22 @@ class SharedEventActivity : AppCompatActivity() {
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
                         )
                         importUsersBtn(sharedEventId =SharedEvent.shared_event_id, groupId = groupId, callback = { reloadSharedEvents() })
+                    }
+                }
+            }
+            if (takingAttendance) {
+                Dialog(onDismissRequest = { takingAttendance = false }) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .padding(16.dp)
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        Text(text = stringResource(id = R.string.take_attendence))
+                        currentUser?.let { takeAttendanceBtn(sharedEventId = SharedEvent.shared_event_id, userId = it.user_id, callback = { reloadSharedEvents() }) }
                     }
                 }
             }
