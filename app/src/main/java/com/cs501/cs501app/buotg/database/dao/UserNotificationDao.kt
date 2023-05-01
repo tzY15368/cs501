@@ -1,9 +1,6 @@
 package com.cs501.cs501app.buotg.database.dao
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.Transaction
-import androidx.room.Upsert
+import androidx.room.*
 import com.cs501.cs501app.buotg.database.entities.CURRENT_USER_KEY
 import com.cs501.cs501app.buotg.database.entities.UserNotification
 import java.util.UUID
