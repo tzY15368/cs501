@@ -1,4 +1,4 @@
-package com.cs501.cs501app.utils
+package com.cs501.cs501app.buotg.view.navDrawer
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
