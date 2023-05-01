@@ -21,8 +21,10 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat.startActivity
+import androidx.lifecycle.LifecycleOwner
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.Event
 import com.cs501.cs501app.buotg.database.entities.USER_LATITUDE_VAL_TO

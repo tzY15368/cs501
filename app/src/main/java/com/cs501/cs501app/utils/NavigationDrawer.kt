@@ -8,29 +8,46 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.common.Ping
+import kotlinx.coroutines.launch
 
 @Composable
-fun DrawerHeader() {
+fun DrawerHeader(
+    lifeCycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+) {
     val ctx = LocalContext.current
     val userRepo = AppRepository.get().userRepo()
-
+    val coroutineScope = rememberCoroutineScope()
     val currentUser = remember { mutableStateOf<User?>(null) }
     LaunchedEffect(true){
         currentUser.value = userRepo.getCurrentUser()
+    }
+    DisposableEffect(lifeCycleOwner){
+        val observer = LifecycleEventObserver{ _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                coroutineScope.launch {
+                    currentUser.value = userRepo.getCurrentUser()
+                }
+            }
+        }
+        lifeCycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifeCycleOwner.lifecycle.removeObserver(observer)
+        }
     }
     Box(
         modifier = Modifier
@@ -58,7 +75,7 @@ fun DrawerBody(
                         onItemClick(item)
                     }
                     .padding(16.dp)
-                    .background(color = if(idx==0)Color.LightGray else Color.Transparent),
+                    .background(color = if (idx == 0) Color.LightGray else Color.Transparent),
             ) {
                 Icon(
                     imageVector = item.icon,
@@ -77,7 +94,9 @@ fun DrawerBody(
         modifier = Modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceBetween,
     ){
-        Spacer(modifier = Modifier.height(16.dp).padding(8.dp))
+        Spacer(modifier = Modifier
+            .height(16.dp)
+            .padding(8.dp))
         Ping(modifier = Modifier.padding(8.dp))
     }
 }
