@@ -35,6 +35,7 @@ import com.cs501.cs501app.buotg.view.user_setup.LoginRegister
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
 import com.cs501.cs501app.buotg.view.user_setup.StuLinkImport
 import com.cs501.cs501app.utils.GenericTopAppBar
+import com.cs501.cs501app.utils.TAlert
 import kotlinx.coroutines.*
 import java.util.*
 
@@ -205,6 +206,7 @@ fun LogoutButton(loading: MutableState<Boolean>, user: MutableState<User?>, appP
 @Composable
 fun changes(languages:List<String>,LocalConfiguration:Configuration,LocalContext: Context){
     var selectedLanguage by remember { mutableStateOf(LocalContext.resources.configuration.locales[0].displayName) }
+    val msg = stringResource(id = R.string.language_change_success)
     languages.forEach { language ->
         // Radio button for each language option
         Row{
@@ -235,7 +237,7 @@ fun changes(languages:List<String>,LocalConfiguration:Configuration,LocalContext
 
                     // Update the context with the new configuration
                     context.resources.updateConfiguration(configuration, context.resources.displayMetrics)
-
+                    TAlert.success(context, msg)
                 }
             )
             CustomText(text = language)

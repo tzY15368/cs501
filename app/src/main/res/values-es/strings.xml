@@ -111,7 +111,7 @@
     <string name="cancel">CANCELAR</string>
     <string name="save">GUARDAR</string>
     <string name="event_start_time">Hora de inicio</string>
-
+    <string name="language_change_success">Idioma cambiado con éxito</string>
     <string name="sync_data">Sincronizar datos</string>
     <string name="language">Idioma</string>
     <string name="sync">Sincronizar</string>
