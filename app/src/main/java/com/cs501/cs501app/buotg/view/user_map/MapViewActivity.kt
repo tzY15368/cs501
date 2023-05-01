@@ -51,23 +51,24 @@ private fun launchURIView(ctx: Context, uri: String) {
     startActivity(ctx, intent, null)
 }
 
-fun getCurrentLocation(activity: Activity, callback: (Location?)->Unit) {
-    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+fun getCurrentLocation(ctx: Context, callback: (Location?)->Unit): Result<String> {
+    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(ctx)
     if (ActivityCompat.checkSelfPermission(
-            activity,
+            ctx,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-            activity,
+            ctx,
             Manifest.permission.ACCESS_COARSE_LOCATION
         ) != PackageManager.PERMISSION_GRANTED
     ) {
-        TAlert.fail(activity, "Permission Denied" + " Please allow location permission")
+        return Result.failure(Exception("Permission Denied" + " Please allow location permission"))
     }
     fusedLocationClient.lastLocation.addOnSuccessListener { location ->
         if (location != null) {
             callback(location)
         }
     }
+    return Result.success("Success")
 }
 
 const val MAPVIEW_KEY = "MAPVIEW_KEY"
