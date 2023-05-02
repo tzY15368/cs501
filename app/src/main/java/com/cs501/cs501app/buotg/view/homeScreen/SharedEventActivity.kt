@@ -46,8 +46,8 @@ fun TranslucentDialog(
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Surface(
-            color = Color.Black.copy(alpha = 0.5F), // Set the alpha value for translucency
-            contentColor = contentColorFor(Color.Black)
+            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.5F), // Set the alpha value for translucency
+            contentColor = contentColorFor(MaterialTheme.colorScheme.surface)
         ) {
             content()
         }
@@ -58,6 +58,7 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location,
     val coroutineScope = rememberCoroutineScope()
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
     val ctx = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
     OutlinedButton(modifier = Modifier.size(30.dp),
         onClick = {
             getCurrentLocation(ctx as Activity) {userLocation ->
@@ -66,13 +67,19 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location,
                         Log.d("CLICKED_ATTENDANCE", sharedEventId.toString())
                         val prev_participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = userId, status = Status.FAIL)
                         coroutineScope.launch {
-                            sharedEventParticipanceRepo.deleteParticipance(prev_participance)
+                            sharedEventParticipanceRepo.deleteParticipance(prev_participance,ctx)
                             callback()
                         }
                         val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = userId, status = Status.SUCCESS)
                         coroutineScope.launch {
-                            sharedEventParticipanceRepo.updateParticipance(participance)
+                            sharedEventParticipanceRepo.updateParticipance(participance,ctx)
                             callback()
+                        }
+                    }
+                    else {
+                        Log.d("CANNOT_TAKE_ATTEND", sharedEventId.toString())
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar("Fail to take attendance")
                         }
                     }
                 }
@@ -90,6 +97,77 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location,
             modifier = Modifier.padding(start = 8.dp)
         )
     }
+
+//    val coroutineScope = rememberCoroutineScope()
+//    val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
+//    val ctx = LocalContext.current
+//    val snackbarHostState = remember { SnackbarHostState() }
+//    val inRange = remember { mutableStateOf(false) }
+//    val attendanceTaken = remember { mutableStateOf(false) }
+//    val attendanceInProgress = remember { mutableStateOf(false) }
+//
+//    fun checkInRange() {
+//        getCurrentLocation(ctx as Activity) { userLocation ->
+//            inRange.value = userLocation != null && userLocation.distanceTo(eventLocation) <= 100
+//        }
+//    }
+//
+//    LaunchedEffect(Unit) {
+//        checkInRange()
+//    }
+//
+//    OutlinedButton(
+//        modifier = Modifier.size(30.dp),
+//        onClick = {
+//            if (inRange.value && !attendanceTaken.value) {
+//                attendanceInProgress.value = true
+//                Log.d("CLICKED_ATTENDANCE", sharedEventId.toString())
+//                val prev_participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = userId, status = Status.FAIL)
+//                coroutineScope.launch {
+//                    sharedEventParticipanceRepo.deleteParticipance(prev_participance)
+//                    callback()
+//                }
+//                val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = userId, status = Status.SUCCESS)
+//                coroutineScope.launch {
+//                    sharedEventParticipanceRepo.updateParticipance(participance)
+//                    callback()
+//                }
+//                attendanceTaken.value = true
+//                attendanceInProgress.value = false
+//            } else if (!inRange.value) {
+//                coroutineScope.launch {
+//                    snackbarHostState.showSnackbar("Fail to take attendance")
+//                }
+//            }
+//        },
+//        enabled = !attendanceTaken.value && !attendanceInProgress.value
+//    ) {
+//        Icon(
+//            Icons.Outlined.Add,
+//            contentDescription = stringResource(id = R.string.take_attendence),
+//            modifier = Modifier.size(20.dp)
+//        )
+//        Text(
+//            text = "Take Attendance",
+//            modifier = Modifier.padding(start = 8.dp)
+//        )
+//    }
+
+    SnackbarHost(
+        hostState = snackbarHostState,
+        modifier = Modifier.size(20.dp),
+        snackbar = {
+            Snackbar(
+                contentColor = Color.Red,
+                content = {
+                    Text(
+                        text = "Fail",
+                        color = Color.White
+                    )
+                }
+            )
+        }
+    )
 }
 
 @Composable
@@ -100,14 +178,14 @@ fun importUsersBtn(sharedEventId: Int, groupId: Int, callback: suspend () -> Uni
     val ctx = LocalContext.current
     OutlinedButton(modifier = Modifier.size(30.dp),
         onClick = {
-            Log.d("CLICKED_IMPORT", sharedEventId.toString())
+            Log.d("CLICKED_IMPORT", groupId.toString())
             coroutineScope.launch {
                 var groupMembers = groupMemberRepo.getGroupMembersById(groupId)
                 for(gm in groupMembers) {
                     val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = gm.user_id, status = Status.FAIL)
-                    sharedEventParticipanceRepo.updateParticipance(participance)
+                    sharedEventParticipanceRepo.updateParticipance(participance,ctx)
                 }
-
+                callback()
             }
 
         }) {
@@ -236,8 +314,6 @@ class SharedEventActivity : AppCompatActivity() {
                     Button(onClick = { importingGroupMembers = true }) {
                         Text(text = stringResource(id = R.string.import_members_2))
                     }
-//                    val group_id = stringResource(id = R.string.group_id)
-//                    Text(text = "$group_id:", fontSize = 20.sp)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Divider()
@@ -246,7 +322,7 @@ class SharedEventActivity : AppCompatActivity() {
 
             //import group members
             if (importingGroupMembers) {
-                Dialog(onDismissRequest = { importingGroupMembers = false }) {
+                TranslucentDialog(onDismissRequest = { importingGroupMembers = false }) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -268,7 +344,7 @@ class SharedEventActivity : AppCompatActivity() {
                 }
             }
             if (takingAttendance) {
-                TranslucentDialog(onDismissRequest = { takingAttendance = false }) {
+                Dialog(onDismissRequest = { takingAttendance = false }) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -399,7 +475,8 @@ class SharedEventActivity : AppCompatActivity() {
                             }
                             val participance = currentUser?.let { sharedEvent?.let { it1 -> SharedEventParticipance(shared_event_id = it1.shared_event_id, user_id = it.user_id, status = Status.FAIL) } }
                             if (participance != null) {
-                                sharedEventParticipanceRepo.updateParticipance(participance)
+                                Log.d("createSharedEventPart", participance.toString())
+                                sharedEventParticipanceRepo.updateParticipance(participance,ctx)
                             }
                             if (sharedEvent != null) {
                                 Log.d("ADD_PARTI", sharedEvent.event_id.toString())
