@@ -71,7 +71,7 @@ interface API {
     suspend fun get_shared_event(@Path("event_id") event_id: String):Response<SharedEventListResponse>
 
     @POST("/shared_event/{event_id}")
-    suspend fun create_shared_event(@Path("event_id") event_id: String):Response<StdResponse>
+    suspend fun create_shared_event(@Path("event_id") event_id: String):Response<SharedEventResponse>
 
     @DELETE("/shared_event")
     @FormUrlEncoded

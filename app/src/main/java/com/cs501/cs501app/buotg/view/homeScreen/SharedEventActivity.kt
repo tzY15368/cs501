@@ -32,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 
 import androidx.compose.ui.window.Dialog
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.database.AppDatabase
 import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
@@ -457,7 +458,7 @@ class SharedEventActivity : AppCompatActivity() {
                         Log.d("CLICKED", eventId.toString())
                         Log.d("CLICKED", currentUser.toString())
                         coroutineScope.launch {
-                            val sharedEvent = eventId?.let {
+                            var sharedEvent = eventId?.let {
                                 currentUser?.let { it1 ->
                                     SharedEvent(
                                         event_id = it,
@@ -473,14 +474,35 @@ class SharedEventActivity : AppCompatActivity() {
                                 Log.d("createSharedEvent", sharedEvent.toString())
                                 sharedEventRepo.updateSharedEvent(sharedEvent, ctx)
                             }
+                            val sharedEvents_be = eventId?.let {
+                                sharedEventRepo.getAllSharedEventByEventId(it, ctx)?.shared_event
+                            } ?: listOf()
+                            Log.d("be sharedevent",sharedEvents_be.toString())
+                            Log.d("db sharedevent",SharedEvents.toString())
+                            for(se in sharedEvents_be) {
+                                var exists: Boolean = false
+                                for(ese in SharedEvents) {
+                                    if(se == ese) {
+                                        Log.d("found sharedevent",se.toString())
+                                        exists = true
+//                                        break
+                                    }
+                                }
+                                if(exists == false) {
+                                    sharedEvent = se
+                                    Log.d("find latest sharedevent",se.toString())
+                                    sharedEventRepo.insertSharedEvent(sharedEvent)
+                                }
+                            }
+
                             val participance = currentUser?.let { sharedEvent?.let { it1 -> SharedEventParticipance(shared_event_id = it1.shared_event_id, user_id = it.user_id, status = Status.FAIL) } }
                             if (participance != null) {
                                 Log.d("createSharedEventPart", participance.toString())
                                 sharedEventParticipanceRepo.updateParticipance(participance,ctx)
                             }
-                            if (sharedEvent != null) {
-                                Log.d("ADD_PARTI", sharedEvent.event_id.toString())
-                            }
+//                            if (sharedEvent != null) {
+//                                Log.d("ADD_PARTI", sharedEvent.event_id.toString())
+//                            }
                             targetApp.create_channel("$newSharedEventName" + "_shared_events")
                             reloadSharedEvents()
                         }
