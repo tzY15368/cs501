@@ -14,10 +14,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.common.Ping
 import com.cs501.cs501app.buotg.view.homeScreen.POLL_STATE_KEY
+import com.cs501.cs501app.buotg.view.user_map.TestAddrPickerActivity
 import com.cs501.cs501app.buotg.view.user_map.getCurrentLocation
 import com.cs501.cs501app.utils.BGService
 import com.cs501.cs501app.utils.sendNotification
@@ -26,6 +28,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ComposedMiscBtns(){
+    val ctx = LocalContext.current
     Row(){
         Ping(modifier = Modifier.padding(8.dp))
     }
@@ -40,6 +43,15 @@ fun ComposedMiscBtns(){
     }
     Row {
         ToggleBackgroundServiceBtn()
+    }
+
+    Row(){
+        Button(onClick = {
+            val intent = Intent(ctx, TestAddrPickerActivity::class.java)
+            ctx.startActivity(intent)
+        }) {
+            Text("picker")
+        }
     }
 }
 

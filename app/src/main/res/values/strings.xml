@@ -113,6 +113,7 @@
     <string name="event_start_time">Start time</string>
     <string name="language_change_success">Language change success</string>
     <string name="server_client_id" translatable="false">535824934955-4qkrgeoin624iegcc7upt3f88pkcle3f.apps.googleusercontent.com</string>
+    <string name="location" translatable="false">Location</string>
 
 
     <string name="sync_data">Sync Data</string>

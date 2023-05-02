@@ -7,6 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.Switch
@@ -100,8 +102,8 @@ fun DrawerBody(
         }
     }
     Column(
-        modifier = Modifier.fillMaxHeight(),
-        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxHeight().verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Top,
     ){
         Spacer(modifier = Modifier
             .height(16.dp)
