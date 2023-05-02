@@ -4,6 +4,8 @@ plugins {
     id "kotlin-android"
     id "kotlin-android-extensions"
     id 'org.jetbrains.kotlin.kapt'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+
 }
 
 android {
@@ -102,5 +104,10 @@ dependencies {
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
 
 //    implementation 'com.google.android.exoplayer:exoplayer:2.18.6'
+   // implementation "com.google.android.libraries.maps:maps:3.1.0-beta"
+    //implementation "com.google.maps.android:maps-v3-ktx:2.2.0"
+    implementation 'com.google.maps.android:maps-compose:2.11.2'
 
+    // Make sure to also include the latest version of the Maps SDK for Android
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 }
