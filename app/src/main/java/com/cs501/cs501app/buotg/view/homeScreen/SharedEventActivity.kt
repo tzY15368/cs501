@@ -62,6 +62,7 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location,
     val snackbarHostState = remember { SnackbarHostState() }
     OutlinedButton(modifier = Modifier.size(30.dp),
         onClick = {
+            Log.d("Try_CLICKED_ATTENDANCE", sharedEventId.toString())
             getCurrentLocation(ctx as Activity) {userLocation ->
                 if (userLocation != null) {
                     if (userLocation.distanceTo(eventLocation) <= 100) {
@@ -98,62 +99,6 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location,
             modifier = Modifier.padding(start = 8.dp)
         )
     }
-
-//    val coroutineScope = rememberCoroutineScope()
-//    val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
-//    val ctx = LocalContext.current
-//    val snackbarHostState = remember { SnackbarHostState() }
-//    val inRange = remember { mutableStateOf(false) }
-//    val attendanceTaken = remember { mutableStateOf(false) }
-//    val attendanceInProgress = remember { mutableStateOf(false) }
-//
-//    fun checkInRange() {
-//        getCurrentLocation(ctx as Activity) { userLocation ->
-//            inRange.value = userLocation != null && userLocation.distanceTo(eventLocation) <= 100
-//        }
-//    }
-//
-//    LaunchedEffect(Unit) {
-//        checkInRange()
-//    }
-//
-//    OutlinedButton(
-//        modifier = Modifier.size(30.dp),
-//        onClick = {
-//            if (inRange.value && !attendanceTaken.value) {
-//                attendanceInProgress.value = true
-//                Log.d("CLICKED_ATTENDANCE", sharedEventId.toString())
-//                val prev_participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = userId, status = Status.FAIL)
-//                coroutineScope.launch {
-//                    sharedEventParticipanceRepo.deleteParticipance(prev_participance)
-//                    callback()
-//                }
-//                val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = userId, status = Status.SUCCESS)
-//                coroutineScope.launch {
-//                    sharedEventParticipanceRepo.updateParticipance(participance)
-//                    callback()
-//                }
-//                attendanceTaken.value = true
-//                attendanceInProgress.value = false
-//            } else if (!inRange.value) {
-//                coroutineScope.launch {
-//                    snackbarHostState.showSnackbar("Fail to take attendance")
-//                }
-//            }
-//        },
-//        enabled = !attendanceTaken.value && !attendanceInProgress.value
-//    ) {
-//        Icon(
-//            Icons.Outlined.Add,
-//            contentDescription = stringResource(id = R.string.take_attendence),
-//            modifier = Modifier.size(20.dp)
-//        )
-//        Text(
-//            text = "Take Attendance",
-//            modifier = Modifier.padding(start = 8.dp)
-//        )
-//    }
-
     SnackbarHost(
         hostState = snackbarHostState,
         modifier = Modifier.size(20.dp),
@@ -175,16 +120,20 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location,
 fun importUsersBtn(sharedEventId: Int, groupId: Int, callback: suspend () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
-    val groupMemberRepo = AppRepository.get().groupMemberDao()
+    val groupMemberRepo = AppRepository.get().groupMemberRepo()
     val ctx = LocalContext.current
     OutlinedButton(modifier = Modifier.size(30.dp),
         onClick = {
             Log.d("CLICKED_IMPORT", groupId.toString())
             coroutineScope.launch {
-                var groupMembers = groupMemberRepo.getGroupMembersById(groupId)
-                for(gm in groupMembers) {
-                    val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = gm.user_id, status = Status.FAIL)
-                    sharedEventParticipanceRepo.updateParticipance(participance,ctx)
+                var groupMembers = groupMemberRepo.getGroupMembers(ctx,groupId)?.groupMembers
+                Log.d("gm list", groupMembers.toString())
+                if (groupMembers != null) {
+                    for(gm in groupMembers) {
+                        Log.d("gm ", gm.toString())
+                        val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = gm.user_id, status = Status.FAIL)
+                        sharedEventParticipanceRepo.updateParticipance(participance,ctx)
+                    }
                 }
                 callback()
             }
@@ -345,7 +294,9 @@ class SharedEventActivity : AppCompatActivity() {
                 }
             }
             if (takingAttendance) {
+                event?.let { toLocation(it).toString() }?.let { Log.d("LOCATION", it) }
                 Dialog(onDismissRequest = { takingAttendance = false }) {
+
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -356,15 +307,12 @@ class SharedEventActivity : AppCompatActivity() {
                         verticalArrangement = Arrangement.Center,
                     ) {
                         Text(text = stringResource(id = R.string.take_attendence))
-                        var eventLocation = null
+                        event?.let {
+                            toLocation(
+                                it
+                            )
+                        }?.let { currentUser?.let { it1 -> takeAttendanceBtn(sharedEventId = SharedEvent.shared_event_id, eventLocation = it, userId = it1.user_id, callback = { reloadSharedEvents() }) } }
 
-                        currentUser?.let {
-                            if (eventLocation != null) {
-                                event?.let { it1 ->
-                                    toLocation(it1)
-                                }?.let { it2 -> takeAttendanceBtn(sharedEventId = SharedEvent.shared_event_id, eventLocation = it2, userId = it.user_id, callback = { reloadSharedEvents() }) }
-                            }
-                        }
 
                     }
                 }
@@ -382,6 +330,7 @@ class SharedEventActivity : AppCompatActivity() {
                 Text(text = stringResource(id = R.string.no_shared_event_found))
             }
             Column {
+                Log.d("1 sharedevent",SharedEvents.toString())
                 for (SharedEvent in SharedEvents) {
                     SharedEventView(SharedEvent = SharedEvent)
                 }
@@ -491,7 +440,9 @@ class SharedEventActivity : AppCompatActivity() {
                                 if(exists == false) {
                                     sharedEvent = se
                                     Log.d("find latest sharedevent",se.toString())
-                                    sharedEventRepo.insertSharedEvent(sharedEvent)
+                                    Log.d("1current sharedevent list",SharedEvents.toString())
+//                                    sharedEventRepo.insertSharedEvent(sharedEvent)
+                                    Log.d("current sharedevent list",SharedEvents.toString())
                                 }
                             }
 
@@ -500,11 +451,9 @@ class SharedEventActivity : AppCompatActivity() {
                                 Log.d("createSharedEventPart", participance.toString())
                                 sharedEventParticipanceRepo.updateParticipance(participance,ctx)
                             }
-//                            if (sharedEvent != null) {
-//                                Log.d("ADD_PARTI", sharedEvent.event_id.toString())
-//                            }
                             targetApp.create_channel("$newSharedEventName" + "_shared_events")
                             reloadSharedEvents()
+
                         }
                         creatingSharedEvent = false
                     }) {

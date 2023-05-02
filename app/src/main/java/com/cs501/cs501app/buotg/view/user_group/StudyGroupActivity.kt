@@ -162,10 +162,10 @@ class StudyGroupActivity : AppCompatActivity() {
                 Log.d("GroupDetails", "Invites: ${invites.size}")
             }
             groupRepo.getGroupMembers(ctx, groupID)?.let {
-                val uuids = it.group_members
+                val uuids = it.groupMembers
                 val users = mutableListOf<User>()
                 for (uuid in uuids) {
-                    userRepo.fetchUser(ctx, uuid)?.let { user ->
+                    userRepo.fetchUser(ctx, uuid.user_id)?.let { user ->
                         users.add(user)
                     }
                 }

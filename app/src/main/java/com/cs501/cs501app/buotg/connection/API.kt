@@ -110,7 +110,7 @@ interface API {
     @GET("/group/{group_id}/list")
     suspend fun group_member_list(
         @Path("group_id") group_id: Int
-    ):Response<GMLResponse>
+    ):Response<GroupMemberResponse>
 
     @POST("/group/{group_id}/list")
     @FormUrlEncoded
