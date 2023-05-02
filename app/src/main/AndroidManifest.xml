@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:name=".buotg.BUOTGApplication"
         android:allowBackup="true"
@@ -20,8 +21,15 @@
         android:theme="@style/Theme.CS501App"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <service android:name=".utils.BGService" android:foregroundServiceType="location"/>
-        <activity android:name=".buotg.view.user_map.MapViewActivity"
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="${MAPS_API_KEY}" />
+        <service
+            android:name=".utils.BGService"
+            android:foregroundServiceType="location" />
+        <activity
+            android:name=".buotg.view.user_map.TestAddrPickerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".buotg.view.user_map.MapViewActivity"
             android:exported="false" />
         <activity
             android:name=".buotg.view.user_invite.InviteActivity"

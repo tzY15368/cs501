@@ -79,6 +79,7 @@ class MapViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val ctx = this as Context
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         savedInstanceState?.let{ itOut ->
             itOut.getString(MAPVIEW_KEY)?.let{
