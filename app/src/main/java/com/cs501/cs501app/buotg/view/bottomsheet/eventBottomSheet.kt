@@ -16,9 +16,13 @@ import androidx.compose.ui.platform.LocalContext
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.Event
 import com.cs501.cs501app.buotg.database.entities.EventPriority
-import com.cs501.cs501app.buotg.database.repositories.AppRepository
+import com.cs501.cs501app.buotg.view.user_map.MapAddressPickerView
+import com.cs501.cs501app.buotg.view.user_map.MapViewModel
 import com.google.android.material.datepicker.*
-import kotlinx.coroutines.launch
+import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -74,12 +78,69 @@ fun SheetForm(
     val eventPriority = remember { mutableStateOf(event.priority) }
     var startDateTime by remember { mutableStateOf(event.start_time) }
     var endDateTime by remember { mutableStateOf(event.end_time) }
+
+    var latitude by remember { mutableStateOf(event.latitude) }
+    var longitude by remember { mutableStateOf(event.longitude) }
+    var address by remember { mutableStateOf("") }
+    var openDialog by remember {
+        mutableStateOf(
+            false
+        )
+    }
+    val viewModel = MapViewModel()
+
     Column(modifier.padding(horizontal = 16.dp)) {
         TextInputRow(
             inputLabel = stringResource(R.string.event_name),
             fieldValue = eventName.value,
             onValueChange = { name -> eventName.value = name }
         )
+        Row {
+            // display location info
+            Icon(
+                imageVector = Icons.Default.LocationOn,
+                contentDescription = "Location",
+                modifier = Modifier
+                    .padding(top = 16.dp, start = 0.dp, end = 8.dp)
+                    .size(28.dp)
+            )
+            TextField(
+                value = address,
+                onValueChange = { },
+                enabled = false,
+                maxLines = 1,
+                modifier = Modifier
+                    .clickable(onClick = {
+                        openDialog = true
+                    })
+                    .fillMaxWidth()
+            )
+            if (openDialog) {
+                AlertDialog(onDismissRequest = { openDialog = false },
+                    title = { Text(text = "Select Location") },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                latitude = viewModel.location.value.latitude.toFloat()
+                                longitude = viewModel.location.value.longitude.toFloat()
+                                address = viewModel.addressText.value
+                                Log.d("EventBottomSheet", "address: $address")
+                                Log.d("EventBottomSheet", "latitude: $latitude")
+                                Log.d("EventBottomSheet", "longitude: $longitude")
+                                openDialog = false
+                            }) {
+                            Text(text = "Save")
+                        }
+                    },
+                    dismissButton = {
+                        Button(onClick = { openDialog = false }) {
+                            Text(text = "Cancel")
+                        }
+                    },
+                    text = { MapAddressPickerView(viewModel = viewModel) }
+                )
+            }
+        }
         TextInputRow(
             inputLabel = stringResource(R.string.event_description),
             fieldValue = eventDesc.value,
@@ -108,7 +169,9 @@ fun SheetForm(
                 val updatedEvent = event.copy(
                     event_name = eventName.value,
                     desc = eventDesc.value,
-                    priority = eventPriority.value
+                    priority = eventPriority.value,
+                    latitude = latitude,
+                    longitude = longitude,
                 )
                 onSubmit(updatedEvent)
             },
@@ -166,7 +229,6 @@ fun TextInputRow(
         )
     }
 }
-
 
 
 @Composable
