@@ -138,17 +138,69 @@ suspend fun generateEvents(semester:String, name:String, instructor:String, buil
     }
     // TODO: PARSE SEASON AND YEAR AND START AND END
     val dayFields = days.split(",")
-    // get the datetime of now
-    val time = Calendar.getInstance().time
     val created_by = AppRepository.get().userRepo().getCurrentUserID()
     for (day in dayFields){
+
+        /*
+        if season is spring, start from first day of Jan where the day is the same as the day in days,
+        end at the last day of May where the day is the same as the day in days
+         */
+        /*
+        if season is summer, start from first day of July where the day is the same as the day in days,
+        end at the last day of August where the day is the same as the day in days
+         */
+        /*
+        if season is fall, start from first day of September where the day is the same as the day in days,
+        end at the last day of December where the day is the same as the day in days
+         */
+        val calStart = Calendar.getInstance()
+        val calEnd = Calendar.getInstance()
+        // set the year
+        calStart.set(Calendar.YEAR, year.toInt())
+        calEnd.set(Calendar.YEAR, year.toInt())
+        if(season=="Spring"){
+            calStart.set(Calendar.MONTH, Calendar.JANUARY)
+            calEnd.set(Calendar.MONTH, Calendar.MAY)
+        } else if(season=="Summer"){
+            calStart.set(Calendar.MONTH, Calendar.JULY)
+            calEnd.set(Calendar.MONTH, Calendar.AUGUST)
+        } else if(season=="Fall"){
+            calStart.set(Calendar.MONTH, Calendar.SEPTEMBER)
+            calEnd.set(Calendar.MONTH, Calendar.DECEMBER)
+        }
+        // set the day of week
+        val dayOfWeek = when(day){
+            "Mon" -> Calendar.MONDAY
+            "Tue" -> Calendar.TUESDAY
+            "Wed" -> Calendar.WEDNESDAY
+            "Thu" -> Calendar.THURSDAY
+            "Fri" -> Calendar.FRIDAY
+            "Sat" -> Calendar.SATURDAY
+            "Sun" -> Calendar.SUNDAY
+            else -> Calendar.MONDAY
+        }
+        // set it as the last day of "dayofWeek" as the end date
+        calStart.set(Calendar.DAY_OF_WEEK, dayOfWeek)
+        calEnd.set(Calendar.DAY_OF_WEEK, dayOfWeek,-1)
+        // set the time
+        val startFields = start.split(":")
+        val endFields = end.split(":")
+        val startHour = startFields[0].toInt()
+        val startMinute = startFields[1].substring(0,2).toInt()
+        val endHour = endFields[0].toInt()
+        val endMinute = endFields[1].substring(0,2).toInt()
+        calStart.set(Calendar.HOUR_OF_DAY, startHour)
+        calStart.set(Calendar.MINUTE, startMinute)
+        calEnd.set(Calendar.HOUR_OF_DAY, endHour)
+        calEnd.set(Calendar.MINUTE, endMinute)
+
         val event = Event(
             event_id = UUID.randomUUID(),
             event_name = name,
             latitude = 0F,
             longitude = 0F,
-            start_time = time,
-            end_time = time,
+            start_time = calStart.time,
+            end_time = calEnd.time,
             repeat_mode = 7,
             priority = 1,
             desc = instructor,
@@ -205,6 +257,7 @@ fun StuLinkImport(done: () -> Unit = {}) {
             CustomButton(onClick = {
                 coroutineScope.launch {
                     Log.d("StudentlinkImport", "ok")
+                    Log.d("StudentlinkImport", "events: ${eventsState.size}")
                     AppRepository.get().eventRepo().upsertAll(ctx, eventsState)
                     TAlert.success(ctx, "ok")
                     done()
