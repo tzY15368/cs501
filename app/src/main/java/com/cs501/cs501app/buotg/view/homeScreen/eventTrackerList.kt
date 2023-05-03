@@ -102,7 +102,7 @@ fun ScaffoldList(
         if (events.isEmpty()) {
             // center text
             //@Todo:What is the $text here?
-            val temp = stringResource(id = R.string.no_such_events) +": "+ text
+            val temp = stringResource(id = R.string.no_such_events) + ": " + text
             Text(
                 text = temp,
                 style = MaterialTheme.typography.bodyLarge,
@@ -117,7 +117,7 @@ fun ScaffoldList(
                 contentPadding = PaddingValues(vertical = 8.dp)
             ) {
                 items(items = events) { event ->
-                    EventTrackerListItem(event, onDelete, onUpdate,onShowSharedEvents)
+                    EventTrackerListItem(event, onDelete, onUpdate, onShowSharedEvents)
                 }
             }
         }
@@ -144,7 +144,10 @@ fun EventTrackerListItem(
         EventIcon(event.priority - 1)
         EventDetails(event, modifier.weight(1f))
         IconButton(onClick = { onShowSharedEvents(event) }) {
-            Icon(Icons.Default.Share, contentDescription = stringResource(id = R.string.show_shared))
+            Icon(
+                Icons.Default.Share,
+                contentDescription = stringResource(id = R.string.show_shared)
+            )
         }
 
         val customLatitude = 37.4219983
@@ -191,6 +194,10 @@ fun divide_events(events: List<Event>): Triple<List<Event>, List<Event>, List<Ev
             future.add(event)
         }
     }
+    Log.d("divide_events:events", events.size.toString())
+    Log.d("divide_events:today_events", today_events.size.toString())
+    Log.d("divide_events:past", past.size.toString())
+    Log.d("divide_events:future", future.size.toString())
     return Triple(today_events, past, future)
 }
 
