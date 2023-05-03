@@ -1,6 +1,7 @@
 package com.cs501.cs501app.buotg.database.repositories
 
 import android.content.Context
+import android.util.Log
 import com.cs501.cs501app.buotg.connection.*
 import com.cs501.cs501app.buotg.database.AppDatabase
 import retrofit2.Response
@@ -38,12 +39,17 @@ class GroupRepository(
     }
 
     suspend fun leaveGroup(ctx: Context, ID: Int, UID: UUID) : StdResponse?{
+
         val res = apiRequest(ctx, {API.getClient().remove_group_member(ID, UID)})
         return res
     }
 
-    suspend fun getGroupMembers(ctx: Context, ID: Int) : GroupMemberResponse?{
+    suspend fun getGroupMembers(ctx: Context, ID: Int) : GMLResponse?{
+        Log.d("GroupRepo",ID.toString())
         val res = apiRequest(ctx, {API.getClient().group_member_list(ID)})
+        if (res != null) {
+            Log.d("GroupRepo", res.group_members.toString())
+        }
         return res
     }
 }

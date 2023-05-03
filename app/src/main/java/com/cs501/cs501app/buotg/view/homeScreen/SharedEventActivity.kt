@@ -1,5 +1,6 @@
 package com.cs501.cs501app.buotg.view.homeScreen
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.location.Location
@@ -120,19 +121,23 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location,
 fun importUsersBtn(sharedEventId: Int, groupId: Int, callback: suspend () -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
-    val groupMemberRepo = AppRepository.get().groupMemberRepo()
+    val groupRepo = AppRepository.get().groupRepo()
     val ctx = LocalContext.current
     OutlinedButton(modifier = Modifier.size(30.dp),
         onClick = {
             Log.d("CLICKED_IMPORT", groupId.toString())
             coroutineScope.launch {
-                var groupMembers = groupMemberRepo.getGroupMembers(ctx,groupId)?.groupMembers
+                Log.d("group id", groupId.toString())
+                var groupMembers = groupRepo.getGroupMembers(ctx,groupId)
+                val uuids = groupMembers?.group_members
                 Log.d("gm list", groupMembers.toString())
                 if (groupMembers != null) {
-                    for(gm in groupMembers) {
-                        Log.d("gm ", gm.toString())
-                        val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = gm.user_id, status = Status.FAIL)
-                        sharedEventParticipanceRepo.updateParticipance(participance,ctx)
+                    if (uuids != null) {
+                        for(gm in uuids) {
+                            Log.d("gm ", gm.toString())
+                            val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = gm, status = Status.FAIL)
+                            sharedEventParticipanceRepo.updateParticipance(participance,ctx)
+                        }
                     }
                 }
                 callback()
@@ -155,7 +160,7 @@ class SharedEventActivity : AppCompatActivity() {
     val sharedEventRepo = AppRepository.get().sharedEventRepo()
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
     var eventId : UUID? = null
-
+    var event : Event?= null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val targetApp = (application as ChatApplication)
@@ -217,13 +222,17 @@ class SharedEventActivity : AppCompatActivity() {
 
         suspend fun reloadSharedEvents() {
             currentUser = userRepo.getCurrentUser()
+            Log.d("reload event id ",eventId.toString())
             event = eventId?.let { eventRepo.getEventById(ctx, eventId = it)?.event }
+            Log.d("reload",event.toString())
+
             val resp = eventId?.let { sharedEventRepo.getAllSharedEventByEventId(it,ctx) }
             if (resp != null) {
                 SharedEvents = resp.shared_event
             }
         }
 
+        @SuppressLint("CoroutineCreationDuringComposition")
         @Composable
         fun SharedEventView(SharedEvent: SharedEvent) {
             var createdbyUser by remember { mutableStateOf<User?>(null) }
@@ -257,11 +266,16 @@ class SharedEventActivity : AppCompatActivity() {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
 
-                    Button(onClick = { takingAttendance = true }) {
+                    Button(onClick = {
+                        coroutineScope.launch {
+                            reloadSharedEvents()
+                        }
+                        takingAttendance = true }) {
                         Text(text = stringResource(id = R.string.take_attendence))
                     }
 
-                    Button(onClick = { importingGroupMembers = true }) {
+                    Button(onClick = {
+                        importingGroupMembers = true }) {
                         Text(text = stringResource(id = R.string.import_members_2))
                     }
                 }
@@ -294,6 +308,8 @@ class SharedEventActivity : AppCompatActivity() {
                 }
             }
             if (takingAttendance) {
+                Log.d("take attendance start","take attendance start")
+                Log.d("event", event.toString())
                 event?.let { toLocation(it).toString() }?.let { Log.d("LOCATION", it) }
                 Dialog(onDismissRequest = { takingAttendance = false }) {
 
