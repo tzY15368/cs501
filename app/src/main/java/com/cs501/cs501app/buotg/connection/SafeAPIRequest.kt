@@ -1,6 +1,7 @@
 package com.cs501.cs501app.buotg.connection
 
 import android.content.Context
+import android.os.Looper
 import com.cs501.cs501app.utils.TAlert
 import org.json.JSONException
 import org.json.JSONObject
@@ -51,7 +52,20 @@ open class SafeAPIRequest {
             println("Exception: $e")
             e.printStackTrace()
             e.message?.let {
-                ctx?.let { it1 -> TAlert.fail(it1, it) }
+                ctx?.let { it1 ->
+                    {
+                        // get the main looper
+                        Looper.getMainLooper().apply {
+                            // create a handler for the main looper
+                            val handler = android.os.Handler(this)
+                            // post a runnable to the handler
+                            handler.post {
+                                // run the runnable
+                                TAlert.fail(it1, it)
+                            }
+                        }
+                    }
+                }
             }
             // throw e
             return null

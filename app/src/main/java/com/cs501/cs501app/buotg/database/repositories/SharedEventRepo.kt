@@ -23,10 +23,9 @@ class SharedEventRepo(
     ): SharedEventListResponse? {
 
         val res = apiRequest(ctx, { API.getClient().get_shared_event(UUIDConverter.fromUUID(eventId))})
-        Log.d("SharedEventRepo", "getAllSharedEventByEventId: $res")
         if (res != null) {
             if (res.shared_event != null) {
-                Log.d("SharedEventRepo", "getAllSharedEventByEventId: ${res.shared_event}")
+                Log.d("SharedEventRepo", "getAllSharedEventByEventId: ${res.shared_event.size}")
                 db.sharedEventDao().upsertAll(res.shared_event)
             }
         }

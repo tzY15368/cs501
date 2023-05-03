@@ -2,7 +2,6 @@ package com.cs501.cs501app.buotg.view.homeScreen
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import kotlin.random.Random
 import androidx.compose.ui.text.input.KeyboardType
@@ -33,7 +33,6 @@ import androidx.navigation.compose.rememberNavController
 
 import androidx.compose.ui.window.Dialog
 import com.cs501.cs501app.R
-import com.cs501.cs501app.buotg.database.AppDatabase
 import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
@@ -216,7 +215,7 @@ class SharedEventActivity : AppCompatActivity() {
         var newSharedEventName by remember { mutableStateOf("") }
         var creatingSharedEvent by remember { mutableStateOf(false) }
         var newSharedEventDesc by remember { mutableStateOf("") }
-        var SharedEvents by remember { mutableStateOf(listOf<SharedEvent>()) }
+        var sharedEvents by remember { mutableStateOf(listOf<SharedEvent>()) }
         var event by remember { mutableStateOf<Event?>(null) }
         var currentUser by remember { mutableStateOf<User?>(null) }
 
@@ -228,7 +227,9 @@ class SharedEventActivity : AppCompatActivity() {
 
             val resp = eventId?.let { sharedEventRepo.getAllSharedEventByEventId(it,ctx) }
             if (resp != null) {
-                SharedEvents = resp.shared_event
+
+                println("got shared events size ${sharedEvents.size}")
+                sharedEvents = resp.shared_event
             }
         }
 
@@ -254,7 +255,7 @@ class SharedEventActivity : AppCompatActivity() {
                 val creator = stringResource(id = R.string.creator)
                 val by = if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
                 Text(
-                    text = SharedEvent.shared_event_id.toString() + by,
+                    text = SharedEvent.shared_event_id.toString() + by + "\n" + SharedEvent.created_at,
                     fontSize = 30.sp,
                     modifier = Modifier.clickable {
                         onNavigateToSharedEventDetails(SharedEvent.shared_event_id)
@@ -291,8 +292,7 @@ class SharedEventActivity : AppCompatActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight()
-                            .padding(16.dp)
-                            .verticalScroll(rememberScrollState()),
+                            .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
@@ -317,8 +317,7 @@ class SharedEventActivity : AppCompatActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight()
-                            .padding(16.dp)
-                            .verticalScroll(rememberScrollState()),
+                            .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
@@ -342,21 +341,22 @@ class SharedEventActivity : AppCompatActivity() {
             LaunchedEffect(true) {
                 reloadSharedEvents()
             }
-            if(SharedEvents.isEmpty()) {
+            if(sharedEvents.isEmpty()) {
                 Text(text = stringResource(id = R.string.no_shared_event_found))
             }
-            Column {
-                Log.d("1 sharedevent",SharedEvents.toString())
-                for (SharedEvent in SharedEvents) {
-                    SharedEventView(SharedEvent = SharedEvent)
+            LazyColumn(content = {
+                items(sharedEvents.size) { idx ->
+                    SharedEventView(SharedEvent = sharedEvents[idx])
                 }
-            }
+            })
         }
         val scaffoldState = rememberScaffoldState()
         val scope = rememberCoroutineScope()
         Scaffold(
             topBar = {
-                GenericTopAppBar(title = stringResource(id = R.string.shared_events),   onNavigationIconClick = {
+                GenericTopAppBar(
+                    title = stringResource(id = R.string.shared_events),
+                    onNavigationIconClick = {
                     scope.launch {
                         scaffoldState.drawerState.open()
                     }
@@ -369,7 +369,7 @@ class SharedEventActivity : AppCompatActivity() {
                     .padding(innerPadding)
                     .padding(16.dp)
                     .fillMaxWidth()
-                    .fillMaxHeight()
+                    .fillMaxHeight(),
             ) {
 
                 SharedEventList()
@@ -443,10 +443,10 @@ class SharedEventActivity : AppCompatActivity() {
                                 sharedEventRepo.getAllSharedEventByEventId(it, ctx)?.shared_event
                             } ?: listOf()
                             Log.d("be sharedevent",sharedEvents_be.toString())
-                            Log.d("db sharedevent",SharedEvents.toString())
+                            Log.d("db sharedevent",sharedEvent.toString())
                             for(se in sharedEvents_be) {
                                 var exists: Boolean = false
-                                for(ese in SharedEvents) {
+                                for(ese in sharedEvents) {
                                     if(se == ese) {
                                         Log.d("found sharedevent",se.toString())
                                         exists = true
@@ -456,9 +456,9 @@ class SharedEventActivity : AppCompatActivity() {
                                 if(exists == false) {
                                     sharedEvent = se
                                     Log.d("find latest sharedevent",se.toString())
-                                    Log.d("1current sharedevent list",SharedEvents.toString())
+                                    Log.d("1current sharedevent list",sharedEvent.toString())
 //                                    sharedEventRepo.insertSharedEvent(sharedEvent)
-                                    Log.d("current sharedevent list",SharedEvents.toString())
+                                    Log.d("current sharedevent list",sharedEvent.toString())
                                 }
                             }
 
