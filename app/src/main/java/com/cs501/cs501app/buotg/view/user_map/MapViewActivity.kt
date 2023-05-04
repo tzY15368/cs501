@@ -41,12 +41,18 @@ fun launchMap(ctx: Context, from: String, to: String) {
     launchURIView(ctx, uri)
 }
 
+fun launchMap(ctx: Context, to: Location){
+    val uri = "https://www.google.com/maps/dir/?api=1&destination=${to.latitude},${to.longitude}"
+    launchURIView(ctx, uri)
+}
+
 fun launchMap(ctx: Context, from: Location, to: String) {
     val uri = "https://www.google.com/maps/dir/${from.latitude},${from.longitude}/$to"
     launchURIView(ctx, uri)
 }
 
 private fun launchURIView(ctx: Context, uri: String) {
+    println("Launching url: $uri")
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
     startActivity(ctx, intent, null)
 }

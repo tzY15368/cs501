@@ -14,7 +14,7 @@ https://github.com/RickWayne1125/bu-on-the-go-backend/blob/master/app/models.py
 
 @Entity(tableName = "event")
 data class Event(
-    @PrimaryKey val event_id: UUID,
+    @PrimaryKey var event_id: UUID,
     val event_name: String,
     val latitude: Float,
     val longitude: Float,

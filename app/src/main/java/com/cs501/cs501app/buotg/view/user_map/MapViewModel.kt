@@ -8,6 +8,8 @@ import android.os.CountDownTimer
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.cs501.cs501app.buotg.database.entities.USER_LATITUDE_VAL_TO
+import com.cs501.cs501app.buotg.database.entities.USER_LONGITUDE_VAL_TO
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.*
 
@@ -20,8 +22,8 @@ class MapViewModel : ViewModel()  {
 
     fun getInitialLocation() : Location {
         val initialLocation = Location("")
-        initialLocation.latitude = 51.506874
-        initialLocation.longitude = -0.139800
+        initialLocation.latitude = USER_LATITUDE_VAL_TO
+        initialLocation.longitude = USER_LONGITUDE_VAL_TO
         return initialLocation
     }
 

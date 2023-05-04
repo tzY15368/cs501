@@ -100,161 +100,13 @@ class StudyGroupActivity : AppCompatActivity() {
             }
             composable("groupDetails/{groupID}") { backStackEntry ->
                 println(backStackEntry.arguments)
-                GroupDetails(Integer.parseInt(backStackEntry.arguments?.getString("groupID")))
-            }
-        }
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun GroupInviteView(groupID: Int) {
-        val inviteRepo = AppRepository.get().inviteRepository()
-        var userEmail by remember { mutableStateOf("") }
-        val loading = remember { mutableStateOf(false) }
-        val coroutineScope = rememberCoroutineScope()
-        val ctx = LocalContext.current
-
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            CustomTextField(
-                value = userEmail,
-                onValueChange = {
-                    userEmail = it
-                },
-                label = stringResource(id = R.string.user_email),
-                placeholder = { Text(stringResource(id = R.string.enter_user_email)) },
-                leadingIcon = { Icon(Icons.Filled.Person, contentDescription = null) })
-            CustomButton(onClick = {
-                coroutineScope.launch {
-                    loading.value = true
-                    inviteRepo.upsertInvite(ctx, groupID, userEmail, API.InviteStatus.PENDING)
-                    loading.value = false
-                }
-            }, enabled = !loading.value, text = stringResource(id = R.string.send_invites))
-        }
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun GroupDetails(groupID: Int) {
-        var group by remember { mutableStateOf<Group?>(null) }
-        var groupOwner by remember { mutableStateOf<User?>(null) }
-        var groupMmebers by remember { mutableStateOf(listOf<User>()) }
-        var currentUser by remember { mutableStateOf<User?>(null) }
-        var invites by remember { mutableStateOf(listOf<GroupInvite>()) }
-        val inviteRepo = AppRepository.get().inviteRepository()
-        val ctx = LocalContext.current
-
-        suspend fun loadGroup() {
-            groupRepo.getGroup(ctx, groupID)?.let {
-                group = it.group
-                groupOwner = userRepo.fetchUser(ctx, it.group.owner_id)
-                currentUser = userRepo.getCurrentUser()
-                if (group == null) {
-                    return
-                }
-
-                // pull group invites
-                val newInvites = mutableListOf<GroupInvite>()
-                inviteRepo.listGroupInvites(ctx, group!!.group_id)?.let { ivts ->
-                    newInvites.addAll(ivts.group_invites)
-                }
-                invites = newInvites
-                Log.d("GroupDetails", "Invites: ${invites.size}")
-            }
-            groupRepo.getGroupMembers(ctx, groupID)?.let {
-                val uuids = it.group_members
-                val users = mutableListOf<User>()
-                for (uuid in uuids) {
-                    userRepo.fetchUser(ctx, uuid)?.let { user ->
-                        users.add(user)
-                    }
-                }
-                groupMmebers = users
-            }
-        }
-
-
-        LaunchedEffect(true) {
-            loadGroup()
-        }
-        val scaffoldState = rememberScaffoldState()
-        val scope = rememberCoroutineScope()
-
-        Scaffold(
-            topBar = {
-                val study_group = stringResource(id = R.string.study_group)
-                GenericTopAppBar(
-                    title = "$study_group: ${group?.group_name}",
-                    onNavigationIconClick = {
-                        scope.launch {
-                            scaffoldState.drawerState.open()
-                        }
-                    },
-                    finished = { finish() })
-            }
-        ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues)
-                    .padding(16.dp)
-            ) {
-                val group_info = stringResource(id = R.string.group_info)
-                Text("$group_info:", fontSize = 25.sp)
-                group?.let {
-                    val group_name = stringResource(id = R.string.group_name)
-                    val group_des = stringResource(id = R.string.group_description)
-                    val group_created = stringResource(id = R.string.group_created)
-                    Text(text = "$group_name: ${it.group_name}", fontSize = 20.sp)
-                    Text(text = "$group_des: ${it.desc}", fontSize = 20.sp)
-                    Text(text = "$group_created: ${groupOwner?.full_name}", fontSize = 20.sp)
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Divider()
-                Spacer(modifier = Modifier.height(16.dp))
-                val members = stringResource(id = R.string.group_member)
-                Text(text = "$members:", fontSize = 20.sp)
-                LazyColumn(content = {
-                    items(groupMmebers.size) { index ->
-                        Row {
-                            UserCardView(User = groupMmebers[index])
-                            currentUser?.let { currentU ->
-                                if (currentU.user_id == groupOwner?.user_id) {
-                                    LeaveGroupBtn(
-                                        groupID,
-                                        groupMmebers[index].user_id,
-                                        callback = ::loadGroup
-                                    )
-                                }
-                            }
-                        }
-                    }
+                GroupDetails(Integer.parseInt(backStackEntry.arguments?.getString("groupID")), onBack = {
+                    navController.popBackStack()
                 })
-                Spacer(modifier = Modifier.height(16.dp))
-                Divider()
-                Spacer(modifier = Modifier.height(16.dp))
-                val group_invites = stringResource(id = R.string.group_invites)
-                Text(text = "$group_invites:", fontSize = 20.sp)
-                LazyColumn(content = {
-                    items(invites.size) { index ->
-                        InviteRow(
-                            groupInvite = invites[index],
-                            reload = ::nothing,
-                            allowModify = false
-                        )
-                    }
-                })
-                Spacer(modifier = Modifier.height(16.dp))
-                Divider()
-                Spacer(modifier = Modifier.height(16.dp))
-                if (group != null) {
-                    GroupInviteView(group!!.group_id)
-                }
             }
         }
     }
 
-    suspend fun nothing() {}
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -331,64 +183,15 @@ class StudyGroupActivity : AppCompatActivity() {
             if (groups.isEmpty()) {
                 Text(text = stringResource(id = R.string.no_group_found))
             }
-            Column {
-                for (group in groups) {
-                    GroupView(group = group)
+            LazyColumn(content = {
+                items(groups.size) { index ->
+                    GroupView(groups[index])
                 }
-            }
+            }, modifier = Modifier.height(500.dp))
         }
 
-        val scaffoldState = rememberScaffoldState()
-        val scope = rememberCoroutineScope()
-        Scaffold(
-            topBar = {
-                GenericTopAppBar(
-                    title = stringResource(id = R.string.study_group),
-                    onNavigationIconClick = {
-                        scope.launch {
-                            scaffoldState.drawerState.open()
-                        }
-                    },
-                    finished = { finish() })
-            }
-        ) { innerPadding ->
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-            ) {
-
-                GroupList()
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    Row() {
-                        CustomButton(
-                            onClick = { creatingGroup = true },
-                            text = stringResource(id = R.string.create_group)
-                        )
-                        CustomButton(
-                            onClick = { joiningGroup = true },
-                            text = stringResource(id = R.string.join_group)
-                        )
-                    }
-                }
-
-
-            }
-        }
-
-
-        //create study group
-        if (creatingGroup) {
+        @Composable
+        fun CreateGroup(){
             Dialog(onDismissRequest = { creatingGroup = false }) {
                 Column(
                     modifier = Modifier
@@ -423,36 +226,46 @@ class StudyGroupActivity : AppCompatActivity() {
                 }
             }
         }
-        //join study group
-//        if (joiningGroup) {
-//            Dialog(onDismissRequest = { joiningGroup = false }) {
-//                Column(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .fillMaxHeight()
-//                        .padding(16.dp)
-//                        .verticalScroll(rememberScrollState()),
-//                    horizontalAlignment = Alignment.CenterHorizontally,
-//                    verticalArrangement = Arrangement.Center,
-//                ) {
-//                    Text(text = "Join a study group")
-//                    TextField(
-//                        value = newGroupName,
-//                        onValueChange = { newGroupName = it },
-//                        label = { Text(text = "Group name") },
-//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-//                    )
-//                    Button(onClick = {
-//                        coroutineScope.launch {
-//                            joiningGroup = false
-//                            reloadGroups()
-//                        }
-//                    }) {
-//                        Text(text = "Join")
-//                    }
-//                }
-//            }
-//        }
+
+        val scaffoldState = rememberScaffoldState()
+        val scope = rememberCoroutineScope()
+        Scaffold(
+            topBar = {
+                GenericTopAppBar(
+                    title = stringResource(id = R.string.study_group),
+                    onNavigationIconClick = {
+                        scope.launch {
+                            scaffoldState.drawerState.open()
+                        }
+                    },
+                    finished = { finish() })
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Row{
+                    GroupList()
+                }
+                Row{
+                    CustomButton(
+                        onClick = { creatingGroup = true },
+                        text = stringResource(id = R.string.create_group)
+                    )
+                }
+            }
+        }
+
+
+        //create study group
+        if (creatingGroup) {
+            CreateGroup()
+        }
     }
 }
 

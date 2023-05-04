@@ -16,7 +16,7 @@ import com.cs501.cs501app.buotg.database.entities.USER_LATITUDE_VAL_TO
 import com.cs501.cs501app.buotg.database.entities.USER_LONGITUDE_VAL_TO
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
-import com.cs501.cs501app.buotg.view.bottomsheet.EventBottomSheet
+import com.cs501.cs501app.buotg.view.homeScreen.bottomsheet.EventBottomSheet
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.*
