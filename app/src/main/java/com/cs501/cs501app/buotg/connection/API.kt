@@ -44,6 +44,9 @@ interface API {
     @GET("/user")
     suspend fun getUser(@Query("user_id") id: UUID): Response<UserResponse>
 
+    @PUT("/user/user_type")
+    suspend fun updateUserType(@Query("user_type") user_type: String): Response<StdResponse>
+
     @GET("/event/{event_id}")
     suspend fun event_detail(@Path("event_id") event_id: String):Response<EventResponse>
 
