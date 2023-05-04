@@ -176,4 +176,6 @@
     <string name="select_end">Seleccionar hora de finalización</string>
 
     <string name="settings_misc">Misceláneo</string>
+    <string name="type_student">estudiante</string>
+    <string name="type_teacher">maestro</string>
 </resources>

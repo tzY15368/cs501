@@ -175,4 +175,6 @@
 
 
     <string name="settings_misc">杂项</string>
+    <string name="type_student">学生</string>
+    <string name="type_teacher">教师</string>
 </resources>
