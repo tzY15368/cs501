@@ -184,6 +184,9 @@ suspend fun generateEvents(
              */
             var calStart = Calendar.getInstance()
             var calEnd = Calendar.getInstance()
+            // set timezone to EST
+            calStart.timeZone = TimeZone.getTimeZone("America/New_York")
+            calEnd.timeZone = TimeZone.getTimeZone("America/New_York")
             // set the year
             val yy = year.toInt()
             calStart.set(Calendar.YEAR, yy)
@@ -218,10 +221,18 @@ suspend fun generateEvents(
             // set the time
             val startFields = start.split(":")
             val endFields = end.split(":")
-            val startHour = startFields[0].toInt()
+            var startHour = startFields[0].toInt()
             val startMinute = startFields[1].substring(0, 2).toInt()
-            val endHour = endFields[0].toInt()
+            var endHour = endFields[0].toInt()
             val endMinute = endFields[1].substring(0, 2).toInt()
+
+            if(start.contains("pm") && startHour != 12) {
+                startHour += 12
+            }
+            if(end.contains("pm") && endHour != 12) {
+                endHour += 12
+            }
+
             calStart.set(Calendar.HOUR_OF_DAY, startHour)
             calStart.set(Calendar.MINUTE, startMinute)
             calEnd.set(Calendar.HOUR_OF_DAY, endHour)

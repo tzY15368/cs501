@@ -31,4 +31,7 @@ interface EventDao {
 
 //    @Query("SELECT * FROM event WHERE created_by = :userId")
 //    suspend fun getAllEventsByUserId(userId : UUID): List<Event>
+    // get all events whose start_time <= Date, end_time >= Date, and (date-start_time) % repeat_mode == 0
+    @Query("SELECT * FROM event WHERE start_time <= :date AND end_time >= :date AND (julianday(:date) - julianday(start_time)) % repeat_mode = 0")
+    suspend fun getAllEventsByDate(date : Date): List<Event>
 }
