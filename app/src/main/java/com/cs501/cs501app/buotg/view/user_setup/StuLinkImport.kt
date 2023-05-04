@@ -67,20 +67,20 @@ suspend fun parseHTML(html: String, events: MutableList<Event>) {
 
             // calculate current semester from the first cell
             val firstCell = row.select("td:eq(0)").first()
-            println("first cell: ${firstCell?.text()}")
+            //println("first cell: ${firstCell?.text()}")
             var isFirstRow = false
-            if(firstCell?.text()?.contains("Graph") == true) {
+            if (firstCell?.text()?.contains("Graph") == true) {
                 // this is the semester indicator
-                currentSemester = firstCell.text().replace("Instructors Graph Buy Books","")
+                currentSemester = firstCell.text().replace("Instructors Graph Buy Books", "")
                 isFirstRow = true
             }
             if (!row.text().contains(STATUS_OK)) continue
-            if(row.text().contains("no reg activity")) continue
+            if (row.text().contains("no reg activity")) continue
             // get the number of tds in the row
             val tds = row.select("td").size
             // println("tds in row: $tds")
             var classIdx = 0
-            if(isFirstRow){
+            if (isFirstRow) {
                 classIdx = 1
             } else {
                 classIdx = 0
@@ -94,7 +94,7 @@ suspend fun parseHTML(html: String, events: MutableList<Event>) {
             val startCell = row.select("td:eq(${classIdx + 10})").first()?.text()!!
             val endCell = row.select("td:eq(${classIdx + 11})").first()?.text()!!
 
-            println("row: ${row.text().length}, ${row.toString()}")
+            //println("row: ${row.text().length}, ${row.toString()}")
             val classCell = row.select("td:eq(${classIdx})").first()
             // println("classCell: ${classCell}")
             if (classCell != null && classCell.text() != "") {
@@ -118,6 +118,29 @@ suspend fun parseHTML(html: String, events: MutableList<Event>) {
     Log.d("parseHTML", "endo fparse")
 }
 
+fun getLastDOWOfWeek(year: Int, month: Int, dow:Int): Calendar {
+    val cal = Calendar.getInstance()
+    cal.set(Calendar.YEAR, year)
+    cal.set(Calendar.MONTH, month)
+    val lastDayOfMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
+    cal.set(Calendar.DAY_OF_MONTH, lastDayOfMonth)
+    val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
+    val daysToSubtract = (dayOfWeek - dow + 7) % 7
+    cal.add(Calendar.DAY_OF_MONTH, -daysToSubtract)
+    return cal
+}
+
+fun getFirstDOWOfWeek(year: Int, month: Int, dow:Int): Calendar {
+    val cal = Calendar.getInstance()
+    cal.set(Calendar.YEAR, year)
+    cal.set(Calendar.MONTH, month)
+    cal.set(Calendar.DAY_OF_MONTH, 1)
+    while (cal.get(Calendar.DAY_OF_WEEK) != dow) {
+        cal.add(Calendar.DAY_OF_MONTH, 1)
+    }
+    return cal
+}
+
 // semester string: Spring 2023
 // name string: CAS CS 501
 // instructor string: Mobile App Development Czik
@@ -126,87 +149,106 @@ suspend fun parseHTML(html: String, events: MutableList<Event>) {
 // days string: Tue,Thu
 // start string: 3:30pm
 // end string: 4:45pm
-suspend fun generateEvents(semester:String, name:String, instructor:String, building:String, room:String, days:String, start:String, end:String):List<Event>{
+suspend fun generateEvents(
+    semester: String,
+    name: String,
+    instructor: String,
+    building: String,
+    room: String,
+    days: String,
+    start: String,
+    end: String
+): List<Event> {
     val events = ArrayList<Event>()
     val semesterFields = semester.split(" ")
     val season = semesterFields[0]
     val field2 = semesterFields[1]
-    val year = if(field2.length != 4){
+    val year = if (field2.length != 4) {
         semesterFields[2]
     } else {
         field2
     }
     // TODO: PARSE SEASON AND YEAR AND START AND END
     val dayFields = days.split(",")
-    val created_by = AppRepository.get().userRepo().getCurrentUserID()
-    for (day in dayFields){
+    for (day in dayFields) {
+        try {
+            /*
+            if season is spring, start from first day of Jan where the day is the same as the day in days,
+            end at the last day of May where the day is the same as the day in days
 
-        /*
-        if season is spring, start from first day of Jan where the day is the same as the day in days,
-        end at the last day of May where the day is the same as the day in days
-         */
-        /*
-        if season is summer, start from first day of July where the day is the same as the day in days,
-        end at the last day of August where the day is the same as the day in days
-         */
-        /*
-        if season is fall, start from first day of September where the day is the same as the day in days,
-        end at the last day of December where the day is the same as the day in days
-         */
-        val calStart = Calendar.getInstance()
-        val calEnd = Calendar.getInstance()
-        // set the year
-        calStart.set(Calendar.YEAR, year.toInt())
-        calEnd.set(Calendar.YEAR, year.toInt())
-        if(season=="Spring"){
-            calStart.set(Calendar.MONTH, Calendar.JANUARY)
-            calEnd.set(Calendar.MONTH, Calendar.MAY)
-        } else if(season=="Summer"){
-            calStart.set(Calendar.MONTH, Calendar.JULY)
-            calEnd.set(Calendar.MONTH, Calendar.AUGUST)
-        } else if(season=="Fall"){
-            calStart.set(Calendar.MONTH, Calendar.SEPTEMBER)
-            calEnd.set(Calendar.MONTH, Calendar.DECEMBER)
-        }
-        // set the day of week
-        val dayOfWeek = when(day){
-            "Mon" -> Calendar.MONDAY
-            "Tue" -> Calendar.TUESDAY
-            "Wed" -> Calendar.WEDNESDAY
-            "Thu" -> Calendar.THURSDAY
-            "Fri" -> Calendar.FRIDAY
-            "Sat" -> Calendar.SATURDAY
-            "Sun" -> Calendar.SUNDAY
-            else -> Calendar.MONDAY
-        }
-        // set it as the last day of "dayofWeek" as the end date
-        calStart.set(Calendar.DAY_OF_WEEK, dayOfWeek)
-        calEnd.set(Calendar.DAY_OF_WEEK, dayOfWeek,-1)
-        // set the time
-        val startFields = start.split(":")
-        val endFields = end.split(":")
-        val startHour = startFields[0].toInt()
-        val startMinute = startFields[1].substring(0,2).toInt()
-        val endHour = endFields[0].toInt()
-        val endMinute = endFields[1].substring(0,2).toInt()
-        calStart.set(Calendar.HOUR_OF_DAY, startHour)
-        calStart.set(Calendar.MINUTE, startMinute)
-        calEnd.set(Calendar.HOUR_OF_DAY, endHour)
-        calEnd.set(Calendar.MINUTE, endMinute)
+            if season is summer, start from first day of July where the day is the same as the day in days,
+            end at the last day of August where the day is the same as the day in days
 
-        val event = Event(
-            event_id = UUID.randomUUID(),
-            event_name = name,
-            latitude = 0F,
-            longitude = 0F,
-            start_time = calStart.time,
-            end_time = calEnd.time,
-            repeat_mode = 7,
-            priority = 1,
-            desc = instructor,
-            notify_time = 15,
-        )
-        events.add(event)
+            if season is fall, start from first day of September where the day is the same as the day in days,
+            end at the last day of December where the day is the same as the day in days
+             */
+            var calStart = Calendar.getInstance()
+            var calEnd = Calendar.getInstance()
+            // set the year
+            val yy = year.toInt()
+            calStart.set(Calendar.YEAR, yy)
+            calEnd.set(Calendar.YEAR, yy)
+            println("GOt season: $season, year: $year")
+            if (season == "Spring") {
+                calStart.set(Calendar.MONTH, Calendar.JANUARY)
+                calEnd.set(Calendar.MONTH, Calendar.MAY)
+            } else if (season == "Summer") {
+                calStart.set(Calendar.MONTH, Calendar.JULY)
+                calEnd.set(Calendar.MONTH, Calendar.AUGUST)
+            } else if (season == "Fall") {
+                calStart.set(Calendar.MONTH, Calendar.SEPTEMBER)
+                calEnd.set(Calendar.MONTH, Calendar.DECEMBER)
+            }
+            // set the day of week
+            val dayOfWeek = when (day) {
+                "Mon" -> Calendar.MONDAY
+                "Tue" -> Calendar.TUESDAY
+                "Wed" -> Calendar.WEDNESDAY
+                "Thu" -> Calendar.THURSDAY
+                "Fri" -> Calendar.FRIDAY
+                "Sat" -> Calendar.SATURDAY
+                "Sun" -> Calendar.SUNDAY
+                else -> Calendar.MONDAY
+            }
+            calStart = getFirstDOWOfWeek(yy, calStart.get(Calendar.MONTH), dayOfWeek)
+            calEnd = getLastDOWOfWeek(yy, calEnd.get(Calendar.MONTH), dayOfWeek)
+            //
+            calEnd.set(Calendar.YEAR, yy)
+            println("start: $start" + " end: $end"+ "end year: ${calEnd.get(Calendar.YEAR)}")
+            // set the time
+            val startFields = start.split(":")
+            val endFields = end.split(":")
+            val startHour = startFields[0].toInt()
+            val startMinute = startFields[1].substring(0, 2).toInt()
+            val endHour = endFields[0].toInt()
+            val endMinute = endFields[1].substring(0, 2).toInt()
+            calStart.set(Calendar.HOUR_OF_DAY, startHour)
+            calStart.set(Calendar.MINUTE, startMinute)
+            calEnd.set(Calendar.HOUR_OF_DAY, endHour)
+            calEnd.set(Calendar.MINUTE, endMinute)
+            calStart.set(Calendar.SECOND, 0)
+            calStart.set(Calendar.MILLISECOND, 0)
+            calStart.add(Calendar.SECOND, -calStart.get(Calendar.MILLISECOND))
+            calEnd.set(Calendar.MILLISECOND, 0)
+            calEnd.set(Calendar.SECOND, 0)
+            calEnd.add(Calendar.SECOND, -calEnd.get(Calendar.MILLISECOND))
+            val event = Event(
+                event_id = UUID.randomUUID(),
+                event_name = name,
+                latitude = 0F,
+                longitude = 0F,
+                start_time = calStart.time,
+                end_time = calEnd.time,
+                repeat_mode = 7,
+                priority = 1,
+                desc = instructor,
+                notify_time = 15,
+            )
+            events.add(event)
+        } catch (e: Exception) {
+            println("error: $e")
+        }
+
     }
     return events
 }
@@ -214,7 +256,7 @@ suspend fun generateEvents(semester:String, name:String, instructor:String, buil
 @Composable
 fun PreviewClasses(events: MutableList<Event>) {
     // return none if classes is empty else concat classes with \n
-    val out = if (events.size == 0) "none" else events.joinToString(separator = "\n")
+    val out = if (events.size == 0) "none" else events.joinToString(separator = "\n\n")
     Text(text = out)
 }
 
@@ -240,7 +282,7 @@ fun StuLinkImport(done: () -> Unit = {}) {
             userRepo.getCurrentUser()
         }
     }
-    if(currentUser.value == null) {
+    if (currentUser.value == null) {
         Text(text = "Please log in first")
         return
     }
@@ -258,7 +300,10 @@ fun StuLinkImport(done: () -> Unit = {}) {
                 coroutineScope.launch {
                     Log.d("StudentlinkImport", "ok")
                     Log.d("StudentlinkImport", "events: ${eventsState.size}")
-                    AppRepository.get().eventRepo().upsertAll(ctx, eventsState)
+                    for (event in eventsState) {
+                        Log.d("StudentlinkImport", "event: ${event.event_name}")
+                        AppRepository.get().eventRepo().upsertEvent(ctx, event, fromStuLink = true)
+                    }
                     TAlert.success(ctx, "ok")
                     done()
                 }
@@ -267,7 +312,7 @@ fun StuLinkImport(done: () -> Unit = {}) {
                 Log.d("StudentlinkImport", "cancel")
                 TAlert.fail(ctx, "canceled, you may retry at any time")
                 done()
-            }, text ="cancel" )
+            }, text = "cancel")
         }
         return
     }
@@ -313,13 +358,17 @@ fun StuLinkImport(done: () -> Unit = {}) {
         Text(text = "Current URL: $url")
         // 10dp padding
         Spacer(modifier = Modifier.height(20.dp))
-        CustomButton({
-            coroutineScope.launch {
-                Log.d("StuLinkImport", "html: ${html.length}")
-                parseHTML(html, eventsState)
-                setShowConfirm(true)
-            }
-        }, text = "Import",enabled = ("?ModuleName=allsched.pl" in url || "CURRENT SCHEDULE" in html))
+        CustomButton(
+            {
+                coroutineScope.launch {
+                    Log.d("StuLinkImport", "html: ${html.length}")
+                    parseHTML(html, eventsState)
+                    setShowConfirm(true)
+                }
+            },
+            text = "Import",
+            enabled = ("?ModuleName=allsched.pl" in url || "CURRENT SCHEDULE" in html)
+        )
     }
 }
 

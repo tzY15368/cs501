@@ -66,8 +66,9 @@ interface API {
         @Field("end_time") end_time: String,
         @Field("repeat_mode") repeat_mode: Int,
         @Field("priority") priority: Int,
-        @Field("desc") desc: String
-    ) : Response<StdResponse>
+        @Field("desc") desc: String,
+        @Field("stulink") fromStuLink:Boolean,
+    ) : Response<EventResponse>
 
     @DELETE("/event/{event_id}")
     suspend fun delete_event(@Path("event_id") event_id: String):Response<StdResponse>
