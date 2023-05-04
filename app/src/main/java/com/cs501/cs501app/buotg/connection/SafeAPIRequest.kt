@@ -53,18 +53,7 @@ open class SafeAPIRequest {
             e.printStackTrace()
             e.message?.let {
                 ctx?.let { it1 ->
-                    {
-                        // get the main looper
-                        Looper.getMainLooper().apply {
-                            // create a handler for the main looper
-                            val handler = android.os.Handler(this)
-                            // post a runnable to the handler
-                            handler.post {
-                                // run the runnable
-                                TAlert.fail(it1, it)
-                            }
-                        }
-                    }
+                    TAlert.fail(it1, it)
                 }
             }
             // throw e
