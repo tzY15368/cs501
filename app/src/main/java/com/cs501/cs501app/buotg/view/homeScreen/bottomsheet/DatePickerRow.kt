@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.view.bottomsheet
+package com.cs501.cs501app.buotg.view.homeScreen.bottomsheet
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog

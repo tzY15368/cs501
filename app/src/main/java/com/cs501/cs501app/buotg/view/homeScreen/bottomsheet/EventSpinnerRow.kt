@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.view.bottomsheet
+package com.cs501.cs501app.buotg.view.homeScreen.bottomsheet
 
 import android.view.View
 import android.widget.AdapterView
@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import com.cs501.cs501app.R
-import com.cs501.cs501app.buotg.view.bottomsheet.InputRow
+import com.cs501.cs501app.buotg.view.homeScreen.bottomsheet.InputRow
 import com.cs501.cs501app.buotg.database.entities.EventPriority
 
 class SpinnerAdapter(val onPriorityChange: (Int) -> Unit) : AdapterView.OnItemSelectedListener {

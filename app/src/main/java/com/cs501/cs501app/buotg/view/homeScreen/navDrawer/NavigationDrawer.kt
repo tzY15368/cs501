@@ -1,4 +1,4 @@
-package com.cs501.cs501app.buotg.view.navDrawer
+package com.cs501.cs501app.buotg.view.homeScreen.navDrawer
 
 import android.content.Intent
 import android.location.Location

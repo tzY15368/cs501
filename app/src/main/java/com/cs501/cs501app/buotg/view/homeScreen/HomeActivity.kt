@@ -17,7 +17,7 @@ import com.cs501.cs501app.R
 import com.cs501.cs501app.utils.CHANNEL_DESCRIPTION
 import com.cs501.cs501app.utils.CHANNEL_NAME
 import com.cs501.cs501app.utils.DEFAULT_CHANNEL_ID
-import com.cs501.cs501app.buotg.view.navDrawer.NavDrawer
+import com.cs501.cs501app.buotg.view.homeScreen.navDrawer.NavDrawer
 import com.cs501.cs501app.utils.*
 
 val POLL_STATE_KEY = "POLL_STATE_KEY"

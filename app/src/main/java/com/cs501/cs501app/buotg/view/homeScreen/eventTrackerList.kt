@@ -150,18 +150,27 @@ fun EventTrackerListItem(
             )
         }
 
-        val customLatitude = 37.4219983
-        val customLongitude = -122.084
+//        val customLatitude = 37.4219983
+//        val customLongitude = -122.084
 
-        val customLocation1 = Location("CustomProvider1")
-        customLocation1.latitude = USER_LATITUDE_VAL_FROM
-        customLocation1.longitude = USER_LONGITUDE_VAL_FROM
-        val customLocation2 = Location("CustomProvider1")
-        customLocation2.latitude = USER_LATITUDE_VAL_TO
-        customLocation2.longitude = USER_LONGITUDE_VAL_TO
-        val ctx = LocalContext.current
-        IconButton(onClick = { launchMap(ctx, customLocation1, customLocation2) }) {
-            Icon(Icons.Default.LocationOn, contentDescription = "Map")
+//        val customLocation1 = Location("CustomProvider1")
+//        customLocation1.latitude = USER_LATITUDE_VAL_FROM
+//        customLocation1.longitude = USER_LONGITUDE_VAL_FROM
+//        val customLocation2 = Location("CustomProvider1")
+//        customLocation2.latitude = USER_LATITUDE_VAL_TO
+//        customLocation2.longitude = USER_LONGITUDE_VAL_TO
+        if(event.longitude!=0f && event.latitude!=0f){
+            val target = Location("target")
+            target.latitude = event.latitude.toDouble()
+            target.longitude = event.longitude.toDouble()
+            val ctx = LocalContext.current
+            IconButton(onClick = {
+                println("got target location $target")
+                launchMap(ctx, target)
+
+            }) {
+                Icon(Icons.Default.LocationOn, contentDescription = "Map")
+            }
         }
         DeleteButton(
             onDelete = {
