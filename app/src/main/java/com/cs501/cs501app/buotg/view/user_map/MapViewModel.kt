@@ -5,6 +5,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,7 +64,9 @@ class MapViewModel : ViewModel()  {
         timer = object : CountDownTimer(1000, 1500) {
             override fun onTick(millisUntilFinished: Long) { }
             override fun onFinish() {
+                Log.d("MapViewModel", "onTextChanged: $text")
                 location.value = getLocationFromAddress(context, text)
+                Log.d("MapViewModel", "Location: ${location.value}")
             }
         }.start()
     }

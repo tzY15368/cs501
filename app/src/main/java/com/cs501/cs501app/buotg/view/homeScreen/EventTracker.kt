@@ -47,6 +47,7 @@ fun EventTracker(
         val resp = eventRepo.listEvents(context)
         if (resp != null) {
             events = resp.events
+            Log.d("EventTracker", "Events loaded: ${events.size}")
         }
         val CURRENT_UID: UUID by lazy {
             runBlocking { setCURRENT_UID() }

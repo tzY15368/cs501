@@ -52,9 +52,7 @@ open class SafeAPIRequest {
             println("Exception: $e")
             e.printStackTrace()
             e.message?.let {
-                ctx?.let { it1 ->
-                    TAlert.fail(it1, it)
-                }
+                ctx?.let { it1 -> TAlert.fail(it1, it) }
             }
             // throw e
             return null

@@ -77,7 +77,8 @@ class UserRepository(
         CURRENT_USER_ID = null
     }
 
-    suspend fun updateUser(user: User) {
+    suspend fun updateUser(ctx: Context, user: User) {
+        val res = apiRequest(ctx, {API.getClient().updateUserType(user.user_type.name)})
         userDao.updateUser(user)
     }
 

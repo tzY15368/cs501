@@ -2,6 +2,7 @@ package com.cs501.cs501app.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Looper
 import android.view.View
 import android.widget.Toast
 import androidx.compose.material3.SnackbarHostState
@@ -48,12 +49,21 @@ class Alert {
 
 class TAlert{
     companion object {
+        private fun mkToast(ctx: Context, msg: String, duration: Int) {
+            Looper.getMainLooper().apply {
+                val handler = android.os.Handler(this)
+                handler.post {
+                    Toast.makeText(ctx, msg, duration).show()
+                }
+            }
+        }
+
         fun success(ctx: Context, msg: String) {
-            Toast.makeText(ctx, "OK:"+msg, Toast.LENGTH_LONG).show()
+            mkToast(ctx, msg, Toast.LENGTH_SHORT)
         }
 
         fun fail(ctx: Context, msg: String) {
-            Toast.makeText(ctx, "Fail:"+msg, Toast.LENGTH_LONG).show()
+            mkToast(ctx, msg, Toast.LENGTH_LONG)
         }
     }
 }

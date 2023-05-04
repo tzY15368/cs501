@@ -53,7 +53,15 @@ class EventRepository (db: AppDatabase) : SafeAPIRequest() {
         }
         Log.d("EventRepository", "listEvents")
 //        res?.let { dao.upsertAll(it.Events) }
-        return res
+        if (res != null) {
+            res.events = dao.listEvents()
+            return res
+        } else {
+            val res2 = EventsResponse()
+            res2.events = dao.listEvents()
+            res2.message = "bruh"
+            return res2
+        }
     }
 
 
