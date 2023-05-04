@@ -67,12 +67,12 @@ class EventRepository(db: AppDatabase) : SafeAPIRequest() {
         Log.d("EventRepository", "listEvents: $res")
         if (res != null) {
             if (res.events != null) {
-                Log.d("EventRepository", "listEvents: ${res.events}")
+//                Log.d("EventRepository", "listEvents: ${res.events}")
 //                res.events.map { apiEventToEvent(it) } ?: emptyList()
                 dao.upsertAll(res.events)
             }
         }
-        Log.d("EventRepository", "listEvents")
+//        Log.d("EventRepository", "listEvents")
 //        res?.let { dao.upsertAll(it.Events) }
         if (res != null) {
             res.events = dao.listEvents()

@@ -72,11 +72,11 @@ fun EventTracker(
                     sheetState.hide()
                 }
             },
-            onSubmit = { updatedEvent ->
+            onSubmit = { it ->
                 scope.launch {
-                    eventRepo.upsertEvent(context, updatedEvent)
+                    eventRepo.upsertEvent(context, it)
                     sheetState.hide()
-                    Log.d("EventTracker", "Event saved: $updatedEvent")
+                    Log.d("EventTracker", "Event saved(submitted): $it")
                     reloadEvents()
                 }
             },
@@ -107,8 +107,11 @@ fun EventTracker(
                         onUpdate = { event ->
                             scope.launch {
                                 eventRepo.upsertEvent(context, event)
+                                Log.d("EventTracker", "Event saved(update): $event")
+                                currentEvent = event
+                                Log.d("EventTracker", "Event saved(update): $currentEvent")
                                 sheetState.show()
-                                reloadEvents()
+//                                reloadEvents()
                             }
                         },
                         onShowSharedEvents = { event ->
