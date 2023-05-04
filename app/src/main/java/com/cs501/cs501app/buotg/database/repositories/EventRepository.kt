@@ -57,6 +57,10 @@ class EventRepository(db: AppDatabase) : SafeAPIRequest() {
 //        Log.d("EventRepository", "getAllEventsByUserId: $userId")
 //        return dao.getAllEventsByUserId(userId)
 //    }
+    suspend fun getAllEventsByDate(ctx: Context, date: Date): List<Event> {
+        Log.d("EventRepository", "getAllEventsByDate: $date")
+        return dao.getAllEventsByDate(date)
+    }
 
     suspend fun listEvents(ctx: Context): EventsResponse? {
         val res = apiRequest(ctx, { API.getClient().event_list() })

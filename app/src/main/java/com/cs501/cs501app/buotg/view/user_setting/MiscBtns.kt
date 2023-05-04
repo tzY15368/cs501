@@ -33,25 +33,10 @@ fun ComposedMiscBtns(){
         Ping(modifier = Modifier.padding(8.dp))
     }
     Row(){
-        TestNotification()
-    }
-    Row(){
         TogglePollButton()
-    }
-    Row(){
-        GetLocation()
     }
     Row {
         ToggleBackgroundServiceBtn()
-    }
-
-    Row(){
-        Button(onClick = {
-            val intent = Intent(ctx, TestAddrPickerActivity::class.java)
-            ctx.startActivity(intent)
-        }) {
-            Text("picker")
-        }
     }
 }
 

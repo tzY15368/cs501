@@ -70,9 +70,7 @@ fun getCurrentLocation(ctx: Context, callback: (Location?)->Unit): Result<String
         return Result.failure(Exception("Permission Denied" + " Please allow location permission"))
     }
     fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-        if (location != null) {
-            callback(location)
-        }
+        callback(location)
     }
     return Result.success("Success")
 }
