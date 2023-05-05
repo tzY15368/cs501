@@ -7,16 +7,15 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import kotlin.random.Random
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.runtime.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.rememberScaffoldState
@@ -38,6 +37,7 @@ import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
 import com.cs501.cs501app.buotg.view.user_map.getCurrentLocation
 import com.cs501.cs501app.utils.GenericTopAppBar
+import com.cs501.cs501app.utils.TAlert
 import kotlinx.coroutines.launch
 import java.util.*
 @Composable
@@ -59,11 +59,13 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location,
     val coroutineScope = rememberCoroutineScope()
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
     val ctx = LocalContext.current
-    val snackbarHostState = remember { SnackbarHostState() }
+    var hasTaken = remember { mutableStateOf(false) }
     OutlinedButton(modifier = Modifier.size(30.dp),
+        border = BorderStroke(1.dp,color = Color.Black),
+        enabled = !hasTaken.value,
         onClick = {
             Log.d("Try_CLICKED_ATTENDANCE", sharedEventId.toString())
-            getCurrentLocation(ctx as Activity) {userLocation ->
+            getCurrentLocation(ctx) {userLocation ->
                 if (userLocation != null) {
                     if (userLocation.distanceTo(eventLocation) <= 100) {
                         Log.d("CLICKED_ATTENDANCE", sharedEventId.toString())
@@ -77,12 +79,11 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location,
                             sharedEventParticipanceRepo.updateParticipance(participance,ctx)
                             callback()
                         }
+                        hasTaken.value = true
                     }
                     else {
                         Log.d("CANNOT_TAKE_ATTEND", sharedEventId.toString())
-                        coroutineScope.launch {
-                            snackbarHostState.showSnackbar("Fail to take attendance")
-                        }
+                        TAlert.fail(ctx,"Away from valid scope!")
                     }
                 }
             }
@@ -93,27 +94,15 @@ fun takeAttendanceBtn(sharedEventId: Int, userId: UUID, eventLocation: Location,
             Icons.Outlined.Add,
             contentDescription = stringResource(id = R.string.take_attendence),
             modifier = Modifier.size(20.dp)
+
+
         )
         Text(
-            text = "Take Attendance",
+            text = "Take Attendance1",
             modifier = Modifier.padding(start = 8.dp)
         )
     }
-    SnackbarHost(
-        hostState = snackbarHostState,
-        modifier = Modifier.size(20.dp),
-        snackbar = {
-            Snackbar(
-                contentColor = Color.Red,
-                content = {
-                    Text(
-                        text = "Fail",
-                        color = Color.White
-                    )
-                }
-            )
-        }
-    )
+
 }
 
 @Composable
@@ -151,7 +140,45 @@ fun importUsersBtn(sharedEventId: Int, groupId: Int, callback: suspend () -> Uni
 
     }
 }
+@Composable
+fun viewParticipantListBtn(sharedEventId: Int) {
 
+    val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
+    var participants by remember { mutableStateOf(listOf<User>()) }
+    var participantInfo by remember { mutableStateOf(mutableListOf<String>()) }
+    val ctx = LocalContext.current
+    suspend fun loadParticipants() {
+        Log.d("loadParticipants",sharedEventId.toString())
+        participants = sharedEventParticipanceRepo.getSharedEventParticipanceBySharedEventId(sharedEventId)
+        Log.d("loadParticipants",participants.toString())
+        for(p in participants) {
+            val status = sharedEventParticipanceRepo.getSharedEventParticipanceStatus(sharedEventId, p.user_id).status
+            participantInfo.add(p.full_name + " " + status.toString())
+        }
+    }
+
+    @Composable
+    fun ParticipantView(participanceInfo: String) {
+        Text(text = participanceInfo)
+    }
+
+
+    LaunchedEffect(true) {
+        loadParticipants()
+    }
+    if(participantInfo.isEmpty()) {
+        Text(text ="No participants yet")
+    }
+    LazyColumn(modifier = Modifier.fillMaxHeight(), content = {
+        items(participantInfo.size) { idx ->
+            ParticipantView(participantInfo[idx])
+        }
+    })
+
+
+
+
+}
 class SharedEventActivity : AppCompatActivity() {
 
     val userRepo = AppRepository.get().userRepo()
@@ -239,6 +266,7 @@ class SharedEventActivity : AppCompatActivity() {
             var createdbyUser by remember { mutableStateOf<User?>(null) }
             var takingAttendance by remember { mutableStateOf(false) }
             var importingGroupMembers by remember { mutableStateOf(false) }
+            var viewingParticipance by remember { mutableStateOf(false) }
             var groupId by remember { mutableStateOf(0) }
             LaunchedEffect(true) {
                 currentUser = userRepo.getCurrentUser()
@@ -254,6 +282,7 @@ class SharedEventActivity : AppCompatActivity() {
             ) {
                 val creator = stringResource(id = R.string.creator)
                 val by = if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
+                var hasTaken = remember { mutableStateOf(false) }
                 Text(
                     text = SharedEvent.shared_event_id.toString() + by + "\n" + SharedEvent.created_at,
                     fontSize = 30.sp,
@@ -268,16 +297,56 @@ class SharedEventActivity : AppCompatActivity() {
                 ) {
 
                     Button(onClick = {
-                        coroutineScope.launch {
-                            reloadSharedEvents()
+                        Log.d("Try_CLICKED_ATTENDANCE", SharedEvent.shared_event_id.toString())
+                        var eventLocation = event?.let { toLocation(it) }
+                        getCurrentLocation(ctx) {userLocation ->
+                            if (userLocation != null) {
+                                if (userLocation?.let { userLocation.distanceTo(it) }!! <= 100) {
+                                    Log.d("CLICKED_ATTENDANCE", SharedEvent.shared_event_id.toString())
+                                    val prev_participance = currentUser?.let { SharedEventParticipance(shared_event_id = SharedEvent.shared_event_id, user_id = it.user_id, status = Status.FAIL) }
+                                    coroutineScope.launch {
+                                        if (prev_participance != null) {
+                                            sharedEventParticipanceRepo.deleteParticipance(prev_participance,ctx)
+                                        }
+                                        reloadSharedEvents()
+                                    }
+                                    val participance = currentUser?.let { SharedEventParticipance(shared_event_id = SharedEvent.shared_event_id, user_id = it.user_id, status = Status.SUCCESS) }
+                                    coroutineScope.launch {
+                                        if (participance != null) {
+                                            sharedEventParticipanceRepo.updateParticipance(participance,ctx)
+                                        }
+                                        reloadSharedEvents()
+                                    }
+                                    hasTaken.value = true
+                                }
+                                else {
+                                    Log.d("CANNOT_TAKE_ATTEND", SharedEvent.shared_event_id.toString())
+                                    TAlert.fail(ctx,"Away from valid scope!")
+                                }
+                            }
                         }
-                        takingAttendance = true }) {
+                    }, enabled = !hasTaken.value
+                    ) {
                         Text(text = stringResource(id = R.string.take_attendence))
                     }
 
                     Button(onClick = {
                         importingGroupMembers = true }) {
                         Text(text = stringResource(id = R.string.import_members_2))
+                    }
+
+
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Button(onClick = {
+                        viewingParticipance = true
+                    }) {
+                        Text(text = stringResource(id = R.string.view_participant))
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
@@ -317,7 +386,9 @@ class SharedEventActivity : AppCompatActivity() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight()
-                            .padding(16.dp),
+                            .padding(16.dp)
+                            .verticalScroll(rememberScrollState()),
+
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
                     ) {
@@ -331,6 +402,10 @@ class SharedEventActivity : AppCompatActivity() {
 
                     }
                 }
+            }
+            if(viewingParticipance) {
+                Log.d("view participants start","view participants start")
+                viewParticipantListBtn(sharedEventId = SharedEvent.shared_event_id)
             }
 
         }
@@ -351,6 +426,7 @@ class SharedEventActivity : AppCompatActivity() {
             })
         }
         val scaffoldState = rememberScaffoldState()
+
         val scope = rememberCoroutineScope()
         Scaffold(
             topBar = {
