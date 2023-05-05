@@ -63,9 +63,12 @@ fun EventTracker(
     }
 
 
-    currentEvent?.let {
+
+    if (currentEvent != null) {
+        val event_show = currentEvent!!
+        Log.d("EventTracker", "Event show: $event_show")
         EventBottomSheet(
-            event = it,
+            event = event_show,
             modifier = modifier,
             onCancel = {
                 scope.launch {
@@ -106,8 +109,7 @@ fun EventTracker(
                         },
                         onUpdate = { event ->
                             scope.launch {
-                                eventRepo.upsertEvent(context, event)
-                                Log.d("EventTracker", "Event saved(update): $event")
+//                                eventRepo.upsertEvent(context, event)
                                 currentEvent = event
                                 Log.d("EventTracker", "Event saved(update): $currentEvent")
                                 sheetState.show()
