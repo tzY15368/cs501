@@ -47,6 +47,7 @@ class GroupMemberResponse: StdResponse(){
 }
 
 class SharedEventListResponse: StdResponse(){
+
     lateinit var shared_event: List<SharedEvent>
 }
 /**GML Group Member List*/

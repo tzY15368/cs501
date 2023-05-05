@@ -19,7 +19,7 @@ import io.getstream.chat.android.client.models.*
 import io.getstream.chat.android.livedata.ChatDomain
 import kotlinx.coroutines.*
 
-open class BUOTGApplication: ChatApplication(), ClientProvider {
+open class  BUOTGApplication: ChatApplication(), ClientProvider {
     override lateinit var client: ChatClient
     override var userName: String? = null
     override val channelCreated = mutableStateOf(false)

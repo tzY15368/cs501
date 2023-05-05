@@ -9,8 +9,6 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -77,7 +75,7 @@ interface API {
     suspend fun get_shared_event(@Path("event_id") event_id: String):Response<SharedEventListResponse>
 
     @POST("/shared_event/{event_id}")
-    suspend fun create_shared_event(@Path("event_id") event_id: String):Response<StdResponse>
+    suspend fun create_shared_event(@Path("event_id") event_id: String):Response<SharedEventResponse>
 
     @DELETE("/shared_event")
     @FormUrlEncoded
@@ -93,17 +91,17 @@ interface API {
     @POST("/shared_event_participance")
     @FormUrlEncoded
     suspend fun create_shared_event_participance(
-        @Field("shared_event_id") shared_event_id: UUID,
+        @Field("shared_event_id") shared_event_id: Int,
         @Field("user_id") user_id: UUID,
         @Field("status") status: Status
-    ):Response<StdResponse>
+    ):Response<SEPsResponse>
 
     @DELETE("/shared_event_participance")
     @FormUrlEncoded
     suspend fun delete_shared_event_participance(
-        @Field("shared_event_id") shared_event_id: UUID,
+        @Field("shared_event_id") shared_event_id: Int,
         @Field("user_id") user_id: UUID,
-    ):Response<StdResponse>
+    ):Response<SEPsResponse>
 
     @GET("/group/list")
     suspend fun group_list():Response<GroupListResponse>
