@@ -27,7 +27,8 @@ class SharedEventResponse: StdResponse(){
 
 /**SEPs Shared Event Participance*/
 class SEPsResponse: StdResponse(){
-    lateinit var shared_event_participances: List<SharedEventParticipance>
+    lateinit var user_id: String
+
 }
 
 class UserResponse: StdResponse(){

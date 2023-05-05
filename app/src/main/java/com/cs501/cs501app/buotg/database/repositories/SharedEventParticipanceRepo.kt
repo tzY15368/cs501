@@ -21,7 +21,7 @@ class SharedEventParticipanceRepo(
 
     suspend fun updateParticipance(participance: SharedEventParticipance, ctx: Context) : SEPsResponse? {
         val res = apiRequest(ctx, { API.getClient().create_shared_event_participance(participance.shared_event_id,participance.user_id,participance.status)})
-        res?.let { db.sharedEventParticipanceDao().upsertAll(listOf(participance))}
+//        res?.let { db.sharedEventParticipanceDao().upsertAll(listOf(participance))}
         return res
     }
 

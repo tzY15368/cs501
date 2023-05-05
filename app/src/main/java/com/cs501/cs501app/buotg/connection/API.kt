@@ -89,7 +89,7 @@ interface API {
 
 
     @POST("/shared_event_participance")
-//    @FormUrlEncoded
+    @FormUrlEncoded
     suspend fun create_shared_event_participance(
         @Field("shared_event_id") shared_event_id: Int,
         @Field("user_id") user_id: UUID,

@@ -159,7 +159,9 @@ fun viewParticipantListBtn(sharedEventId: Int) {
 
     @Composable
     fun ParticipantView(participanceInfo: String) {
-        Text(text = participanceInfo)
+        Text(text = participanceInfo,color = Color.Black)
+        Spacer(modifier = Modifier.height(10.dp))
+        Divider()
     }
 
 
@@ -167,15 +169,14 @@ fun viewParticipantListBtn(sharedEventId: Int) {
         loadParticipants()
     }
     if(participantInfo.isEmpty()) {
-        Text(text ="No participants yet")
+        Text(text ="No participants yet", color = Color.Black)
     }
-    LazyColumn(modifier = Modifier.fillMaxHeight(), content = {
+    LazyColumn(modifier = Modifier.fillMaxHeight().background(color = Color.White), content = {
         items(participantInfo.size) { idx ->
             ParticipantView(participantInfo[idx])
         }
+
     })
-
-
 
 
 }
@@ -304,19 +305,17 @@ class SharedEventActivity : AppCompatActivity() {
                                 if (userLocation?.let { userLocation.distanceTo(it) }!! <= 100) {
                                     Log.d("CLICKED_ATTENDANCE", SharedEvent.shared_event_id.toString())
                                     val prev_participance = currentUser?.let { SharedEventParticipance(shared_event_id = SharedEvent.shared_event_id, user_id = it.user_id, status = Status.FAIL) }
+                                    val participance = currentUser?.let { SharedEventParticipance(shared_event_id = SharedEvent.shared_event_id, user_id = it.user_id, status = Status.SUCCESS) }
                                     coroutineScope.launch {
                                         if (prev_participance != null) {
                                             sharedEventParticipanceRepo.deleteParticipance(prev_participance,ctx)
                                         }
-                                        reloadSharedEvents()
-                                    }
-                                    val participance = currentUser?.let { SharedEventParticipance(shared_event_id = SharedEvent.shared_event_id, user_id = it.user_id, status = Status.SUCCESS) }
-                                    coroutineScope.launch {
                                         if (participance != null) {
                                             sharedEventParticipanceRepo.updateParticipance(participance,ctx)
                                         }
-                                        reloadSharedEvents()
+
                                     }
+
                                     hasTaken.value = true
                                 }
                                 else {
@@ -405,7 +404,10 @@ class SharedEventActivity : AppCompatActivity() {
             }
             if(viewingParticipance) {
                 Log.d("view participants start","view participants start")
-                viewParticipantListBtn(sharedEventId = SharedEvent.shared_event_id)
+                Dialog(onDismissRequest = { viewingParticipance = false }) {
+                    viewParticipantListBtn(sharedEventId = SharedEvent.shared_event_id)
+                }
+
             }
 
         }
