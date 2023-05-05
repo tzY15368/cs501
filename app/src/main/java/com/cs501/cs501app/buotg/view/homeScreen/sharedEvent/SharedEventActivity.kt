@@ -1,8 +1,5 @@
 package com.cs501.cs501app.buotg.view.homeScreen.sharedEvent
 
-import android.annotation.SuppressLint
-import android.app.Activity
-import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
@@ -10,34 +7,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import kotlin.random.Random
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.runtime.*
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
-import androidx.compose.ui.window.Dialog
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
-import com.cs501.cs501app.buotg.view.user_map.getCurrentLocation
 import com.cs501.cs501app.utils.GenericTopAppBar
-import com.cs501.cs501app.utils.TAlert
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -134,7 +120,7 @@ class SharedEventActivity : AppCompatActivity() {
             LazyColumn(
                 content = {
                     items(sharedEvents.size) { idx ->
-                        SharedEventView(
+                        SharedEventItem(
                             SharedEvent = sharedEvents[idx],
                             currentUser,
                             userRepo,

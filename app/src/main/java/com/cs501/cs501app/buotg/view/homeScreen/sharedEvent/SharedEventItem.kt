@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun SharedEventView(
+fun SharedEventItem(
     SharedEvent: SharedEvent,
     currentUser: MutableState<User?>,
     userRepo: UserRepository,
