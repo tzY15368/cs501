@@ -7,6 +7,7 @@ import com.cs501.cs501app.buotg.database.AppDatabase
 import com.cs501.cs501app.buotg.database.DateTimeConverter
 import com.cs501.cs501app.buotg.database.UUIDConverter
 import com.cs501.cs501app.buotg.database.entities.Event
+import com.cs501.cs501app.buotg.database.entities.apiEventToEvent
 import java.util.*
 
 class EventRepository(db: AppDatabase) : SafeAPIRequest() {
@@ -21,7 +22,7 @@ class EventRepository(db: AppDatabase) : SafeAPIRequest() {
     }
 
     suspend fun upsertEvent(ctx: Context, event: Event, fromStuLink: Boolean = false) {
-        Log.d("EventRepository", "upsertEvent: $event")
+        Log.d("EventRepository", "upsertEvent: $event" + "fromStuLink: $fromStuLink")
         val zonedStartDateTime = DateTimeConverter().fromDateToISO(event.start_time)
         val zonedEndDateTime = DateTimeConverter().fromDateToISO(event.end_time)
         val res = apiRequest(ctx, {
@@ -40,6 +41,9 @@ class EventRepository(db: AppDatabase) : SafeAPIRequest() {
         })
         if(res != null && fromStuLink){
             event.event_id = res.event.event_id
+        }
+        if (res != null) {
+            Log.d("EventRepository", "upsertEvent: ${res.event}")
         }
         dao.upsert(event)
     }
@@ -64,18 +68,19 @@ class EventRepository(db: AppDatabase) : SafeAPIRequest() {
 
     suspend fun listEvents(ctx: Context): EventsResponse? {
         val res = apiRequest(ctx, { API.getClient().event_list() })
-        Log.d("EventRepository", "listEvents: $res")
         if (res != null) {
-            if (res.events != null) {
-                Log.d("EventRepository", "listEvents: ${res.events}")
+            val apiEvents = res.apievents
+            if (res.apievents != null) {
+//                Log.d("EventRepository", "listEvents: ${res.events}")
 //                res.events.map { apiEventToEvent(it) } ?: emptyList()
+                res.events = res.apievents.map { apiEventToEvent(it) } ?: emptyList()
                 dao.upsertAll(res.events)
             }
         }
-        Log.d("EventRepository", "listEvents")
+//        Log.d("EventRepository", "listEvents")
 //        res?.let { dao.upsertAll(it.Events) }
         if (res != null) {
-            res.events = dao.listEvents()
+//            res.events = dao.listEvents()
             return res
         } else {
             val res2 = EventsResponse()

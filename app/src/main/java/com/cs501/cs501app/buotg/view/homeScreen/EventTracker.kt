@@ -63,20 +63,23 @@ fun EventTracker(
     }
 
 
-    currentEvent?.let {
+
+    if (currentEvent != null) {
+        val event_show = currentEvent!!
+        Log.d("EventTracker", "Event show: $event_show")
         EventBottomSheet(
-            event = it,
+            event = event_show,
             modifier = modifier,
             onCancel = {
                 scope.launch {
                     sheetState.hide()
                 }
             },
-            onSubmit = { updatedEvent ->
+            onSubmit = { it ->
                 scope.launch {
-                    eventRepo.upsertEvent(context, updatedEvent)
+                    eventRepo.upsertEvent(context, it)
                     sheetState.hide()
-                    Log.d("EventTracker", "Event saved: $updatedEvent")
+                    Log.d("EventTracker", "Event saved(submitted): $it")
                     reloadEvents()
                 }
             },
@@ -106,9 +109,11 @@ fun EventTracker(
                         },
                         onUpdate = { event ->
                             scope.launch {
-                                eventRepo.upsertEvent(context, event)
+//                                eventRepo.upsertEvent(context, event)
+                                currentEvent = event
+                                Log.d("EventTracker", "Event saved(update): $currentEvent")
                                 sheetState.show()
-                                reloadEvents()
+//                                reloadEvents()
                             }
                         },
                         onShowSharedEvents = { event ->
