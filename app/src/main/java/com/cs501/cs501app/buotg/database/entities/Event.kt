@@ -26,7 +26,14 @@ data class Event(
     val priority: Int,
     val desc: String,
     val notify_time: Int // notify time in minutes
-)
+){
+    fun toLocation(): Location {
+        val location = Location("")
+        location.latitude = latitude.toDouble()
+        location.longitude = longitude.toDouble()
+        return location
+    }
+}
 //data class ApiEvent(
 //    val event_id: String,
 //    val event_name: String,
