@@ -20,17 +20,19 @@ import com.cs501.cs501app.buotg.database.repositories.AppRepository
 fun viewParticipantListBtn(sharedEventId: Int) {
 
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
-    var participants by remember { mutableStateOf(listOf<User>()) }
+    //var participants by remember { mutableStateOf(listOf<User>()) }
     var participantInfo by remember { mutableStateOf(mutableListOf<String>()) }
     val ctx = LocalContext.current
     suspend fun loadParticipants() {
         Log.d("loadParticipants",sharedEventId.toString())
-        participants = sharedEventParticipanceRepo.getSharedEventParticipanceBySharedEventId(sharedEventId)
-        Log.d("loadParticipants",participants.toString())
-        for(p in participants) {
-            val status = sharedEventParticipanceRepo.getSharedEventParticipanceStatus(sharedEventId, p.user_id).status
-            participantInfo.add(p.full_name + " " + status.toString())
-        }
+        val result = sharedEventParticipanceRepo.getSharedEventParticipanceBySharedEventId(ctx, sharedEventId)
+        val infoList: List<String> = result.map { it.user.full_name + " " + it.shared_event_participance.status.toString() }
+//        Log.d("loadParticipants",participants.toString())
+//        for(p in participants) {
+//            val status = sharedEventParticipanceRepo.getSharedEventParticipanceStatus(sharedEventId, p.user_id).status
+//            participantInfo.add(p.full_name + " " + status.toString())
+//        }
+        participantInfo = infoList.toMutableList()
     }
 
     @Composable

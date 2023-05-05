@@ -84,17 +84,17 @@ interface API {
     ):Response<StdResponse>
 
 
-    @GET("/shared_event_participance/{int:shared_event_id}/list")
-    suspend fun shared_event_participance_list():Response<SEPsResponse>
+    @GET("/shared_event_participance/{shared_event_id}/list")
+    suspend fun shared_event_participance_list(@Path("shared_event_id") shared_event_id: Int):Response<SEPsResponse>
 
 
     @POST("/shared_event_participance")
     @FormUrlEncoded
-    suspend fun create_shared_event_participance(
+    suspend fun put_shared_event_participance(
         @Field("shared_event_id") shared_event_id: Int,
         @Field("user_id") user_id: UUID,
         @Field("status") status: Status
-    ):Response<SEPsResponse>
+    ):Response<StdResponse>
 
     @DELETE("/shared_event_participance")
 //    @FormUrlEncoded

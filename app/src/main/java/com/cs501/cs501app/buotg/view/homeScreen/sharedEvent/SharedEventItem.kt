@@ -33,11 +33,11 @@ fun SharedEventItem(
     currentUser: MutableState<User?>,
     userRepo: UserRepository,
     reloadSharedEvents: suspend () -> Unit,
-    onNavigateToSharedEventDetails: (eventId:Int) -> Unit,
+    onNavigateToSharedEventDetails: (eventId: Int) -> Unit,
     event: Event?
 ) {
     var createdbyUser by remember { mutableStateOf<User?>(null) }
-    var takingAttendance by remember { mutableStateOf(false) }
+    //var takingAttendance by remember { mutableStateOf(false) }
     var importingGroupMembers by remember { mutableStateOf(false) }
     var viewingParticipance by remember { mutableStateOf(false) }
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
@@ -72,61 +72,13 @@ fun SharedEventItem(
                 .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            if(currentUser.value != null){
 
-            Button(
-                onClick = {
-                    Log.d("Try_CLICKED_ATTENDANCE", SharedEvent.shared_event_id.toString())
-                    var eventLocation = event?.let { it.toLocation() }
-                    getCurrentLocation(ctx) { userLocation ->
-                        if (userLocation != null) {
-                            if (userLocation?.let { userLocation.distanceTo(it) }!! <= CHECKIN_DISTANCE) {
-                                Log.d(
-                                    "CLICKED_ATTENDANCE",
-                                    SharedEvent.shared_event_id.toString()
-                                )
-                                val prev_participance = currentUser.value?.let {
-                                    SharedEventParticipance(
-                                        shared_event_id = SharedEvent.shared_event_id,
-                                        user_id = it.user_id,
-                                        status = Status.FAIL
-                                    )
-                                }
-                                val participance = currentUser.value?.let {
-                                    SharedEventParticipance(
-                                        shared_event_id = SharedEvent.shared_event_id,
-                                        user_id = it.user_id,
-                                        status = Status.SUCCESS
-                                    )
-                                }
-                                coroutineScope.launch {
-                                    if (prev_participance != null) {
-                                        sharedEventParticipanceRepo.deleteParticipance(
-                                            prev_participance,
-                                            ctx
-                                        )
-                                    }
-                                    if (participance != null) {
-                                        sharedEventParticipanceRepo.updateParticipance(
-                                            participance,
-                                            ctx
-                                        )
-                                    }
-
-                                }
-
-                                hasTaken.value = true
-                            } else {
-                                Log.d(
-                                    "CANNOT_TAKE_ATTEND",
-                                    SharedEvent.shared_event_id.toString()
-                                )
-                                TAlert.fail(ctx, "Away from valid scope!")
-                            }
-                        }
-                    }
-                }, enabled = !hasTaken.value
-            ) {
-                Text(text = stringResource(id = R.string.take_attendence))
+                takeAttendanceBtn(
+                    sharedEventId = SharedEvent.shared_event_id,
+                    userId = currentUser.value!!.user_id,
+                    eventLocation = event?.toLocation(),
+                )
             }
 
             Button(onClick = {
@@ -165,51 +117,57 @@ fun SharedEventItem(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
-                Text(text = stringResource(id = R.string.import_members_2))
-                TextField(
-                    value = groupId.toString(),
-                    onValueChange = { groupId = it.toInt() },
-                    label = { Text(text = stringResource(id = R.string.group_id)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-                )
-                importUsersBtn(
-                    sharedEventId = SharedEvent.shared_event_id,
-                    groupId = groupId,
-                    callback = { reloadSharedEvents() })
-            }
-        }
-    }
-    if (takingAttendance) {
-        Log.d("take attendance start", "take attendance start")
-        Log.d("event", event.toString())
-        event?.let { it.toLocation().toString() }?.let { Log.d("LOCATION", it) }
-        Dialog(onDismissRequest = { takingAttendance = false }) {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState()),
-
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Text(text = stringResource(id = R.string.take_attendence))
-                event?.let {
-                    it.toLocation()
-                }?.let {
-                    currentUser.value?.let { it1 ->
-                        takeAttendanceBtn(
-                            sharedEventId = SharedEvent.shared_event_id,
-                            eventLocation = it,
-                            userId = it1.user_id,
-                            callback = { reloadSharedEvents() })
-                    }
+                Row {
+                    Text(text = stringResource(id = R.string.import_members_2))
+                }
+                Row {
+                    TextField(
+                        value = groupId.toString(),
+                        onValueChange = { groupId = it.toInt() },
+                        label = { Text(text = stringResource(id = R.string.group_id)) },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                    )
+                }
+                Row {
+                    importUsersBtn(
+                        sharedEventId = SharedEvent.shared_event_id,
+                        groupId = groupId,
+                        callback = { reloadSharedEvents() })
                 }
             }
         }
     }
+//    if (takingAttendance) {
+//        Log.d("take attendance start", "take attendance start")
+//        Log.d("event", event.toString())
+//        event?.let { it.toLocation().toString() }?.let { Log.d("LOCATION", it) }
+//        Dialog(onDismissRequest = { takingAttendance = false }) {
+//
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .fillMaxHeight()
+//                    .padding(16.dp)
+//                    .verticalScroll(rememberScrollState()),
+//
+//                horizontalAlignment = Alignment.CenterHorizontally,
+//                verticalArrangement = Arrangement.Center,
+//            ) {
+//                Text(text = stringResource(id = R.string.take_attendence))
+//                event?.let {
+//                    it.toLocation()
+//                }?.let {
+//                    currentUser.value?.let { it1 ->
+//                        takeAttendanceBtn(
+//                            sharedEventId = SharedEvent.shared_event_id,
+//                            eventLocation = it,
+//                            userId = it1.user_id,
+//                            callback = { reloadSharedEvents() })
+//                    }
+//                }
+//            }
+//        }
+//    }
     if (viewingParticipance) {
         Log.d("view participants start", "view participants start")
         Dialog(onDismissRequest = { viewingParticipance = false }) {

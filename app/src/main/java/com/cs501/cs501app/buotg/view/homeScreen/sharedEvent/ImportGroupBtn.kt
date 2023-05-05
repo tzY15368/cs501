@@ -1,7 +1,7 @@
 package com.cs501.cs501app.buotg.view.homeScreen.sharedEvent
 
 import android.util.Log
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Icon
@@ -37,7 +37,7 @@ fun importUsersBtn(sharedEventId: Int, groupId: Int, callback: suspend () -> Uni
                         for(gm in uuids) {
                             Log.d("gm ", gm.toString())
                             val participance = SharedEventParticipance(shared_event_id = sharedEventId, user_id = gm, status = Status.FAIL)
-                            sharedEventParticipanceRepo.updateParticipance(participance,ctx)
+                            sharedEventParticipanceRepo.putParticipance(participance,ctx)
                         }
                     }
                 }

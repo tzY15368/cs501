@@ -121,7 +121,7 @@ fun CreateSharedEventHandler(
                     }
                     if (participance != null) {
                         Log.d("createSharedEventPart", participance.toString())
-                        sharedEventParticipanceRepo.updateParticipance(participance, ctx)
+                        sharedEventParticipanceRepo.putParticipance(participance, ctx)
                     }
 
                     targetApp.create_channel("$newSharedEventName" + "_shared_events")
