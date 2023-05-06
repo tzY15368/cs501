@@ -11,6 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.connection.SharedEventListItem
 import com.cs501.cs501app.buotg.database.entities.SharedEventParticipance
 import com.cs501.cs501app.buotg.database.entities.Status
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
@@ -18,44 +19,46 @@ import com.cs501.cs501app.buotg.view.user_map.getCurrentLocation
 import kotlinx.coroutines.launch
 import java.util.*
 
+val MUST_CHECK_LOCATION = false
+
 @Composable
 fun takeAttendanceBtn(
-    sharedEventId: Int,
+    eventData: SharedEventListItem,
     userId: UUID,
     eventLocation: Location?,
+    reload: suspend () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
     val ctx = LocalContext.current
-    var hasTaken = remember { mutableStateOf(false) }
     Button(
         onClick = {
-            Log.d("Try_CLICKED_ATTENDANCE", sharedEventId.toString())
+            Log.d("Try_CLICKED_ATTENDANCE", eventData.shared_event.shared_event_id.toString())
             getCurrentLocation(ctx) { userLocation ->
                 var locationOK = false
                 if (eventLocation!=null && userLocation != null && userLocation.distanceTo(eventLocation) <= CHECKIN_DISTANCE) {
                     locationOK = true
                 }
-                if (locationOK) {
+                if (locationOK || !MUST_CHECK_LOCATION) {
                     val participance =
                         SharedEventParticipance(
-                            shared_event_id = sharedEventId,
+                            shared_event_id = eventData.shared_event.shared_event_id,
                             user_id = userId,
                             status = Status.SUCCESS
                         )
 
                     coroutineScope.launch {
-                        if (participance != null) {
-                            sharedEventParticipanceRepo.putParticipance(
-                                participance,
-                                ctx
-                            )
-                        }
-
+                        sharedEventParticipanceRepo.putParticipance(
+                            participance,
+                            ctx
+                        )
+                        reload()
                     }
+                } else {
+                    println("location not ok")
                 }
             }
-        }, enabled = !hasTaken.value
+        }, enabled = eventData.participance.status == Status.FAIL
     ) {
         Text(text = stringResource(id = R.string.take_attendence))
     }

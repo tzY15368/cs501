@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,18 +16,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.connection.SharedEventListItem
 import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.database.repositories.UserRepository
-import com.cs501.cs501app.buotg.view.user_map.getCurrentLocation
-import com.cs501.cs501app.utils.TAlert
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun SharedEventItem(
-    SharedEvent: SharedEvent,
+    eventData: SharedEventListItem,
     currentUser: MutableState<User?>,
     userRepo: UserRepository,
     reloadSharedEvents: suspend () -> Unit,
@@ -42,11 +38,10 @@ fun SharedEventItem(
     var viewingParticipance by remember { mutableStateOf(false) }
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
     val ctx = LocalContext.current
-    var groupId by remember { mutableStateOf(0) }
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(true) {
         currentUser.value = userRepo.getCurrentUser()
-        userRepo.fetchUser(ctx, SharedEvent.owner_id)?.let {
+        userRepo.fetchUser(ctx, eventData.shared_event.owner_id)?.let {
             createdbyUser = it
         }
 
@@ -61,10 +56,10 @@ fun SharedEventItem(
             if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
         var hasTaken = remember { mutableStateOf(false) }
         Text(
-            text = SharedEvent.shared_event_id.toString() + by + "\n" + SharedEvent.created_at,
+            text = eventData.shared_event.shared_event_id.toString() + by + "\n" + eventData.shared_event.created_at,
             fontSize = 30.sp,
             modifier = Modifier.clickable {
-                onNavigateToSharedEventDetails(SharedEvent.shared_event_id)
+                onNavigateToSharedEventDetails(eventData.shared_event.shared_event_id)
             })
         Row(
             modifier = Modifier
@@ -72,12 +67,13 @@ fun SharedEventItem(
                 .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if(currentUser.value != null){
+            if (currentUser.value != null) {
 
                 takeAttendanceBtn(
-                    sharedEventId = SharedEvent.shared_event_id,
+                    eventData = eventData,
                     userId = currentUser.value!!.user_id,
                     eventLocation = event?.toLocation(),
+                    reload = { reloadSharedEvents() }
                 )
             }
 
@@ -109,69 +105,16 @@ fun SharedEventItem(
     //import group members
     if (importingGroupMembers) {
         TranslucentDialog(onDismissRequest = { importingGroupMembers = false }) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Row {
-                    Text(text = stringResource(id = R.string.import_members_2))
-                }
-                Row {
-                    TextField(
-                        value = groupId.toString(),
-                        onValueChange = { groupId = it.toInt() },
-                        label = { Text(text = stringResource(id = R.string.group_id)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-                    )
-                }
-                Row {
-                    importUsersBtn(
-                        sharedEventId = SharedEvent.shared_event_id,
-                        groupId = groupId,
-                        callback = { reloadSharedEvents() })
-                }
-            }
+            importUsersView(
+                sharedEventId = eventData.shared_event.shared_event_id,
+                reloadSharedEvents = { reloadSharedEvents() },
+            )
         }
     }
-//    if (takingAttendance) {
-//        Log.d("take attendance start", "take attendance start")
-//        Log.d("event", event.toString())
-//        event?.let { it.toLocation().toString() }?.let { Log.d("LOCATION", it) }
-//        Dialog(onDismissRequest = { takingAttendance = false }) {
-//
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .fillMaxHeight()
-//                    .padding(16.dp)
-//                    .verticalScroll(rememberScrollState()),
-//
-//                horizontalAlignment = Alignment.CenterHorizontally,
-//                verticalArrangement = Arrangement.Center,
-//            ) {
-//                Text(text = stringResource(id = R.string.take_attendence))
-//                event?.let {
-//                    it.toLocation()
-//                }?.let {
-//                    currentUser.value?.let { it1 ->
-//                        takeAttendanceBtn(
-//                            sharedEventId = SharedEvent.shared_event_id,
-//                            eventLocation = it,
-//                            userId = it1.user_id,
-//                            callback = { reloadSharedEvents() })
-//                    }
-//                }
-//            }
-//        }
-//    }
     if (viewingParticipance) {
         Log.d("view participants start", "view participants start")
         Dialog(onDismissRequest = { viewingParticipance = false }) {
-            viewParticipantListBtn(sharedEventId = SharedEvent.shared_event_id)
+            viewParticipantListBtn(sharedEventId = eventData.shared_event.shared_event_id)
         }
     }
 }

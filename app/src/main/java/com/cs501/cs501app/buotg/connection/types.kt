@@ -52,9 +52,13 @@ class GroupMemberResponse: StdResponse(){
     lateinit var groupMembers: List<GroupMember>
 }
 
-class SharedEventListResponse: StdResponse(){
+data class SharedEventListItem(
+    var shared_event: SharedEvent,
+    var participance: SharedEventParticipance
+)
 
-    lateinit var shared_event: List<SharedEvent>
+class SharedEventListResponse: StdResponse(){
+    lateinit var shared_events: List<SharedEventListItem>
 }
 /**GML Group Member List*/
 class GMLResponse:StdResponse(){

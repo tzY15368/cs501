@@ -24,10 +24,10 @@ class SharedEventRepo(
 
         val res = apiRequest(ctx, { API.getClient().get_shared_event(UUIDConverter.fromUUID(eventId))})
         if (res != null) {
-            if (res.shared_event != null) {
-                Log.d("SharedEventRepo", "getAllSharedEventByEventId: ${res.shared_event.size}")
-                db.sharedEventDao().upsertAll(res.shared_event)
-            }
+            Log.d("SharedEventRepo", "getAllSharedEventByEventId: ${res.shared_events.size}")
+            // extract the shared events from the response and insert them into the database
+            val r = res.shared_events.map { it.shared_event }
+            db.sharedEventDao().upsertAll(r)
         }
         return res
     }

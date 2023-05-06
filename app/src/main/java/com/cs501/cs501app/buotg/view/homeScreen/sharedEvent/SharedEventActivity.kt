@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.connection.SharedEventListItem
 import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
@@ -89,7 +90,7 @@ class SharedEventActivity : AppCompatActivity() {
         val coroutineScope = rememberCoroutineScope()
         val ctx = LocalContext.current
         var creatingSharedEvent = remember { mutableStateOf(false) }
-        var sharedEvents by remember { mutableStateOf(listOf<SharedEvent>()) }
+        var sharedEvents by remember { mutableStateOf(listOf<SharedEventListItem>()) }
         var event by remember { mutableStateOf<Event?>(null) }
         var currentUser = remember { mutableStateOf<User?>(null) }
 
@@ -103,7 +104,7 @@ class SharedEventActivity : AppCompatActivity() {
             if (resp != null) {
 
                 println("got shared events size ${sharedEvents.size}")
-                sharedEvents = resp.shared_event
+                sharedEvents = resp.shared_events
             }
         }
 
@@ -121,7 +122,7 @@ class SharedEventActivity : AppCompatActivity() {
                 content = {
                     items(sharedEvents.size) { idx ->
                         SharedEventItem(
-                            SharedEvent = sharedEvents[idx],
+                            eventData = sharedEvents[idx],
                             currentUser,
                             userRepo,
                             {reloadSharedEvents()},
