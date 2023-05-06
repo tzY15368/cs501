@@ -18,6 +18,7 @@ class EventResponse: StdResponse(){
 }
 
 class EventsResponse: StdResponse(){
+    lateinit var apievents: List<ApiEvent>
     lateinit var events: List<Event>
 }
 

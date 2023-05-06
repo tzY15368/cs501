@@ -73,22 +73,21 @@ fun SheetForm(
     onSubmit: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val eventName = remember { mutableStateOf(event.event_name) }
-    val eventDesc = remember { mutableStateOf(event.desc) }
-    val eventPriority = remember { mutableStateOf(event.priority) }
-    var startDateTime by remember { mutableStateOf(event.start_time) }
-    var endDateTime by remember { mutableStateOf(event.end_time) }
+    val eventName = remember(event) { mutableStateOf(event.event_name) }
+    val eventDesc = remember(event) { mutableStateOf(event.desc) }
+    val eventPriority = remember(event) { mutableStateOf(event.priority) }
+    var startDateTime by remember(event) { mutableStateOf(event.start_time) }
+    var endDateTime by remember(event) { mutableStateOf(event.end_time) }
 
-    var latitude by remember { mutableStateOf(event.latitude) }
-    var longitude by remember { mutableStateOf(event.longitude) }
-    var address by remember { mutableStateOf("") }
-    var openDialog by remember {
+    var latitude by remember(event) { mutableStateOf(event.latitude) }
+    var longitude by remember(event) { mutableStateOf(event.longitude) }
+    var address by remember(event) { mutableStateOf("") }
+    var openDialog by remember(event) {
         mutableStateOf(
             false
         )
     }
     val viewModel = MapViewModel()
-
     Column(modifier.padding(horizontal = 16.dp)) {
         TextInputRow(
             inputLabel = stringResource(R.string.event_name),
