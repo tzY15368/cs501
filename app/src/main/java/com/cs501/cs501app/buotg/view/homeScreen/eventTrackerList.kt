@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.*
+import com.cs501.cs501app.buotg.view.user_map.BU_LOCATION_PREFIX
 import com.cs501.cs501app.buotg.view.user_map.MapViewActivity
 import com.cs501.cs501app.buotg.view.user_map.launchMap
 import java.util.*
@@ -159,7 +160,11 @@ fun EventTrackerListItem(
 //        val customLocation2 = Location("CustomProvider1")
 //        customLocation2.latitude = USER_LATITUDE_VAL_TO
 //        customLocation2.longitude = USER_LONGITUDE_VAL_TO
-        if(event.longitude!=0f && event.latitude!=0f){
+        // try to extract the location from event desc where it is wrapped by < >
+        val pattern = "<(.*?)>".toRegex()
+        val matchResult = pattern.find(event.desc)
+        val location = matchResult?.value?.removePrefix("<")?.removeSuffix(">") ?: ""
+        if((event.longitude!=0f && event.latitude!=0f)){
             val target = Location("target")
             target.latitude = event.latitude.toDouble()
             target.longitude = event.longitude.toDouble()
@@ -168,6 +173,14 @@ fun EventTrackerListItem(
                 println("got target location $target")
                 launchMap(ctx, target)
 
+            }) {
+                Icon(Icons.Default.LocationOn, contentDescription = "Map")
+            }
+        } else if (location != "") {
+            val ctx = LocalContext.current
+            IconButton(onClick = {
+                println("got location $location")
+                launchMap(ctx, BU_LOCATION_PREFIX+location)
             }) {
                 Icon(Icons.Default.LocationOn, contentDescription = "Map")
             }
