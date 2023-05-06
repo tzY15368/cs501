@@ -147,7 +147,7 @@ class StudyGroupActivity : AppCompatActivity() {
                 val by =
                     if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
                 Text(
-                    text = group.group_name + by,
+                    text = "(${group.group_id})"+group.group_name + by,
                     fontSize = 30.sp,
                     modifier = Modifier.clickable {
                         onNavigateToGroupDetails(group.group_id)

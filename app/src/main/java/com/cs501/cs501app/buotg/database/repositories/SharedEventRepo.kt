@@ -23,12 +23,11 @@ class SharedEventRepo(
     ): SharedEventListResponse? {
 
         val res = apiRequest(ctx, { API.getClient().get_shared_event(UUIDConverter.fromUUID(eventId))})
-        Log.d("SharedEventRepo", "getAllSharedEventByEventId: $res")
         if (res != null) {
-            if (res.shared_event != null) {
-                Log.d("SharedEventRepo", "getAllSharedEventByEventId: ${res.shared_event}")
-                db.sharedEventDao().upsertAll(res.shared_event)
-            }
+            Log.d("SharedEventRepo", "getAllSharedEventByEventId: ${res.shared_events.size}")
+            // extract the shared events from the response and insert them into the database
+            val r = res.shared_events.map { it.shared_event }
+            db.sharedEventDao().upsertAll(r)
         }
         return res
     }
@@ -40,11 +39,15 @@ class SharedEventRepo(
         Log.d("SharedEventRepo", "updateSharedEvent: $sharedEvent")
         val res = apiRequest(ctx, { API.getClient().create_shared_event(UUIDConverter.fromUUID(sharedEvent.event_id))})
         Log.d("SharedEventRepo", "updateSharedEvent: $res")
-        res?.let { db.sharedEventDao().upsertAll(listOf(sharedEvent)) }
+//        res?.let { db.sharedEventDao().upsertAll(listOf(sharedEvent)) }
         return res
     }
 
-
+    suspend fun insertSharedEvent(
+        sharedEvent: SharedEvent,
+    ) {
+        db.sharedEventDao().upsertAll(listOf(sharedEvent))
+    }
     suspend fun deleteSharedEvent(ctx : Context, sharedEventId: Int) {
         val res = apiRequest(ctx, { API.getClient().delete_shared_event(sharedEventId) })
         db.sharedEventDao().deleteSharedEvent(sharedEventId)

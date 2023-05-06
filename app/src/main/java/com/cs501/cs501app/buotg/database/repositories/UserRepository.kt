@@ -56,7 +56,9 @@ class UserRepository(
     fun getCurrentUserID() = CURRENT_USER_ID!!
     suspend fun getCurrentUser():User?  {
         val u = userDao.getCurrentUser()
-        println("getCurrentUser: $u")
+        if(u==null){
+            println("getCurrentUser: $u")
+        }
         return u
     }
 

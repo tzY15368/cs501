@@ -26,9 +26,15 @@ class SharedEventResponse: StdResponse(){
     lateinit var sharedEvent: SharedEvent
 }
 
+data class SEPListItem(
+    var shared_event_participance: SharedEventParticipance,
+    var user: User
+)
+
 /**SEPs Shared Event Participance*/
 class SEPsResponse: StdResponse(){
-    lateinit var shared_event_participances: List<SharedEventParticipance>
+    lateinit var result: List<SEPListItem>
+
 }
 
 class UserResponse: StdResponse(){
@@ -47,8 +53,13 @@ class GroupMemberResponse: StdResponse(){
     lateinit var groupMembers: List<GroupMember>
 }
 
+data class SharedEventListItem(
+    var shared_event: SharedEvent,
+    var participance: SharedEventParticipance
+)
+
 class SharedEventListResponse: StdResponse(){
-    lateinit var shared_event: List<SharedEvent>
+    lateinit var shared_events: List<SharedEventListItem>
 }
 /**GML Group Member List*/
 class GMLResponse:StdResponse(){

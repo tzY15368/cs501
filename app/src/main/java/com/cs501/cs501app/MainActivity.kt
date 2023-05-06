@@ -25,16 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.buotg.BUOTGApplication
 import com.cs501.cs501app.buotg.view.homeScreen.HomeActivity
-import com.cs501.cs501app.buotg.database.entities.KVEntry
-import com.cs501.cs501app.buotg.database.repositories.AppRepository
-import com.cs501.cs501app.buotg.view.homeScreen.SharedEventActivity
-import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatRoomActivity
-import com.cs501.cs501app.buotg.view.user_setting.SettingActivity
-import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
-import com.cs501.cs501app.buotg.view.user_group.StudyGroupActivity
-import com.cs501.cs501app.buotg.view.user_map.MapViewActivity
-import com.cs501.cs501app.buotg.view.user_invite.InviteActivity
-import com.cs501.cs501app.example.WebViewDemo
 import com.cs501.cs501app.utils.*
 import com.cs501.cs501app.utils.GenericTopAppBar
 import kotlinx.coroutines.launch

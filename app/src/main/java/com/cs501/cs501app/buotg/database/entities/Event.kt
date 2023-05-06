@@ -1,5 +1,6 @@
 package com.cs501.cs501app.buotg.database.entities
 
+import android.location.Location
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import androidx.room.Entity
@@ -26,7 +27,15 @@ data class Event(
     val priority: Int,
     val desc: String,
     val notify_time: Int // notify time in minutes
-)
+){
+    fun toLocation(): Location {
+        val location = Location("")
+        location.latitude = latitude.toDouble()
+        location.longitude = longitude.toDouble()
+        return location
+    }
+}
+
 
 data class ApiEvent(
     val event_id: String,

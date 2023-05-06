@@ -164,6 +164,7 @@
     <string name="empty_event">Empty Event</string>
     <string name="empty_desc">Empty Event Description</string>
     <string name="take_attendence">Take Attendance</string>
+    <string name="view_participant" translatable="false">View Participants</string>
     <string name="import_members">Import Study Group Members</string>
     <string name="import_members_2">Import Group Members</string>
     <string name="group_id">Group Id</string>
