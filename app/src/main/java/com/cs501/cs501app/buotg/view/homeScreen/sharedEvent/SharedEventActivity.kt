@@ -25,7 +25,9 @@ import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
 import com.cs501.cs501app.utils.GenericTopAppBar
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.Thread.sleep
 import java.util.*
 
 const val CHECKIN_DISTANCE = 1000.0

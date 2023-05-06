@@ -84,7 +84,9 @@ fun CreateSharedEventHandler(
                     Log.d("CLICKED", sharedEvent.toString())
                     if (sharedEvent != null) {
                         Log.d("createSharedEvent", sharedEvent.toString())
+                        Log.d("before_job_cancel", "diff")
                         sharedEventRepo.updateSharedEvent(sharedEvent, ctx)
+                        Log.d("after_job_cancel", "diff")
                     }
                     // What is this?
 //                    val sharedEvents_be = eventId?.let {
@@ -109,7 +111,6 @@ fun CreateSharedEventHandler(
 //                            Log.d("current sharedevent list", sharedEvent.toString())
 //                        }
 //                    }
-
                     val participance = currentUser.value?.let {
                         sharedEvent?.let { it1 ->
                             SharedEventParticipance(
@@ -124,7 +125,7 @@ fun CreateSharedEventHandler(
                         sharedEventParticipanceRepo.putParticipance(participance, ctx)
                     }
 
-                    targetApp.create_channel("$newSharedEventName" + "_shared_events")
+                    targetApp.create_channel("${newSharedEventName.value}" + "_shared_events")
                     reloadSharedEvents()
                 }
                 creatingSharedEvent.value = false
