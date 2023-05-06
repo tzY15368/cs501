@@ -24,6 +24,7 @@ import com.cs501.cs501app.buotg.database.entities.Status
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.random.Random
@@ -35,9 +36,9 @@ fun CreateSharedEventHandler(
     reloadSharedEvents: suspend () -> Unit,
     eventId:UUID?,
     currentUser: MutableState<User?>,
-    targetApp: ChatApplication
+    targetApp: ChatApplication,
+    coroutineScope: CoroutineScope,
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val sharedEventRepo = AppRepository.get().sharedEventRepo()
     val sharedEventParticipanceRepo = AppRepository.get().sharedEventParticipanceRepo()
     val newSharedEventName = remember { mutableStateOf("") }

@@ -190,7 +190,8 @@ class SharedEventActivity : AppCompatActivity() {
                 { reloadSharedEvents() },
                 eventId,
                 currentUser,
-                (application as ChatApplication)
+                (application as ChatApplication),
+                coroutineScope
             )
         }
     }
