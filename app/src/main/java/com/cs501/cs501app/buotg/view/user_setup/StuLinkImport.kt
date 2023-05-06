@@ -252,7 +252,7 @@ suspend fun generateEvents(
                 end_time = calEnd.time,
                 repeat_mode = 7,
                 priority = 1,
-                desc = instructor,
+                desc = instructor + "\n<${building} ${room}>",
                 notify_time = 15,
             )
             events.add(event)

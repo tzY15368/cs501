@@ -30,6 +30,8 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
 
+const val BU_LOCATION_PREFIX = "Boston MA Boston University "
+
 fun launchMap(ctx: Context, from: Location, to: Location) {
     val mapUrl =
         "https://www.google.com/maps/dir/${from.latitude},${from.longitude}/${to.latitude},${to.longitude}"
@@ -43,6 +45,11 @@ fun launchMap(ctx: Context, from: String, to: String) {
 
 fun launchMap(ctx: Context, to: Location){
     val uri = "https://www.google.com/maps/dir/?api=1&destination=${to.latitude},${to.longitude}"
+    launchURIView(ctx, uri)
+}
+
+fun launchMap(ctx: Context, to:String){
+    val uri = "https://www.google.com/maps/dir/?api=1&destination=$to"
     launchURIView(ctx, uri)
 }
 
@@ -172,7 +179,7 @@ class MapViewActivity : AppCompatActivity() {
                                         Icons.Default.LocationOn,
                                         contentDescription = "Location",
                                         modifier = Modifier.clickable {
-                                            handleIconClick(ctx, "Boston MA ${building.address}")
+                                            handleIconClick(ctx, "$BU_LOCATION_PREFIX ${building.address}")
                                         })
                                 }
                             }
