@@ -189,4 +189,11 @@
     <string name="drawer_invite">Invitación</string>
     <string name="drawer_chat">Sala de chat</string>
     <string name="drawer_setting">Configuración</string>
+
+    <string name="no_repeat">No repetir</string>
+    <string name="daily">Diariamente</string>
+    <string name="weekly">Semanal</string>
+    <string name="monthly">Mensual</string>
+    <string name="yearly">Anualmente</string>
+    <string name="repeat_mode">Modo de repetición</string>
 </resources>

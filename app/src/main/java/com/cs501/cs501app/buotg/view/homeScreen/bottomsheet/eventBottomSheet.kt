@@ -20,12 +20,11 @@ import com.cs501.cs501app.buotg.view.user_map.MapAddressPickerView
 import com.cs501.cs501app.buotg.view.user_map.MapViewModel
 import com.google.android.material.datepicker.*
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.ui.graphics.Color
 import com.cs501.cs501app.buotg.CustomText
+import com.cs501.cs501app.buotg.database.entities.EventRepeatMode
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -88,6 +87,9 @@ fun SheetForm(
             false
         )
     }
+
+    var repeat_mode by remember(event) { mutableStateOf(event.repeat_mode) }
+
     val viewModel = MapViewModel()
     Column(modifier.padding(horizontal = 16.dp)) {
         TextInputRow(
@@ -153,6 +155,12 @@ fun SheetForm(
                 eventPriority.value = priority + 1
             }
         )
+        // repeat mode spinner
+        RepeatSpinnerRow(repeatSpinnerPosition = EventRepeatMode.values()[event.repeat_mode].ordinal,
+            onRepeatModeChange = { repeatMode ->
+                repeat_mode = EventRepeatMode.values()[repeatMode].repeatMode
+                Log.d("EventBottomSheet", "repeat_mode: $repeat_mode")
+            })
         DatePickerRow(
             inputLabel = stringResource(R.string.event_start_time),
             onStartTimeChanged = { newStartTime ->
@@ -173,6 +181,7 @@ fun SheetForm(
                     priority = eventPriority.value,
                     latitude = latitude,
                     longitude = longitude,
+                    repeat_mode = repeat_mode,
                 )
                 onSubmit(updatedEvent)
             },

@@ -75,3 +75,11 @@ enum class EventPriority(val color: Color, @StringRes val priority: Int) {
 //    Magenta(Color.Magenta, 0),
 //    Orange(OrangeColor, 0)
 }
+
+enum class EventRepeatMode(val repeatMode: Int, @StringRes val repeatModeString: Int) {
+    NoRepeat(0, R.string.no_repeat),
+    Daily(1, R.string.daily),
+    Weekly(7, R.string.weekly),
+    Monthly(30, R.string.monthly),
+    Yearly(365, R.string.yearly)
+}

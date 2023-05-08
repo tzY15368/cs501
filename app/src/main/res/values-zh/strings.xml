@@ -189,4 +189,11 @@
     <string name="drawer_invite">邀请</string>
     <string name="drawer_chat">聊天室</string>
     <string name="drawer_setting">设置</string>
+
+    <string name="no_repeat">不重复</string>
+    <string name="daily">每日</string>
+    <string name="weekly">每周</string>
+    <string name="monthly">每月</string>
+    <string name="yearly">每年</string>
+    <string name="repeat_mode">重复模式</string>
 </resources>
