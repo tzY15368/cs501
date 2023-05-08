@@ -194,5 +194,11 @@
     <string name="drawer_invite">Invite</string>
     <string name="drawer_chat">Chat Room</string>
     <string name="drawer_setting">Settings</string>
+    <string name="no_repeat">No repeat</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+    <string name="repeat_mode">Repeat Mode</string>
 
 </resources>
