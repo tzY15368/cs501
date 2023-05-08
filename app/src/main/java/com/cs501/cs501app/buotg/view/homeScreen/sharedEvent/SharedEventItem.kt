@@ -52,8 +52,7 @@ fun SharedEventItem(
             .padding(10.dp)
     ) {
         val creator = stringResource(id = R.string.creator)
-        val by =
-            if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
+        val by = if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
         var hasTaken = remember { mutableStateOf(false) }
         Text(
             text = eventData.shared_event.shared_event_id.toString() + by + "\n" + eventData.shared_event.created_at,
@@ -67,7 +66,7 @@ fun SharedEventItem(
                 .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (currentUser.value != null) {
+            if (currentUser.value != null && currentUser.value!!.user_type == UserType.student) {
 
                 takeAttendanceBtn(
                     eventData = eventData,
@@ -76,25 +75,26 @@ fun SharedEventItem(
                     reload = { reloadSharedEvents() }
                 )
             }
-
-            Button(onClick = {
-                importingGroupMembers = true
-            }) {
-                Text(text = stringResource(id = R.string.import_members_2))
+            if (currentUser.value != null && currentUser.value!!.user_type == UserType.teacher) {
+                Button(onClick = {
+                    importingGroupMembers = true
+                }) {
+                    Text(text = stringResource(id = R.string.import_members_2))
+                }
             }
-
-
         }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Button(onClick = {
-                viewingParticipance = true
-            }) {
-                Text(text = stringResource(id = R.string.view_participant))
+        if (currentUser.value != null && currentUser.value!!.user_type == UserType.teacher){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Button(onClick = {
+                    viewingParticipance = true
+                }) {
+                    Text(text = stringResource(id = R.string.view_participant))
+                }
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -102,7 +102,6 @@ fun SharedEventItem(
     }
 
 
-    //import group members
     if (importingGroupMembers) {
         TranslucentDialog(onDismissRequest = { importingGroupMembers = false }) {
             importUsersView(
