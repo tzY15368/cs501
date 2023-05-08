@@ -23,7 +23,7 @@ class EventsResponse: StdResponse(){
 }
 
 class SharedEventResponse: StdResponse(){
-    lateinit var sharedEvent: SharedEvent
+    lateinit var event: SharedEvent
 }
 
 data class SEPListItem(
