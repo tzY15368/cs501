@@ -3,29 +3,23 @@ package com.cs501.cs501app.buotg.view.homeScreen.sharedEvent
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.CustomButton
-import com.cs501.cs501app.buotg.CustomText
 import com.cs501.cs501app.buotg.database.entities.SharedEvent
 import com.cs501.cs501app.buotg.database.entities.SharedEventParticipance
 import com.cs501.cs501app.buotg.database.entities.Status
@@ -98,8 +92,6 @@ fun CreateSharedEventHandler(
             )
 
             CustomButton(onClick = {
-                Log.d("CLICKED", eventId.toString())
-                Log.d("CLICKED", currentUser.toString())
                 coroutineScope.launch {
                     var sharedEvent = eventId?.let {
                         currentUser.value?.let { it1 ->
@@ -112,12 +104,9 @@ fun CreateSharedEventHandler(
                             )
                         }
                     }
-                    Log.d("CLICKED", sharedEvent.toString())
                     if (sharedEvent != null) {
                         Log.d("createSharedEvent", sharedEvent.toString())
-                        Log.d("before_job_cancel", "diff")
-                        sharedEventRepo.updateSharedEvent(sharedEvent, ctx)
-                        Log.d("after_job_cancel", "diff")
+                        sharedEvent = sharedEventRepo.updateSharedEvent(sharedEvent, ctx)?.event
                     }
                     // What is this?
 //                    val sharedEvents_be = eventId?.let {

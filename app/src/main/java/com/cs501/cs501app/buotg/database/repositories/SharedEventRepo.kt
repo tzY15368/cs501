@@ -21,7 +21,7 @@ class SharedEventRepo(
         eventId : UUID,
         ctx: Context
     ): SharedEventListResponse? {
-
+        Log.d("SharedEventRepo", "getAllSharedEventByEventId: $eventId")
         val res = apiRequest(ctx, { API.getClient().get_shared_event(UUIDConverter.fromUUID(eventId))})
         if (res != null) {
             Log.d("SharedEventRepo", "getAllSharedEventByEventId: ${res.shared_events.size}")
@@ -35,7 +35,7 @@ class SharedEventRepo(
     suspend fun updateSharedEvent(
         sharedEvent: SharedEvent,
         ctx: Context
-    ) : StdResponse? {
+    ) : SharedEventResponse? {
         Log.d("SharedEventRepo", "updateSharedEvent: $sharedEvent")
         val res = apiRequest(ctx, { API.getClient().create_shared_event(UUIDConverter.fromUUID(sharedEvent.event_id))})
         Log.d("SharedEventRepo", "updateSharedEvent: $res")
