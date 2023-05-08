@@ -1,6 +1,5 @@
 package com.cs501.cs501app.buotg.view.homeScreen
 
-import android.content.Intent
 import android.location.Location
 import android.util.Log
 import androidx.compose.foundation.clickable
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
@@ -25,13 +23,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.CustomText
 import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.view.user_map.BU_LOCATION_PREFIX
-import com.cs501.cs501app.buotg.view.user_map.MapViewActivity
 import com.cs501.cs501app.buotg.view.user_map.launchMap
 import java.util.*
 
@@ -88,10 +84,12 @@ fun ScaffoldList(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable { isListExpanded = !isListExpanded }
     ) {
-        CustomText(text = text,
+        CustomText(
+            text = text,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 8.dp))
+            modifier = Modifier.padding(start = 8.dp)
+        )
         Icon(
             painter = painterResource(if (isListExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down),
             contentDescription = "Expand list",
@@ -103,12 +101,14 @@ fun ScaffoldList(
             // center text
             //@Todo:What is the $text here?
             val temp = stringResource(id = R.string.no_such_events) + ": " + text
-            CustomText(                text = temp,
+            CustomText(
+                text = temp,
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
                 color = Color.Gray,
-                fontWeight = FontWeight.Bold)
+                fontWeight = FontWeight.Bold
+            )
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
@@ -161,7 +161,7 @@ fun EventTrackerListItem(
         val pattern = "<(.*?)>".toRegex()
         val matchResult = pattern.find(event.desc)
         val location = matchResult?.value?.removePrefix("<")?.removeSuffix(">") ?: ""
-        if((event.longitude!=0f && event.latitude!=0f)){
+        if ((event.longitude != 0f && event.latitude != 0f)) {
             val target = Location("target")
             target.latitude = event.latitude.toDouble()
             target.longitude = event.longitude.toDouble()
@@ -177,7 +177,7 @@ fun EventTrackerListItem(
             val ctx = LocalContext.current
             IconButton(onClick = {
                 println("got location $location")
-                launchMap(ctx, BU_LOCATION_PREFIX+location)
+                launchMap(ctx, BU_LOCATION_PREFIX + location)
             }) {
                 Icon(Icons.Default.LocationOn, contentDescription = "Map")
             }
@@ -191,6 +191,50 @@ fun EventTrackerListItem(
     }
 }
 
+// check if the event is on today
+fun is_today(event: Event): Boolean {
+    val today = Calendar.getInstance()
+    val event_date = Calendar.getInstance()
+    // if the event starts exactly today
+    event_date.time = event.start_time
+    if (event_date.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+        event_date.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
+        event_date.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)
+    )
+        return true
+    // if the event ends exactly today
+    event_date.time = event.end_time
+    if (event_date.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+        event_date.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
+        event_date.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)
+    )
+        return true
+    // if the event repeats on today
+    if (event.repeat_mode != 0 && event.start_time.before(today.time) && event.end_time.after(today.time)) {
+        val repeat = event.repeat_mode  // repeat is an int indicates how many days to repeat
+        // convert to the 00:00:00 of the day
+        today.set(Calendar.HOUR_OF_DAY, 0)
+        today.set(Calendar.MINUTE, 0)
+        today.set(Calendar.SECOND, 0)
+        today.set(Calendar.MILLISECOND, 0)
+        val event_copy = Calendar.getInstance()
+        event_copy.time = event.start_time
+        event_copy.set(Calendar.HOUR_OF_DAY, 0)
+        event_copy.set(Calendar.MINUTE, 0)
+        event_copy.set(Calendar.SECOND, 0)
+        event_copy.set(Calendar.MILLISECOND, 0)
+        val diff = today.timeInMillis - event_copy.timeInMillis
+        // days is the number of days between today and the event start date (), rounding up
+        val days = diff / (1000 * 60 * 60 * 24) + 1
+        Log.d("is_today:event", event.start_time.toString())
+        Log.d("is_today:days", days.toString())
+        if (days % repeat == 0L)
+            return true
+    }
+    return false
+}
+
+
 // divide events by today, past, future
 fun divide_events(events: List<Event>): Triple<List<Event>, List<Event>, List<Event>> {
     val today = Calendar.getInstance()
@@ -202,15 +246,17 @@ fun divide_events(events: List<Event>): Triple<List<Event>, List<Event>, List<Ev
         event_date.time = event.start_time
         Log.d("divide_events:event", event_date.toString())
         Log.d("divide_events:today", today.toString())
-        if (event_date.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-            event_date.get(Calendar.MONTH) == today.get(Calendar.MONTH) &&
-            event_date.get(Calendar.DAY_OF_MONTH) == today.get(Calendar.DAY_OF_MONTH)
+        if (is_today(event)
         ) {
             today_events.add(event)
-        } else if (event_date.before(today)) {
-            past.add(event)
         } else {
-            future.add(event)
+            if (event_date.before(today)) {
+                past.add(event)
+            }
+            event_date.time = event.end_time
+            if (event_date.after(today)){
+                future.add(event)
+            }
         }
     }
     Log.d("divide_events:events", events.size.toString())
