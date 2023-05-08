@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.CustomText
 import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.view.user_map.BU_LOCATION_PREFIX
 import com.cs501.cs501app.buotg.view.user_map.MapViewActivity
@@ -87,12 +88,10 @@ fun ScaffoldList(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable { isListExpanded = !isListExpanded }
     ) {
-        Text(
-            text = text,
+        CustomText(text = text,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 8.dp)
-        )
+            modifier = Modifier.padding(start = 8.dp))
         Icon(
             painter = painterResource(if (isListExpanded) R.drawable.ic_arrow_up else R.drawable.ic_arrow_down),
             contentDescription = "Expand list",
@@ -104,14 +103,12 @@ fun ScaffoldList(
             // center text
             //@Todo:What is the $text here?
             val temp = stringResource(id = R.string.no_such_events) + ": " + text
-            Text(
-                text = temp,
+            CustomText(                text = temp,
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
                 color = Color.Gray,
-                fontWeight = FontWeight.Bold
-            )
+                fontWeight = FontWeight.Bold)
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
@@ -225,22 +222,35 @@ fun divide_events(events: List<Event>): Triple<List<Event>, List<Event>, List<Ev
 
 @Composable
 fun EventDetails(event: Event, modifier: Modifier = Modifier) {
-    Column(modifier, verticalArrangement = Arrangement.Top) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Top
+    ) {
         Text(
             text = event.event_name,
-            style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+            style = androidx.compose.material.MaterialTheme.typography.h4.copy(
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF2E2E2E),
+            )
         )
-        //@Todo: DO we need the time localized as 年月日?
-        val event_position = stringResource(id = R.string.event_position)
-        val time_slot = stringResource(id = R.string.time_slot)
-        val priority_name = stringResource(id = R.string.priority_name)
-        Text("$event_position: " + event.latitude.toString() + ", " + event.longitude.toString())
-        Text(text = "$time_slot: " + event.start_time.toString() + " - " + event.end_time.toString() + " (" + event.repeat_mode.toString() + ")")
+        val eventPosition = stringResource(id = R.string.event_position)
+        val timeSlot = stringResource(id = R.string.time_slot)
+        val priorityName = stringResource(id = R.string.priority_name)
         Text(
-            text = "$priority_name: " + stringResource(EventPriority.values()[event.priority - 1].priority),
-            color = EventPriority.values()[event.priority - 1].color
+            text = "$eventPosition: ${event.latitude}, ${event.longitude}",
+            style = androidx.compose.material.MaterialTheme.typography.body1
+        )
+        Text(
+            text = "$timeSlot: ${event.start_time} - ${event.end_time} (${event.repeat_mode})",
+            style = androidx.compose.material.MaterialTheme.typography.body1
+        )
+        Text(
+            text = "$priorityName: ${stringResource(EventPriority.values()[event.priority - 1].priority)}",
+            color = EventPriority.values()[event.priority - 1].color,
+            style = androidx.compose.material.MaterialTheme.typography.body1
         )
     }
+
 }
 
 @Composable

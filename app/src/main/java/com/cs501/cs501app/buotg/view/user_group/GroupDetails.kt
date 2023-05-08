@@ -1,6 +1,7 @@
 package com.cs501.cs501app.buotg.view.user_group
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.rememberScaffoldState
@@ -9,9 +10,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cs501.cs501app.R
@@ -92,58 +96,74 @@ fun GroupDetails(groupID: Int, onBack: () -> Unit) {
                 .padding(paddingValues)
                 .padding(16.dp)
         ) {
-            val group_info = stringResource(id = R.string.group_info)
-            Text("$group_info:", fontSize = 25.sp)
-            group?.let {
-                val group_name = stringResource(id = R.string.group_name)
-                val group_des = stringResource(id = R.string.group_description)
-                val group_created = stringResource(id = R.string.group_created)
-                Text(text = "$group_name: ${it.group_name}", fontSize = 20.sp)
-                Text(text = "$group_des: ${it.desc}", fontSize = 20.sp)
-                Text(text = "$group_created: ${groupOwner?.full_name}", fontSize = 20.sp)
+            val groupInfoTitle = stringResource(id = R.string.group_info)
+            Text(text = groupInfoTitle, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            group?.let { group ->
+                val groupNameLabel = stringResource(id = R.string.group_name)
+                val groupDescriptionLabel = stringResource(id = R.string.group_description)
+                val groupCreatedLabel = stringResource(id = R.string.group_created)
+                Text(text = "$groupNameLabel: ${group.group_name}", fontSize = 18.sp)
+                Text(text = "$groupDescriptionLabel: ${group.desc}", fontSize = 18.sp)
+                Text(text = "$groupCreatedLabel: ${groupOwner?.full_name}", fontSize = 18.sp)
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Divider()
-            Spacer(modifier = Modifier.height(16.dp))
-            val members = stringResource(id = R.string.group_member)
-            Text(text = "$members:", fontSize = 20.sp)
-            LazyColumn(content = {
-                items(groupMmebers.size) { index ->
-                    Row {
-                        UserCardView(User = groupMmebers[index])
-                        currentUser?.let { currentU ->
-                            if (currentU.user_id == groupOwner?.user_id) {
-                                LeaveGroupBtn(
-                                    groupID,
-                                    groupMmebers[index].user_id,
-                                    callback = ::loadGroup
+            Spacer(modifier = Modifier.height(24.dp))
+            Divider(color = Color(0xFFF52D4D), thickness = 1.dp)
+            Spacer(modifier = Modifier.height(24.dp))
+            val membersTitle = stringResource(id = R.string.group_member)
+            Text(text = membersTitle, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                content = {
+                    items(groupMmebers.size) { index ->
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .background(
+                                    if (index % 2 == 0) Color.LightGray else Color.White
                                 )
+                                .fillMaxWidth()
+                        ) {
+                            UserCardView(User = groupMmebers[index])
+                            currentUser?.let { currentUser ->
+                                if (currentUser.user_id == groupOwner?.user_id) {
+                                    LeaveGroupBtn(
+                                        groupID = groupID,
+                                        userId = groupMmebers[index].user_id,
+                                        callback = ::loadGroup,
+                                    )
+                                }
                             }
                         }
                     }
                 }
-            })
-            Spacer(modifier = Modifier.height(16.dp))
-            Divider()
-            Spacer(modifier = Modifier.height(16.dp))
-            val group_invites = stringResource(id = R.string.group_invites)
-            Text(text = "$group_invites:", fontSize = 20.sp)
-            LazyColumn(content = {
-                items(invites.size) { index ->
-                    InviteRow(
-                        groupInvite = invites[index],
-                        reload = ::nothing,
-                        allowModify = false
-                    )
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            Divider(color = Color(0xFFF52D4D), thickness = 1.dp)
+            Spacer(modifier = Modifier.height(24.dp))
+            val invitesTitle = stringResource(id = R.string.group_invites)
+            Text(text = invitesTitle, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                content = {
+                    items(invites.size) { index ->
+                        InviteRow(
+                            groupInvite = invites[index],
+                            reload = ::nothing,
+                            allowModify = false,
+                        )
+                    }
                 }
-            })
-            Spacer(modifier = Modifier.height(16.dp))
-            Divider()
-            Spacer(modifier = Modifier.height(16.dp))
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+            Divider(color = Color(0xFFF52D4D), thickness = 1.dp)
+            Spacer(modifier = Modifier.height(24.dp))
             if (group != null) {
                 GroupInviteView(group!!.group_id)
             }
         }
+
+
     }
 }
 

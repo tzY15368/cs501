@@ -11,8 +11,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role.Companion.Image
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -90,15 +93,18 @@ fun CustomText(
     modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit.Unspecified,
     fontWeight: FontWeight? = null,
-    color: Color = Color(0xFFF52D4D)
-
+    color: Color = Color(0xFFF52D4D),
+    style: TextStyle = LocalTextStyle.current,
+    textAlign: TextAlign? = null
 ) {
     Text(
         text = text,
         modifier = modifier,
         color = color,
         fontSize = fontSize,
-        fontWeight = fontWeight
+        fontWeight = fontWeight,
+        style = style,
+        textAlign = textAlign
     )
 }
 
@@ -106,19 +112,27 @@ fun CustomText(
 fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
-    label: String,
+    label: String? = null,
     modifier: Modifier = Modifier,
     placeholder: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     leadingIcon: @Composable (() -> Unit)? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    readOnly: Boolean = false,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     TextField(
+        readOnly = readOnly,
+        trailingIcon = trailingIcon,
         keyboardOptions = keyboardOptions,
         leadingIcon = leadingIcon,
         value = value,
         onValueChange = onValueChange,
-        label = { Text(text = label) },
+        label = {
+            if (label != null) {
+                Text(text = label)
+            }
+        },
         modifier = modifier,
         textStyle = MaterialTheme.typography.body1,
         shape = RoundedCornerShape(4.dp),

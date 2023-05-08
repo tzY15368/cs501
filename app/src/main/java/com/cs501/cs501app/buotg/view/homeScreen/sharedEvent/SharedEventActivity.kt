@@ -20,6 +20,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.CustomButton
 import com.cs501.cs501app.buotg.connection.SharedEventListItem
 import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
@@ -172,9 +173,7 @@ class SharedEventActivity : AppCompatActivity() {
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Row() {
-                        Button(onClick = { creatingSharedEvent.value = true }) {
-                            Text(text = stringResource(id = R.string.create_shared_event))
-                        }
+                        CustomButton(onClick = { creatingSharedEvent.value = true },text = stringResource(id = R.string.create_shared_event))
                     }
                 }
 

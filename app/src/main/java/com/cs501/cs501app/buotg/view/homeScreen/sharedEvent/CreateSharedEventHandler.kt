@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -12,17 +15,25 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.CustomButton
+import com.cs501.cs501app.buotg.CustomText
 import com.cs501.cs501app.buotg.database.entities.SharedEvent
 import com.cs501.cs501app.buotg.database.entities.SharedEventParticipance
 import com.cs501.cs501app.buotg.database.entities.Status
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
+import com.cs501.cs501app.buotg.view.dayNightTheme.RedPrimary
+import com.cs501.cs501app.buotg.view.dayNightTheme.RedPrimaryVariant
+import com.cs501.cs501app.buotg.view.dayNightTheme.RedSecondary
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -47,27 +58,46 @@ fun CreateSharedEventHandler(
     Dialog(onDismissRequest = { creatingSharedEvent.value = false }) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(16.dp)
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 24.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center
         ) {
-            Text(text = stringResource(id = R.string.create_a_shared_event))
-            TextField(
+            Text(
+                text = stringResource(id = R.string.create_a_shared_event),
+                style = MaterialTheme.typography.h5,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(bottom = 16.dp),
+                color = RedPrimary
+            )
+            OutlinedTextField(
                 value = newSharedEventName.value,
                 onValueChange = { newSharedEventName.value = it },
                 label = { Text(text = stringResource(id = R.string.shared_event_name)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+                textStyle = MaterialTheme.typography.body1,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = RedPrimaryVariant,
+                    unfocusedBorderColor = RedSecondary
+                )
             )
-            TextField(
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
                 value = newSharedEventDesc.value,
                 onValueChange = { newSharedEventDesc.value = it },
                 label = { Text(text = stringResource(id = R.string.shared_event_desc)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                modifier = Modifier.fillMaxWidth(),
+                textStyle = MaterialTheme.typography.body1,
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = RedPrimaryVariant,
+                    unfocusedBorderColor = RedSecondary
+                )
             )
-            Button(onClick = {
+
+            CustomButton(onClick = {
                 Log.d("CLICKED", eventId.toString())
                 Log.d("CLICKED", currentUser.toString())
                 coroutineScope.launch {
@@ -130,9 +160,7 @@ fun CreateSharedEventHandler(
                     reloadSharedEvents()
                 }
                 creatingSharedEvent.value = false
-            }) {
-                Text(text = stringResource(id = R.string.create))
-            }
+            },text = stringResource(id = R.string.create))
         }
     }
 }

@@ -20,9 +20,12 @@ import com.cs501.cs501app.buotg.view.user_map.MapAddressPickerView
 import com.cs501.cs501app.buotg.view.user_map.MapViewModel
 import com.google.android.material.datepicker.*
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.ui.graphics.Color
+import com.cs501.cs501app.buotg.CustomText
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -57,11 +60,9 @@ fun EventBottomSheet(
 @Composable
 fun SheetHeader(modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(8.dp)) {
-        Text(
-            modifier = modifier.padding(8.dp),
+        CustomText(            modifier = modifier.padding(8.dp),
             text = stringResource(R.string.bottom_sheet_headline),
-            style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold)
-        )
+            style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold))
         Divider()
     }
 }
@@ -127,7 +128,8 @@ fun SheetForm(
                                 Log.d("EventBottomSheet", "latitude: $latitude")
                                 Log.d("EventBottomSheet", "longitude: $longitude")
                                 openDialog = false
-                            }) {
+                            },
+                        ) {
                             Text(text = "Save")
                         }
                     },

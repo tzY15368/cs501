@@ -100,7 +100,7 @@ fun UserInfoForm(user: User, onUserInfoUpdated: (User) -> Unit) {
             ExposedDropdownMenuBox(
                 expanded = typeMenuExpanded,
                 onExpandedChange = { typeMenuExpanded = !typeMenuExpanded }) {
-                TextField(
+                CustomTextField(
                     value = selectedType.toString(),
                     onValueChange = {},
                     readOnly = true,
@@ -115,7 +115,8 @@ fun UserInfoForm(user: User, onUserInfoUpdated: (User) -> Unit) {
                         onClick = {
                             typeMenuExpanded = false
                             selectedType = UserType.student
-                        })
+                        },
+                    )
                     Divider()
                     DropdownMenuItem(
                         text = { Text(stringResource(id = R.string.type_teacher)) },
