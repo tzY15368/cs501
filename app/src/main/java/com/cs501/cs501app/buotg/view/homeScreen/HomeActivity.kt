@@ -18,18 +18,26 @@ import com.cs501.cs501app.utils.CHANNEL_DESCRIPTION
 import com.cs501.cs501app.utils.CHANNEL_NAME
 import com.cs501.cs501app.utils.DEFAULT_CHANNEL_ID
 import com.cs501.cs501app.buotg.view.homeScreen.navDrawer.NavDrawer
+import com.cs501.cs501app.buotg.view.user_setting.applyCurrentLocale
 import com.cs501.cs501app.utils.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 val POLL_STATE_KEY = "POLL_STATE_KEY"
 val WORK_NAME = "BUOTG-POLLWORKER"
 
 class HomeActivity : AppCompatActivity() {
+    val coroutineScope = CoroutineScope(Dispatchers.IO)
+
     override fun onStart() {
         super.onStart()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        coroutineScope.launch {
+            applyCurrentLocale(resources.configuration, this@HomeActivity)
+        }
         setContent {
             EventTrackerTheme {
                 val scaffoldState = rememberScaffoldState()

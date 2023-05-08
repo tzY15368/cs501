@@ -24,12 +24,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.cs501.cs501app.MainActivity
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.CustomButton
 import com.cs501.cs501app.buotg.CustomText
 import com.cs501.cs501app.buotg.database.SyncRepo
+import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
+import com.cs501.cs501app.buotg.view.homeScreen.HomeActivity
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatApplication
 import com.cs501.cs501app.buotg.view.user_setup.LoginRegister
 import com.cs501.cs501app.buotg.view.user_setup.SetupActivity
@@ -74,7 +77,6 @@ class SettingActivity() : AppCompatActivity() {
         val foldStateList = foldViewModel.showListFlow
         // Collect StateFlow outside of composable
         val foldStates = foldStateList.map { it.collectAsState() }
-        val languages = listOf("English", "简体中文", "Español")
 
         fun updateData() {
             coroutineScope.launch {
@@ -164,7 +166,7 @@ class SettingActivity() : AppCompatActivity() {
                         leadingContent = { Icon(Icons.Filled.Face, contentDescription = null) },
                         foldedContent = {
                             changes(
-                                languages, LocalConfiguration.current, LocalContext.current
+                                LocalConfiguration.current, LocalContext.current
                             )
                         }
                     )
@@ -233,47 +235,92 @@ fun LogoutButton(
     }, text = stringResource(id = R.string.logout), enabled = !loading.value && user.value != null)
 }
 
+const val LANGUAGE_LOCALE_KEY = "language_locale_key"
+
+suspend fun applyCurrentLocale(cfg: Configuration, ctx:Context, reload:Boolean = false){
+    val defaultLocale = "en"
+    val kvDao = AppRepository.get().kvDao()
+    val locale = kvDao.get(LANGUAGE_LOCALE_KEY)?.value ?: defaultLocale
+    val newLocale = Locale(locale)
+
+    // Set the new locale in the configuration object
+    cfg.setLocale(newLocale)
+
+    // Update the configuration with the new locale
+    cfg.setTo(cfg)
+
+    // Update the context with the new configuration
+    ctx.resources.updateConfiguration(
+        cfg,
+        ctx.resources.displayMetrics
+    )
+    Log.d("LocaleSetting", "applyCurrentLocale: $locale")
+    // clear the activity stack and recreate current one
+    // check if the currentactivity is homeactivity
+    // get the current activity's class
+    if(reload){
+        val intent = Intent(ctx, HomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        ctx.startActivity(intent)
+    }
+}
+
 @Composable
-fun changes(languages: List<String>, LocalConfiguration: Configuration, LocalContext: Context) {
-    var selectedLanguage by remember { mutableStateOf(LocalContext.resources.configuration.locales[0].displayName) }
+fun changes(LocalConfiguration: Configuration, LocalContext: Context) {
+    val languages = listOf("en", "zh", "es")
+    val languageDisplayName = listOf("English", "中文", "Español")
     val msg = stringResource(id = R.string.language_change_success)
-    languages.forEach { language ->
+    val kvDao = AppRepository.get().kvDao()
+    val coroutineScope = rememberCoroutineScope()
+    val selectedLanguage = remember { mutableStateOf("en") }
+    LaunchedEffect(true){
+        kvDao.get(LANGUAGE_LOCALE_KEY)?.let {
+            println("loaded language locale: $it")
+            if(it.value in languages){
+                selectedLanguage.value = it.value
+            } else {
+                Log.d("SettingActivity", "language locale not in list")
+            }
+        }
+    }
+    println("selectedLanguage: ${selectedLanguage.value}")
+    languages.forEachIndexed { i,language ->
         // Radio button for each language option
         Row {
             RadioButton(
-                selected = language.equals(selectedLanguage),
+                selected = language.equals(selectedLanguage.value),
                 onClick = {
-                    selectedLanguage = language
-                    val lan = when (language) {
-                        "English" -> "en"
-                        "简体中文" -> "zh"
-                        "Español" -> "es"
-                        else -> "en"
+                    selectedLanguage.value = language
+                    val lan = selectedLanguage.value
+
+                    coroutineScope.launch {
+                        kvDao.put(KVEntry(LANGUAGE_LOCALE_KEY, lan))
+                        applyCurrentLocale(LocalConfiguration, LocalContext, true)
+                        TAlert.success(LocalContext, msg)
                     }
-                    // Get the current configuration
-                    val configuration = LocalConfiguration
-
-                    // Create a new Locale object with the user-selected language
-                    val newLocale = Locale(lan)
-
-                    // Set the new locale in the configuration object
-                    configuration.setLocale(newLocale)
-
-                    // Update the configuration with the new locale
-                    LocalConfiguration.setTo(configuration)
-
-                    // Get the current context
-                    val context = LocalContext
-
-                    // Update the context with the new configuration
-                    context.resources.updateConfiguration(
-                        configuration,
-                        context.resources.displayMetrics
-                    )
-                    TAlert.success(context, msg)
+//                    // Get the current configuration
+//                    val configuration = LocalConfiguration
+//
+//                    // Create a new Locale object with the user-selected language
+//                    val newLocale = Locale(lan)
+//
+//                    // Set the new locale in the configuration object
+//                    configuration.setLocale(newLocale)
+//
+//                    // Update the configuration with the new locale
+//                    LocalConfiguration.setTo(configuration)
+//
+//                    // Get the current context
+//                    val context = LocalContext
+//
+//                    // Update the context with the new configuration
+//                    context.resources.updateConfiguration(
+//                        configuration,
+//                        context.resources.displayMetrics
+//                    )
                 }
             )
-            CustomText(text = language)
+            CustomText(text = languageDisplayName[i], modifier = Modifier.padding(start = 8.dp))
         }
 
     }

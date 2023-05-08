@@ -102,15 +102,15 @@ fun DrawerBody(
             }
         }
     }
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Top,
-    ){
-        Spacer(modifier = Modifier
-            .height(16.dp)
-            .padding(8.dp))
-        ComposedMiscBtns()
-    }
+//    Column(
+//        modifier = Modifier
+//            .fillMaxHeight()
+//            .verticalScroll(rememberScrollState()),
+//        verticalArrangement = Arrangement.Top,
+//    ){
+//        Spacer(modifier = Modifier
+//            .height(16.dp)
+//            .padding(8.dp))
+//        ComposedMiscBtns()
+//    }
 }
