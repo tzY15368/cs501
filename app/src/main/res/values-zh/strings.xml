@@ -177,4 +177,16 @@
     <string name="settings_misc">杂项</string>
     <string name="type_student">学生</string>
     <string name="type_teacher">教师</string>
+    <string name="cd_button_send">发送</string>
+    <string name="bg_svc_toggle">后台服务</string>
+
+
+    <string name="poll_toggle">投票</string>
+    <string name="drawer_home">主页</string>
+    <string name="drawer_setup">设置</string>
+    <string name="drawer_group">学习小组</string>
+    <string name="drawer_map">校园地图</string>
+    <string name="drawer_invite">邀请</string>
+    <string name="drawer_chat">聊天室</string>
+    <string name="drawer_setting">设置</string>
 </resources>

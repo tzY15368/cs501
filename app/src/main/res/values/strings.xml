@@ -185,4 +185,14 @@
 
     <string name="type_student">Student</string>
     <string name="type_teacher">Teacher</string>
+    <string name="bg_svc_toggle">Background Service</string>
+    <string name="poll_toggle">Polling</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_setup">Setup</string>
+    <string name="drawer_group">Study Group</string>
+    <string name="drawer_map">Campus Map</string>
+    <string name="drawer_invite">Invite</string>
+    <string name="drawer_chat">Chat Room</string>
+    <string name="drawer_setting">Settings</string>
+
 </resources>

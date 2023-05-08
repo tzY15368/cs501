@@ -13,8 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.buotg.view.common.Ping
@@ -73,7 +75,7 @@ fun TogglePollButton(){
     val coroutineScope = rememberCoroutineScope()
     val kvDao = AppRepository.get().kvDao()
     val ctx = LocalContext.current
-    Text("Poll")
+    Text(stringResource(id = R.string.poll_toggle))
     Switch(
         checked = isPolling.value,
         onCheckedChange = {
@@ -91,7 +93,8 @@ fun TogglePollButton(){
 fun ToggleBackgroundServiceBtn(){
     val ctx = LocalContext.current
     val serviceOn = remember { mutableStateOf(false) }
-    Text("Background Service")
+    val btnTxt = stringResource(id = R.string.bg_svc_toggle)
+    Text(btnTxt)
     Switch(checked=serviceOn.value, onCheckedChange = {
         serviceOn.value = it
         val _action = if(it){

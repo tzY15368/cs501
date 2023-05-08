@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.cs501.cs501app.buotg.CustomText
 import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.entities.User
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
@@ -66,7 +67,7 @@ fun DrawerHeader(
             .padding(horizontal = 8.dp, vertical = 16.dp),
     ) {
         val text = currentUser.value?.full_name ?: "No Logon"
-        Text(text = "BU TOGO: $text", fontSize = 24.sp)
+        CustomText(text = "BU TOGO: $text", fontSize = 24.sp)
     }
 }
 
@@ -101,13 +102,15 @@ fun DrawerBody(
             }
         }
     }
-    Column(
-        modifier = Modifier.fillMaxHeight().verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.Top,
-    ){
-        Spacer(modifier = Modifier
-            .height(16.dp)
-            .padding(8.dp))
-        ComposedMiscBtns()
-    }
+//    Column(
+//        modifier = Modifier
+//            .fillMaxHeight()
+//            .verticalScroll(rememberScrollState()),
+//        verticalArrangement = Arrangement.Top,
+//    ){
+//        Spacer(modifier = Modifier
+//            .height(16.dp)
+//            .padding(8.dp))
+//        ComposedMiscBtns()
+//    }
 }

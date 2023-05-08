@@ -19,8 +19,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -140,25 +142,34 @@ class StudyGroupActivity : AppCompatActivity() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
+                    .padding(16.dp)
             ) {
-                //@TODO Is this expression fluent?
                 val creator = stringResource(id = R.string.creator)
                 val by =
                     if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
                 Text(
-                    text = "(${group.group_id})"+group.group_name + by,
-                    fontSize = 30.sp,
-                    modifier = Modifier.clickable {
-                        onNavigateToGroupDetails(group.group_id)
-                    })
-                Row(
+                    text = "(${group.group_id}) "+group.group_name + by,
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF2E2E2E),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .clickable {
+                            onNavigateToGroupDetails(group.group_id)
+                        }
+                        .padding(bottom = 8.dp)
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = group.desc, fontSize = 15.sp)
+                    Text(
+                        text = group.desc,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF7F7F7F),
+                        modifier = Modifier.weight(1f)
+                    )
                     currentUser?.let {
                         LeaveGroupBtn(
                             groupID = group.group_id,
@@ -169,8 +180,7 @@ class StudyGroupActivity : AppCompatActivity() {
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(10.dp))
-                Divider()
+                Divider(color = Color(0xFFF52D4D), thickness = 1.dp, modifier = Modifier.padding(vertical = 16.dp))
             }
         }
 
@@ -191,41 +201,54 @@ class StudyGroupActivity : AppCompatActivity() {
         }
 
         @Composable
-        fun CreateGroup(){
+        fun CreateGroup() {
             Dialog(onDismissRequest = { creatingGroup = false }) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight()
                         .padding(16.dp)
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
-                    CustomText(text = stringResource(id = R.string.create_a_group))
+                    CustomText(
+                        text = stringResource(id = R.string.create_a_group),
+                        style = androidx.compose.material.MaterialTheme.typography.h5,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
                     CustomTextField(
                         value = newGroupName,
                         onValueChange = { newGroupName = it },
                         label = stringResource(id = R.string.group_name),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                        modifier = Modifier.fillMaxWidth()
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
                     CustomTextField(
                         value = newGroupDesc,
                         onValueChange = { newGroupDesc = it },
                         label = stringResource(id = R.string.group_description),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                        modifier = Modifier.fillMaxWidth()
                     )
-                    CustomButton(onClick = {
-                        coroutineScope.launch {
-                            groupRepo.createGroup(ctx, newGroupName, newGroupDesc)
-                            targetApp.create_channel("$newGroupName" + "_study_group")
-                            reloadGroups()
-                        }
-                        creatingGroup = false
-                    }, text = stringResource(id = R.string.create))
+                    Spacer(modifier = Modifier.height(16.dp))
+                    CustomButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                groupRepo.createGroup(ctx, newGroupName, newGroupDesc)
+                                targetApp.create_channel("$newGroupName" + "_study_group")
+                                reloadGroups()
+                            }
+                            creatingGroup = false
+                        },
+                        text = stringResource(id = R.string.create),
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
         }
+
 
         val scaffoldState = rememberScaffoldState()
         val scope = rememberCoroutineScope()

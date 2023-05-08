@@ -178,4 +178,15 @@
     <string name="settings_misc">Misceláneo</string>
     <string name="type_student">estudiante</string>
     <string name="type_teacher">maestro</string>
+    <string name="cd_button_send">Enviar</string>
+    <string name="bg_svc_toggle">Alternar servicio de fondo</string>
+
+    <string name="poll_toggle">Encuesta</string>
+    <string name="drawer_home">Inicio</string>
+    <string name="drawer_setup">Configuración</string>
+    <string name="drawer_group">Grupo de estudio</string>
+    <string name="drawer_map">Mapa del campus</string>
+    <string name="drawer_invite">Invitación</string>
+    <string name="drawer_chat">Sala de chat</string>
+    <string name="drawer_setting">Configuración</string>
 </resources>

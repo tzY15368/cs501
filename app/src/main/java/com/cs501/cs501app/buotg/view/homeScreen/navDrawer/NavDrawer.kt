@@ -5,7 +5,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
+import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.view.homeScreen.HomeActivity
 import com.cs501.cs501app.buotg.view.thirdParty.chatRoom.ChatRoomActivity
 import com.cs501.cs501app.buotg.view.user_group.StudyGroupActivity
@@ -21,43 +23,43 @@ fun NavDrawer(){
     DrawerBody(
         items = listOf(
             MenuItem(
-                title = "Home",
+                title = stringResource(id = R.string.drawer_home),
                 contentDescription = "Goto home",
                 icon = Icons.Default.Home,
                 bindClass = HomeActivity::class.java
             ),
             MenuItem(
-                title = "Setup",
+                title = stringResource(id = R.string.drawer_setup),
                 contentDescription = "Goto setup",
                 icon = Icons.Default.AccountBox,
                 bindClass = SetupActivity::class.java
             ),
             MenuItem(
-                title = "Study Group",
+                title = stringResource(id = R.string.drawer_group),
                 contentDescription = "Goto Study Group",
                 icon = Icons.Default.Person,
                 bindClass = StudyGroupActivity::class.java
             ),
             MenuItem(
-                title = "Map View",
+                title = stringResource(id = R.string.drawer_map),
                 contentDescription = "Goto Map View",
                 icon = Icons.Default.LocationOn,
                 bindClass = MapViewActivity::class.java
             ),
             MenuItem(
-                title = "Invite",
+                title = stringResource(id = R.string.drawer_invite),
                 contentDescription = "Goto My Invite",
                 icon = Icons.Default.Info,
                 bindClass = InviteActivity::class.java
             ),
             MenuItem(
-                title = "Chat Room",
+                title = stringResource(id = R.string.drawer_chat),
                 contentDescription = "Goto Chat Room (Groups)",
                 icon = Icons.Default.Email,
                 bindClass = ChatRoomActivity::class.java
             ),
             MenuItem(
-                title = "Setting",
+                title = stringResource(id = R.string.drawer_setting),
                 contentDescription = "Goto setting",
                 icon = Icons.Default.Settings,
                 bindClass = SettingActivity::class.java
