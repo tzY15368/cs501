@@ -153,11 +153,20 @@ fun SheetForm(
             }
         )
         // repeat mode spinner
-        RepeatSpinnerRow(repeatSpinnerPosition = EventRepeatMode.values()[event.repeat_mode].ordinal,
-            onRepeatModeChange = { repeatMode ->
-                repeat_mode = EventRepeatMode.values()[repeatMode].repeatMode
-                Log.d("EventBottomSheet", "repeat_mode: $repeat_mode")
-            })
+        var pos: EventRepeatMode? = null
+        for(i in EventRepeatMode.values()) {
+            if (i.repeatMode == event.repeat_mode) {
+                pos = i
+            }
+        }
+        if(pos != null){
+            RepeatSpinnerRow(repeatSpinnerPosition = pos.ordinal,
+                onRepeatModeChange = { repeatMode ->
+                    repeat_mode = pos.repeatMode
+                    Log.d("EventBottomSheet", "repeat_mode: $repeat_mode")
+                })
+        }
+
         DatePickerRow(
             inputLabel = stringResource(R.string.event_start_time),
             onStartTimeChanged = { newStartTime ->
