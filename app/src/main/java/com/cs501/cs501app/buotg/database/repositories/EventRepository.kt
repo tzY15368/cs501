@@ -63,7 +63,7 @@ class EventRepository(db: AppDatabase) : SafeAPIRequest() {
 //    }
     suspend fun getAllEventsByDate(ctx: Context, date: Date): List<Event> {
         Log.d("EventRepository", "getAllEventsByDate: $date")
-        return dao.getAllEventsByDate(date)
+        return dao.listEvents()
     }
 
     suspend fun listEvents(ctx: Context): EventsResponse? {

@@ -18,8 +18,8 @@ https://github.com/RickWayne1125/bu-on-the-go-backend/blob/master/app/models.py
 data class Event(
     @PrimaryKey var event_id: UUID,
     val event_name: String,
-    val latitude: Float,
-    val longitude: Float,
+    var latitude: Float,
+    var longitude: Float,
     val start_time: Date,
     val end_time: Date,
     // the value of repeat_mode means that event happens every N days

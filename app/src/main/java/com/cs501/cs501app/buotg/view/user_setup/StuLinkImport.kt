@@ -1,5 +1,8 @@
 package com.cs501.cs501app.buotg.view.user_setup
 
+import android.content.Context
+import android.location.Geocoder
+import android.location.Location
 import android.util.Log
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -22,6 +25,7 @@ import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.cs501.cs501app.utils.TAlert
 import kotlinx.coroutines.launch
 import com.cs501.cs501app.buotg.database.entities.User
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
@@ -32,7 +36,7 @@ import kotlin.collections.ArrayList
 const val STATUS_OK = "REG"
 val SEASONS = listOf("Fall", "Spring", "Summer")
 
-suspend fun parseHTML(html: String, events: MutableList<Event>) {
+suspend fun parseHTML(ctx: Context, html: String, events: MutableList<Event>) {
     val doc = Jsoup.parse(html)
     val expectedHeader = listOf(
         "Semester",
@@ -99,6 +103,7 @@ suspend fun parseHTML(html: String, events: MutableList<Event>) {
             // println("classCell: ${classCell}")
             if (classCell != null && classCell.text() != "") {
                 val classEvents = generateEvents(
+                    ctx,
                     currentSemester,
                     nameCell,
                     instructorCell,
@@ -150,6 +155,7 @@ fun getFirstDOWOfWeek(year: Int, month: Int, dow:Int): Calendar {
 // start string: 3:30pm
 // end string: 4:45pm
 suspend fun generateEvents(
+    ctx: Context,
     semester: String,
     name: String,
     instructor: String,
@@ -243,6 +249,7 @@ suspend fun generateEvents(
             calEnd.set(Calendar.MILLISECOND, 0)
             calEnd.set(Calendar.SECOND, 0)
             calEnd.add(Calendar.SECOND, -calEnd.get(Calendar.MILLISECOND))
+
             val event = Event(
                 event_id = UUID.randomUUID(),
                 event_name = name,
@@ -255,6 +262,21 @@ suspend fun generateEvents(
                 desc = instructor + "\n<${building} ${room}>",
                 notify_time = 15,
             )
+            try{
+                val coder = Geocoder(ctx)
+                val address = coder.getFromLocationName("Boston University " +
+                        "$building, Boston, MA", 1)
+                if (address != null && address.size > 0) {
+                    val location = address[0]
+                    val lat = location.latitude
+                    val lng = location.longitude
+                    println("lat: $lat, lng: $lng")
+                    event.latitude = lat.toFloat()
+                    event.longitude = lng.toFloat()
+                }
+            } catch (e: Exception) {
+                println("error: $e")
+            }
             events.add(event)
         } catch (e: Exception) {
             println("error: $e")
@@ -373,7 +395,7 @@ fun StuLinkImport(done: () -> Unit = {}) {
             {
                 coroutineScope.launch {
                     Log.d("StuLinkImport", "html: ${html.length}")
-                    parseHTML(html, eventsState)
+                    parseHTML(ctx, html, eventsState)
                     setShowConfirm(true)
                 }
             },
@@ -397,4 +419,10 @@ fun unescapeUnicode(html: String): String {
     matcher.appendTail(buffer)
     return buffer.toString().replace("\\n", "")
 }
+
+val buildingToLatLngMap:kotlin.collections.Map<String, LatLng> = mapOf(
+    "CAS" to LatLng(42.3505, -71.1054),
+    "COM" to LatLng(42.3495, -71.1013),
+    "CFA" to LatLng(42.3495, -71.1013),
+)
 

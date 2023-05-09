@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Switch
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -23,9 +20,7 @@ import com.cs501.cs501app.buotg.view.common.Ping
 import com.cs501.cs501app.buotg.view.homeScreen.POLL_STATE_KEY
 import com.cs501.cs501app.buotg.view.user_map.TestAddrPickerActivity
 import com.cs501.cs501app.buotg.view.user_map.getCurrentLocation
-import com.cs501.cs501app.utils.BGService
-import com.cs501.cs501app.utils.sendNotification
-import com.cs501.cs501app.utils.setupBackgroundWork
+import com.cs501.cs501app.utils.*
 import kotlinx.coroutines.launch
 
 @Composable
@@ -75,6 +70,14 @@ fun TogglePollButton(){
     val coroutineScope = rememberCoroutineScope()
     val kvDao = AppRepository.get().kvDao()
     val ctx = LocalContext.current
+
+    LaunchedEffect(true){
+        kvDao.get(POLL_STATE_KEY)?.let {
+            val v = it.value
+            isPolling.value = v == "true"
+        }
+    }
+
     Text(stringResource(id = R.string.poll_toggle))
     Switch(
         checked = isPolling.value,
@@ -94,15 +97,23 @@ fun ToggleBackgroundServiceBtn(){
     val ctx = LocalContext.current
     val serviceOn = remember { mutableStateOf(false) }
     val btnTxt = stringResource(id = R.string.bg_svc_toggle)
+    val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(true){
+        serviceOn.value = getBGserviceState()
+    }
     Text(btnTxt)
     Switch(checked=serviceOn.value, onCheckedChange = {
         serviceOn.value = it
-        val _action = if(it){
-            BGService.ACTION_START}else{
-            BGService.ACTION_STOP}
-        val intent = Intent(ctx, BGService::class.java).apply {
-            action = _action
+        coroutineScope.launch {
+            setBGServiceState(ctx, it)
         }
-        ctx.startService(intent)
+//        val _action = if(it){
+//            BGService.ACTION_START}else{
+//            BGService.ACTION_STOP}
+//        val intent = Intent(ctx, BGService::class.java).apply {
+//            action = _action
+//        }
+//        ctx.startService(intent)
     })
 }
+
