@@ -196,4 +196,5 @@
     <string name="monthly">Mensual</string>
     <string name="yearly">Anualmente</string>
     <string name="repeat_mode">Modo de repetición</string>
+    <string name="location_not_ok">Ubicación no disponible</string>
 </resources>

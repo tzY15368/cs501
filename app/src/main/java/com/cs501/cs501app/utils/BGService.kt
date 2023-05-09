@@ -8,6 +8,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.database.entities.KVEntry
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.*
@@ -19,6 +20,37 @@ import java.util.concurrent.ScheduledExecutorService
 
 val LOCATION_NOTIFICATION_ID = 3
 val USER_NOTIFICATION_ID = 4
+val BGSVC_STATE_KEY = "BGSVC_STATE_KEY"
+
+suspend fun getBGserviceState():Boolean{
+    val kvDao = AppRepository.get().kvDao()
+
+    var bgSvcState:Boolean = false
+    kvDao.get(BGSVC_STATE_KEY)?.let {
+        bgSvcState = it.value == "true"
+    }
+    Log.d("setupBGService", "bgSvcState: $bgSvcState")
+    return bgSvcState
+}
+
+suspend fun setBGServiceState(ctx: Context, state:Boolean){
+    val kvDao = AppRepository.get().kvDao()
+    val value = if(state) "true" else "false"
+    kvDao.put(KVEntry(BGSVC_STATE_KEY, value))
+    setupBGService(ctx)
+}
+suspend fun setupBGService(ctx:Context){
+    val state = getBGserviceState()
+
+    val _action = if(state){
+        BGService.ACTION_START}else{
+        BGService.ACTION_STOP}
+    val intent = Intent(ctx, BGService::class.java).apply {
+        action = _action
+    }
+    ctx.startService(intent)
+}
+
 class BGService: Service() {
 
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)

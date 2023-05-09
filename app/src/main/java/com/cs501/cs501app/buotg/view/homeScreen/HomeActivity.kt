@@ -37,6 +37,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         coroutineScope.launch {
             applyCurrentLocale(resources.configuration, this@HomeActivity)
+            setupBGService(this@HomeActivity)
         }
         setContent {
             EventTrackerTheme {
