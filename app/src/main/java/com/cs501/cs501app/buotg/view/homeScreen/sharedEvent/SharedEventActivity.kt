@@ -157,7 +157,7 @@ class SharedEventActivity : AppCompatActivity() {
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .padding(16.dp)
+                    .padding(5.dp)
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
             ) {
@@ -168,7 +168,7 @@ class SharedEventActivity : AppCompatActivity() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
-                        .padding(16.dp),
+                        .padding(5.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {

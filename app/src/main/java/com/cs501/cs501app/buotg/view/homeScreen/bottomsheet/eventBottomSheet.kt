@@ -23,6 +23,7 @@ import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import com.cs501.cs501app.buotg.CustomButton
 import com.cs501.cs501app.buotg.CustomText
 import com.cs501.cs501app.buotg.database.entities.EventRepeatMode
 
@@ -121,7 +122,7 @@ fun SheetForm(
                 AlertDialog(onDismissRequest = { openDialog = false },
                     title = { Text(text = "Select Location") },
                     confirmButton = {
-                        Button(
+                        CustomButton(
                             onClick = {
                                 latitude = viewModel.location.value.latitude.toFloat()
                                 longitude = viewModel.location.value.longitude.toFloat()
@@ -130,15 +131,11 @@ fun SheetForm(
                                 Log.d("EventBottomSheet", "latitude: $latitude")
                                 Log.d("EventBottomSheet", "longitude: $longitude")
                                 openDialog = false
-                            },
-                        ) {
-                            Text(text = "Save")
-                        }
+                            },text = "Save"
+                        )
                     },
                     dismissButton = {
-                        Button(onClick = { openDialog = false }) {
-                            Text(text = "Cancel")
-                        }
+                        CustomButton(onClick = { openDialog = false }, text = "Cancel")
                     },
                     text = { MapAddressPickerView(viewModel = viewModel) }
                 )

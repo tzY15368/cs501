@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.CustomButton
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.*
 
@@ -88,14 +89,14 @@ fun DatePickerRow(
                     }
                 )
                 Log.d("DatePickerRow", "Selected start time is $selectedStartDateText")
-                Button(
+
+                CustomButton(
                     onClick = {
                         timePickerStart.show()
                         datePickerStart.show()
-                    }
-                ) {
-                    Text(text = stringResource(id = R.string.select_start))
-                }
+                    },
+                    text = stringResource(id = R.string.select_start)
+                )
             }
             Column() {
                 Text(
@@ -106,14 +107,13 @@ fun DatePickerRow(
                     }
                 )
                 Log.d("DatePickerRow", "Selected end time is $selectedEndDateText")
-                Button(
+                CustomButton(
                     onClick = {
                         timePickerEnd.show()
                         datePickerEnd.show()
-                    }
-                ) {
-                    Text(text = stringResource(id = R.string.select_end))
-                }
+                    },
+                    text = stringResource(id = R.string.select_end)
+                )
             }
         }
     }

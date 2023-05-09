@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -205,9 +206,9 @@ class StudyGroupActivity : AppCompatActivity() {
             Dialog(onDismissRequest = { creatingGroup = false }) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .padding(16.dp)
-                        .verticalScroll(rememberScrollState()),
+                        .verticalScroll(rememberScrollState()).background(Color.White),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
@@ -222,7 +223,7 @@ class StudyGroupActivity : AppCompatActivity() {
                         onValueChange = { newGroupName = it },
                         label = stringResource(id = R.string.group_name),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     CustomTextField(
@@ -230,7 +231,7 @@ class StudyGroupActivity : AppCompatActivity() {
                         onValueChange = { newGroupDesc = it },
                         label = stringResource(id = R.string.group_description),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     CustomButton(
@@ -243,7 +244,7 @@ class StudyGroupActivity : AppCompatActivity() {
                             creatingGroup = false
                         },
                         text = stringResource(id = R.string.create),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxHeight(0.5f)
                     )
                 }
             }
