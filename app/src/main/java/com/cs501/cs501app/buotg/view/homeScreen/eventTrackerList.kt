@@ -282,10 +282,13 @@ fun EventDetails(event: Event, modifier: Modifier = Modifier) {
         val eventPosition = stringResource(id = R.string.event_position)
         val timeSlot = stringResource(id = R.string.time_slot)
         val priorityName = stringResource(id = R.string.priority_name)
-        Text(
-            text = "$eventPosition: ${event.latitude}, ${event.longitude}",
-            style = androidx.compose.material.MaterialTheme.typography.body1
-        )
+        if(event.latitude!=0f && event.longitude!=0f){
+
+            Text(
+                text = "$eventPosition: ${event.latitude}, ${event.longitude}",
+                style = androidx.compose.material.MaterialTheme.typography.body1
+            )
+        }
         Text(
             text = "$timeSlot: ${event.start_time} - ${event.end_time} (${event.repeat_mode})",
             style = androidx.compose.material.MaterialTheme.typography.body1
