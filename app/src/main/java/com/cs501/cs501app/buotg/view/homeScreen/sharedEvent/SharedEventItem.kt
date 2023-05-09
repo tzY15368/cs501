@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.cs501.cs501app.R
+import com.cs501.cs501app.buotg.CustomButton
 import com.cs501.cs501app.buotg.connection.SharedEventListItem
 import com.cs501.cs501app.buotg.database.entities.*
 import com.cs501.cs501app.buotg.database.repositories.AppRepository
@@ -52,54 +53,58 @@ fun SharedEventItem(
             .padding(10.dp)
     ) {
         val creator = stringResource(id = R.string.creator)
-        val by = if (createdbyUser != null) " $creator: " + createdbyUser!!.full_name else ""
-        var hasTaken = remember { mutableStateOf(false) }
+        val createdBy = if (createdbyUser != null) "$creator: ${createdbyUser!!.full_name}" else ""
+        val sharedEventId = eventData.shared_event.shared_event_id.toString()
+        val sharedEventDate = eventData.shared_event.created_at
+
         Text(
-            text = eventData.shared_event.shared_event_id.toString() + by + "\n" + eventData.shared_event.created_at,
-            fontSize = 30.sp,
-            modifier = Modifier.clickable {
-                onNavigateToSharedEventDetails(eventData.shared_event.shared_event_id)
-            })
-        Row(
+            text = "$sharedEventId $createdBy\n$sharedEventDate",
+            fontSize = 24.sp,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
+                .padding(vertical = 8.dp)
+                .clickable(onClick = { onNavigateToSharedEventDetails(eventData.shared_event.shared_event_id) })
+        )
+
+        val isStudent = currentUser.value?.user_type == UserType.student
+        val isTeacher = currentUser.value?.user_type == UserType.teacher
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (currentUser.value != null && currentUser.value!!.user_type == UserType.student) {
-
+            if (isStudent) {
                 takeAttendanceBtn(
                     eventData = eventData,
                     userId = currentUser.value!!.user_id,
                     eventLocation = event?.toLocation(),
-                    reload = { reloadSharedEvents() }
+                    reload = { reloadSharedEvents() },
                 )
             }
-            if (currentUser.value != null && currentUser.value!!.user_type == UserType.teacher) {
-                Button(onClick = {
-                    importingGroupMembers = true
-                }) {
-                    Text(text = stringResource(id = R.string.import_members_2))
-                }
+            if (isTeacher) {
+                CustomButton(
+                    onClick = { importingGroupMembers = true },
+                    modifier = Modifier.padding(4.dp),
+                    text = stringResource(id = R.string.import_members_2)
+                )
+            }
+
+            if (isTeacher) {
+                CustomButton(
+                    onClick = { viewingParticipance = true },
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .fillMaxWidth(),
+                    text = stringResource(id = R.string.view_participant)
+                )
             }
         }
-        if (currentUser.value != null && currentUser.value!!.user_type == UserType.teacher){
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Button(onClick = {
-                    viewingParticipance = true
-                }) {
-                    Text(text = stringResource(id = R.string.view_participant))
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(10.dp))
+
+
+
+        Spacer(modifier = Modifier.height(16.dp))
         Divider()
     }
+
 
 
     if (importingGroupMembers) {

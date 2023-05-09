@@ -3,6 +3,7 @@ package com.cs501.cs501app.buotg.view.user_group
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
@@ -11,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.CustomButton
 import com.cs501.cs501app.buotg.CustomTextField
@@ -28,6 +30,7 @@ fun GroupInviteView(groupID: Int) {
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
         CustomTextField(
+            modifier = Modifier.padding(4.dp),
             value = userEmail,
             onValueChange = {
                 userEmail = it
@@ -41,6 +44,6 @@ fun GroupInviteView(groupID: Int) {
                 inviteRepo.upsertInvite(ctx, groupID, userEmail, API.InviteStatus.PENDING)
                 loading.value = false
             }
-        }, enabled = !loading.value, text = stringResource(id = R.string.send_invites))
+        }, enabled = !loading.value, text = stringResource(id = R.string.send_invites),modifier = Modifier.padding(4.dp),)
     }
 }

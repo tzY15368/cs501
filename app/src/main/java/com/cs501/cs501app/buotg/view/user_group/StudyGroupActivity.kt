@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -142,7 +143,7 @@ class StudyGroupActivity : AppCompatActivity() {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(10.dp)
             ) {
                 val creator = stringResource(id = R.string.creator)
                 val by =
@@ -165,7 +166,7 @@ class StudyGroupActivity : AppCompatActivity() {
                 ) {
                     Text(
                         text = group.desc,
-                        fontSize = 16.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF7F7F7F),
                         modifier = Modifier.weight(1f)
@@ -205,32 +206,31 @@ class StudyGroupActivity : AppCompatActivity() {
             Dialog(onDismissRequest = { creatingGroup = false }) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxSize()
                         .padding(16.dp)
-                        .verticalScroll(rememberScrollState()),
+                        .verticalScroll(rememberScrollState()).background(Color.White),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
                 ) {
                     CustomText(
                         text = stringResource(id = R.string.create_a_group),
                         style = androidx.compose.material.MaterialTheme.typography.h5,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 16.dp)
+                        modifier = Modifier.padding(bottom =200.dp,top=10.dp)
                     )
                     CustomTextField(
                         value = newGroupName,
                         onValueChange = { newGroupName = it },
                         label = stringResource(id = R.string.group_name),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
                     CustomTextField(
                         value = newGroupDesc,
                         onValueChange = { newGroupDesc = it },
                         label = stringResource(id = R.string.group_description),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     CustomButton(
@@ -243,7 +243,7 @@ class StudyGroupActivity : AppCompatActivity() {
                             creatingGroup = false
                         },
                         text = stringResource(id = R.string.create),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxHeight(0.5f)
                     )
                 }
             }
@@ -267,7 +267,7 @@ class StudyGroupActivity : AppCompatActivity() {
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .padding(16.dp)
+                    .padding(10.dp)
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,

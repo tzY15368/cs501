@@ -1,6 +1,7 @@
 package com.cs501.cs501app.buotg.view.homeScreen.sharedEvent
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -12,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.CustomButton
+import com.cs501.cs501app.buotg.CustomTextField
 import com.cs501.cs501app.buotg.database.entities.SharedEvent
 import com.cs501.cs501app.buotg.database.entities.SharedEventParticipance
 import com.cs501.cs501app.buotg.database.entities.Status
@@ -53,42 +56,30 @@ fun CreateSharedEventHandler(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 24.dp)
+                .padding(horizontal = 16.dp, vertical = 24.dp).background(Color.White)
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = stringResource(id = R.string.create_a_shared_event),
                 style = MaterialTheme.typography.h5,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 16.dp),
+                modifier = Modifier.padding(bottom = 200.dp, top = 10.dp),
                 color = RedPrimary
             )
-            OutlinedTextField(
+            CustomTextField(
                 value = newSharedEventName.value,
                 onValueChange = { newSharedEventName.value = it },
-                label = { Text(text = stringResource(id = R.string.shared_event_name)) },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                textStyle = MaterialTheme.typography.body1,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = RedPrimaryVariant,
-                    unfocusedBorderColor = RedSecondary
-                )
+                label = stringResource(id = R.string.shared_event_name),
+                modifier = Modifier.fillMaxWidth().padding(start = 10.dp,end=10.dp),
             )
             Spacer(modifier = Modifier.height(16.dp))
-            OutlinedTextField(
+            CustomTextField(
                 value = newSharedEventDesc.value,
                 onValueChange = { newSharedEventDesc.value = it },
-                label = { Text(text = stringResource(id = R.string.shared_event_desc)) },
-                modifier = Modifier.fillMaxWidth(),
-                textStyle = MaterialTheme.typography.body1,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = RedPrimaryVariant,
-                    unfocusedBorderColor = RedSecondary
-                )
+                label = stringResource(id = R.string.shared_event_desc),
+                modifier = Modifier.fillMaxWidth().padding(start = 10.dp,end=10.dp),
             )
 
             CustomButton(onClick = {
@@ -149,7 +140,7 @@ fun CreateSharedEventHandler(
                     reloadSharedEvents()
                 }
                 creatingSharedEvent.value = false
-            },text = stringResource(id = R.string.create))
+            },text = stringResource(id = R.string.create),Modifier.padding(top = 10.dp))
         }
     }
 }
