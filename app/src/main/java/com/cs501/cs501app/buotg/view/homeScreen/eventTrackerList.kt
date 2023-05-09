@@ -274,7 +274,7 @@ fun EventDetails(event: Event, modifier: Modifier = Modifier) {
     ) {
         Text(
             text = event.event_name,
-            style = androidx.compose.material.MaterialTheme.typography.h4.copy(
+            style = androidx.compose.material.MaterialTheme.typography.h5.copy(
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF2E2E2E),
             )

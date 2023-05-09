@@ -94,7 +94,7 @@ fun GroupDetails(groupID: Int, onBack: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(paddingValues)
-                .padding(16.dp)
+                .padding(10.dp)
         ) {
             val groupInfoTitle = stringResource(id = R.string.group_info)
             Text(text = groupInfoTitle, fontSize = 24.sp, fontWeight = FontWeight.Bold)
@@ -106,9 +106,9 @@ fun GroupDetails(groupID: Int, onBack: () -> Unit) {
                 Text(text = "$groupDescriptionLabel: ${group.desc}", fontSize = 18.sp)
                 Text(text = "$groupCreatedLabel: ${groupOwner?.full_name}", fontSize = 18.sp)
             }
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Divider(color = Color(0xFFF52D4D), thickness = 1.dp)
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             val membersTitle = stringResource(id = R.string.group_member)
             Text(text = membersTitle, fontSize = 24.sp, fontWeight = FontWeight.Bold)
             LazyColumn(
@@ -138,9 +138,9 @@ fun GroupDetails(groupID: Int, onBack: () -> Unit) {
                     }
                 }
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Divider(color = Color(0xFFF52D4D), thickness = 1.dp)
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             val invitesTitle = stringResource(id = R.string.group_invites)
             Text(text = invitesTitle, fontSize = 24.sp, fontWeight = FontWeight.Bold)
             LazyColumn(
@@ -155,9 +155,9 @@ fun GroupDetails(groupID: Int, onBack: () -> Unit) {
                     }
                 }
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Divider(color = Color(0xFFF52D4D), thickness = 1.dp)
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             if (group != null) {
                 GroupInviteView(group!!.group_id)
             }

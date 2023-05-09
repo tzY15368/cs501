@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.cs501.cs501app.R
 import com.cs501.cs501app.buotg.CustomButton
+import com.cs501.cs501app.buotg.CustomTextField
 import com.cs501.cs501app.buotg.database.entities.SharedEvent
 import com.cs501.cs501app.buotg.database.entities.SharedEventParticipance
 import com.cs501.cs501app.buotg.database.entities.Status
@@ -57,40 +58,28 @@ fun CreateSharedEventHandler(
                 .fillMaxSize()
                 .padding(horizontal = 16.dp, vertical = 24.dp).background(Color.White)
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = stringResource(id = R.string.create_a_shared_event),
                 style = MaterialTheme.typography.h5,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(bottom = 16.dp),
+                modifier = Modifier.padding(bottom = 200.dp, top = 10.dp),
                 color = RedPrimary
             )
-            OutlinedTextField(
+            CustomTextField(
                 value = newSharedEventName.value,
                 onValueChange = { newSharedEventName.value = it },
-                label = { Text(text = stringResource(id = R.string.shared_event_name)) },
-                singleLine = true,
+                label = stringResource(id = R.string.shared_event_name),
                 modifier = Modifier.fillMaxWidth().padding(start = 10.dp,end=10.dp),
-                textStyle = MaterialTheme.typography.body1,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = RedPrimaryVariant,
-                    unfocusedBorderColor = RedSecondary
-                )
             )
             Spacer(modifier = Modifier.height(16.dp))
-            OutlinedTextField(
+            CustomTextField(
                 value = newSharedEventDesc.value,
                 onValueChange = { newSharedEventDesc.value = it },
-                label = { Text(text = stringResource(id = R.string.shared_event_desc)) },
+                label = stringResource(id = R.string.shared_event_desc),
                 modifier = Modifier.fillMaxWidth().padding(start = 10.dp,end=10.dp),
-                textStyle = MaterialTheme.typography.body1,
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = RedPrimaryVariant,
-                    unfocusedBorderColor = RedSecondary
-                )
             )
 
             CustomButton(onClick = {

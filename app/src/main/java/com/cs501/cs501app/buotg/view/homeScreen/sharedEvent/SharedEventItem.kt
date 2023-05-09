@@ -83,21 +83,23 @@ fun SharedEventItem(
             if (isTeacher) {
                 CustomButton(
                     onClick = { importingGroupMembers = true },
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier.padding(4.dp),
                     text = stringResource(id = R.string.import_members_2)
+                )
+            }
+
+            if (isTeacher) {
+                CustomButton(
+                    onClick = { viewingParticipance = true },
+                    modifier = Modifier
+                        .padding(top = 4.dp)
+                        .fillMaxWidth(),
+                    text = stringResource(id = R.string.view_participant)
                 )
             }
         }
 
-        if (isTeacher) {
-            CustomButton(
-                onClick = { viewingParticipance = true },
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .fillMaxWidth(),
-                text = stringResource(id = R.string.view_participant)
-            )
-        }
+
 
         Spacer(modifier = Modifier.height(16.dp))
         Divider()
